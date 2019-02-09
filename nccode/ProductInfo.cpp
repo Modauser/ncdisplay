@@ -1,8 +1,11 @@
+#include <fatfs/ff.h>
 #include <gameduino2/GD2.h>
 #include <stdio.h>
 
 #include "Assets.h"
 #include "Screens.h"
+
+constexpr const char *piServiceFile = DRV_SD "Service.txt";
 
 static Button buttonsProductInfo[] = {
 	Button(1, {0, 0}, Button::drawBackArrow, [](bool press) {
@@ -26,6 +29,7 @@ unsigned int piFilterType = 5;
 
 static unsigned int piFilterRemaining;
 //static unsigned int piFilterFlowRate;
+static char piServiceContact[200];
 
 Screen screenProductInfo (
 	// Parent screen
@@ -33,8 +37,8 @@ Screen screenProductInfo (
 	// Buttons
 	buttonsProductInfo, 1,
 	// Initialization function
-#ifdef USE_SERIAL
 	[](void) {
+#ifdef USE_SERIAL
 		printf("@!");
 		piModel = serialGet();
 
@@ -70,10 +74,21 @@ Screen screenProductInfo (
 			piFlowRate[6] = 'P';
 			piFlowRate[7] = 'M';
 		}
-	},
-#else
-	nullptr,
 #endif // USE_SERIAL
+
+		FIL fil;
+		auto result = f_open(&fil, piServiceFile, FA_READ);
+		if (result == FR_OK) {
+			UINT unused;
+			f_read(&fil, piServiceContact, 200, &unused);
+			unsigned int i;
+			for (i = 0; piServiceContact[i]; i++) {
+				if (piServiceContact[i] == '\r')
+					piServiceContact[i] = ' ';
+			}
+			f_close(&fil);
+		}
+	},
 	// Pre-draw function
 	[](void) {
 		Screen::clearWithIonHeader();
@@ -139,10 +154,7 @@ Screen screenProductInfo (
 	      GD.cmd_number(140, 240, FONT_SMALL, 0, piFilterRemaining);
 		GD.cmd_text(140, 260, FONT_SMALL, 0, piFlowRate);
 
-		GD.cmd_text(20, 380, FONT_SMALL, 0, "SERVICE CONTACT");
-	      //GD.cmd_text(20, 400, FONT_SMALL, 0, piServiceName);
-	      //GD.cmd_text(20, 420, FONT_SMALL, 0, piServicePhone);
-	      //GD.cmd_text(20, 440, FONT_SMALL, 0, piServiceSite);
+		GD.cmd_text(20, 380, FONT_SMALL, 0, piServiceContact, 20);
 	}
 );
 
