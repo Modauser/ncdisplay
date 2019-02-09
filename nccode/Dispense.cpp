@@ -1,5 +1,6 @@
 #include <gameduino2/GD2.h>
 #include "Assets.h"
+#include "Errors.h"
 #include "Screens.h"
 
 // UART redirected to stdio
@@ -112,7 +113,7 @@ static Button buttonsDispense[] = {
 static char dTime[] = { 0, 0, ':', 0, 0, 0, 'M', '\0' };
 static char dDate[] = { 0, 0, '-', 0, 0, '-', 0, 0, '\0' };
 static unsigned int timeDateCounter = 3000;
-static unsigned int errorCode = 0;
+static Error dispError = Error::get(0);
 
 Screen screenDispense (
 	// Parent screen
@@ -125,20 +126,6 @@ Screen screenDispense (
 	},
 	// Pre-draw function
 	[](void) {
-#ifdef USE_SERIAL
-		++timeDateCounter;
-		// Check for errors
-		if ((timeDateCounter % 500) == 0) {
-			printf("%%?");
-			errorCode = serialGet();
-		}
-		// Update date/time
-		if (timeDateCounter >= 2000) {
-			timeDateCounter = 0;
-			updateDateTime();
-		}
-#endif // USE_SERIAL
-
 		Screen::clearWithIonHeader();
 
 		GD.Begin(BITMAPS);
@@ -164,48 +151,25 @@ Screen screenDispense (
 		GD.cmd_text(15, 450, FONT_TIME, 0, dTime);
 		GD.cmd_text(202, 450, FONT_TIME, 0, dDate);
 
-		if (errorCode != 0)
-			showErrorStatus();
+#ifdef USE_SERIAL
+		++timeDateCounter;
+		// Check for errors
+		if ((timeDateCounter % 500) == 0) {
+			printf("%%?");
+			dispError = Error::get(serialGet());
+		}
+
+		if (dispError)
+			dispError.show();
+
+		// Update date/time
+		if (timeDateCounter >= 2000) {
+			timeDateCounter = 0;
+			updateDateTime();
+		}
+#endif // USE_SERIAL
 	}
 );
-
-void showErrorStatus(void)
-{
-	// Draw message box
-	GD.ColorRGB(0xFF0000);
-	GD.Begin(RECTS);
-	GD.Vertex2ii(20, 210);
-	GD.Vertex2ii(250, 266);
-	GD.ColorRGB(WHITE);
-	GD.Vertex2ii(22, 212);
-	GD.Vertex2ii(248, 264);
-
-	// Get error message
-	const char *message = "";
-	int unknownError = 0;
-	switch (errorCode) {
-	case 0x31:
-		message = "Drip tray leak detected.";
-		break;
-	case 0x74:
-		message = "Ice level error.";
-		break;
-	case 0x19:
-		message = "Hot tank level error.";
-		break;
-	default:
-		message = "Unknown error detected.";
-		unknownError = errorCode;
-		break;
-	}
-
-	// Put error message
-	GD.ColorRGB(BLACK);
-	GD.cmd_text(135, 238, FONT_MESG, OPT_CENTER, message);
-	if (unknownError != 0)
-		GD.cmd_number(135, 258, FONT_MESG, OPT_CENTER, errorCode);
-	GD.ColorRGB(WHITE);
-}
 
 void updateDateTime(void)
 {

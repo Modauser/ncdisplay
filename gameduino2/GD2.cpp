@@ -1571,6 +1571,7 @@ void GDClass::alert(const char *message)
 {
   begin(0);
   copy(__bsod, sizeof(__bsod));
+  GD.ColorRGB(0xFF0000);
   cmd_text(240, 176, 29, OPT_CENTER, message);
   swap();
   GD.finish();

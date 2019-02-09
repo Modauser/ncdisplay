@@ -128,6 +128,7 @@ nccode/FilterChange.o \
 nccode/FilterChangeTimer.o \
 nccode/USBUpdate.o \
 nccode/Warning.o \
+nccode/Errors.o \
 nccode/Init.o
 
 OBJS_AS_ARGS +=  \
@@ -205,6 +206,7 @@ OBJS_AS_ARGS +=  \
 "nccode/FilterChangeTimer.o" \
 "nccode/USBUpdate.o" \
 "nccode/Warning.o" \
+"nccode/Errors.o" \
 "nccode/Init.o"
 
 # List the dependency files
@@ -285,6 +287,7 @@ DEPS_AS_ARGS +=  \
 "nccode/FilterChangeTimer.d" \
 "nccode/USBUpdate.d" \
 "nccode/Warning.d" \
+"nccode/Errors.d" \
 "nccode/Init.d"
 
 OUTPUT_FILE_NAME :=AtmelStart

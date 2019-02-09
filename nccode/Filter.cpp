@@ -72,8 +72,8 @@ Screen screenFilter (
 		filterMetric = (serialGet() != 0);
 #else
 		piFilterType = 0;
-	},
 #endif // USE_SERIAL
+	},
 	// Pre-draw function
 	[](void) {
 		Screen::clearWithIonHeader();
