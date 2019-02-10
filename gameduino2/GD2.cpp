@@ -1261,7 +1261,7 @@ void GDClass::cmd_text(int16_t x, int16_t y, byte font, uint16_t options, const 
       ch(font);
       cH(options);
       cs(buf);
-      if (s[i] == '\0')
+      if (s[i] == '\0' || s[i + 1] == '\0')
         return;
       y += inc;
     } else {

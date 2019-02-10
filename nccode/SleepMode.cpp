@@ -7,6 +7,12 @@ static bool sleepModeOn = false;
 static bool sleepSettingHours = false;
 static bool sleepSettingWeekday = false;
 
+static unsigned int sleepHours[4] = {
+	0, 0, 0, 0
+};
+
+static AMPMFormat sleepHourString;
+
 void sleepSetVisibilities(void);
 
 static Button buttonsSleepMode[] = {
@@ -47,24 +53,55 @@ static Button buttonsSleepMode[] = {
 		}
 	}),
 	Button(4, {0, 422}, Button::drawFullWidth, lStringSave, [](bool press) {
-		if (!press)
+		if (press)
+			return;
+
+		if (sleepSettingHours & sleepSettingWeekday) {
+			sleepSettingWeekday = false;
+			buttonsSleepMode[3].setText(lStringSave);
+		} else {
 			screenCurrent = &screenSettings;
+		}
 	}),
 	Button(5, {34, 210}, Button::drawUpButton, [](bool press) {
 		if (press)
 			return;
+
+		auto& hour = sleepHours[sleepSettingWeekday ? 0 : 2];
+		if (hour < 23)
+			hour++;
+		else
+			hour = 0;
 	}),
 	Button(6, {34, 282}, Button::drawDownButton, [](bool press) {
 		if (press)
 			return;
+
+		auto& hour = sleepHours[sleepSettingWeekday ? 0 : 2];
+		if (hour > 0)
+			hour--;
+		else
+			hour = 23;
 	}),
-	Button(7, {146, 210}, Button::drawUpButton, [](bool press) {
+	Button(7, {168, 210}, Button::drawUpButton, [](bool press) {
 		if (press)
 			return;
+
+		auto& hour = sleepHours[sleepSettingWeekday ? 1 : 3];
+		if (hour < 23)
+			hour++;
+		else
+			hour = 0;
 	}),
-	Button(8, {146, 282}, Button::drawDownButton, [](bool press) {
+	Button(8, {168, 282}, Button::drawDownButton, [](bool press) {
 		if (press)
 			return;
+
+		auto& hour = sleepHours[sleepSettingWeekday ? 1 : 3];
+		if (hour > 0)
+			hour--;
+		else
+			hour = 23;
 	})
 };
 
@@ -131,9 +168,22 @@ Screen screenSleepMode (
 				"Programmer Heures de Fonctionnement",
 				"Programar Horas de Funcionamiento"
 			})());
+			GD.cmd_text(136, 260, FONT_SMALL, OPT_CENTER, "TO");
+
 			GD.cmd_text(136, 155, FONT_TITLE, OPT_CENTER,
 				sleepSettingWeekday ? smWeekdays() : smWeekend());
-			GD.cmd_text(136, 260, FONT_SMALL, OPT_CENTER, "TO");
+
+			GD.ColorRGB(WHITE);
+			GD.Begin(RECTS);
+			GD.Vertex2ii(34, 244); GD.Vertex2ii(104, 282);
+			GD.Vertex2ii(168, 244); GD.Vertex2ii(238, 282);
+			GD.ColorRGB(BLACK);
+
+			int i = sleepSettingWeekday ? 0 : 2;
+			GD.cmd_text(69, 263, FONT_SMALL, OPT_CENTER,
+				sleepHourString.format(sleepHours[i]));
+			GD.cmd_text(203, 263, FONT_SMALL, OPT_CENTER,
+				sleepHourString.format(sleepHours[i + 1]));
 		}
 	}
 );

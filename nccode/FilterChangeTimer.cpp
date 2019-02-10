@@ -32,7 +32,7 @@ static Button buttonsFilterChangeTimer[] = {
 	Button(4, {34, 282}, Button::drawDownButton, [](bool press) {
 		if (!press && filterTimerMonths > 3)
 			filterTimerMonths -= 3;
-	}),
+	})
 };
 
 Screen screenFilterChangeTimer (
@@ -66,7 +66,7 @@ Screen screenFilterChangeTimer (
 			"OU",
 			"O"
 		})());
-		GD.cmd_text(185, 300, FONT_SMALL, OPT_CENTERX, LanguageString({
+		GD.cmd_text(203, 300, FONT_SMALL, OPT_CENTERX, LanguageString({
 			"GALLONS",
 			"GALLONEN",
 			"GALLONS",
@@ -76,11 +76,12 @@ Screen screenFilterChangeTimer (
 		GD.ColorRGB(WHITE);
 		GD.Begin(RECTS);
 		GD.Vertex2ii(34, 244); GD.Vertex2ii(104, 282);
-		GD.Vertex2ii(150, 244); GD.Vertex2ii(220, 282);
+		GD.Vertex2ii(168, 244); GD.Vertex2ii(238, 282);
 
+		GD.ColorRGB(BLACK);
 		GD.cmd_number(69, 263, FONT_SMALL, OPT_CENTER,
 			filterTimerMonths);
-		GD.cmd_number(185, 263, FONT_SMALL, OPT_CENTER,
+		GD.cmd_number(203, 263, FONT_SMALL, OPT_CENTER,
 			filterTimerGallons);
 	}
 );

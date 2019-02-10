@@ -92,6 +92,7 @@ void Button::draw(void)
 
 	GD.Tag(tag);
 	if (render != nullptr) {
+		GD.LineWidth(16);
 		if (!text.empty()) {
 			((void (*)(const vec2&, bool, const LanguageString&))
 				render)(xy, pressed | forcePressed, text);

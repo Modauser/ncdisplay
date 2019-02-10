@@ -279,4 +279,46 @@ public:
 	static void clearWithIonHeader(void);
 };
 
+template<std::size_t N>
+class NumFormat {
+protected:
+	char buffer[N];
+
+public:
+	constexpr NumFormat(void)
+		: buffer{""} {}
+
+	constexpr const char *get(void) const {
+		return buffer;
+	}
+
+	virtual const char *format(int number) = 0;
+};
+
+class AMPMFormat : public NumFormat<5>
+{
+public:
+	constexpr AMPMFormat(void)
+		: NumFormat() {
+		buffer[3] = 'M';
+		buffer[4] = '\0';
+	}
+
+	const char *format(int number) {
+		bool pm = number > 11;
+		if (number > 11)
+			number -= 12;
+		if (number == 0)
+			number = 12;
+
+		if (auto div = number / 10; div != 0)
+			buffer[0] = '0' + div;
+		else
+			buffer[0] = ' ';
+		buffer[1] = '0' + number % 10;
+		buffer[2] = pm ? 'P' : 'A';
+		return get();
+	}
+};
+
 #endif // ASSETS_H_
