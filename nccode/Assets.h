@@ -295,8 +295,7 @@ public:
 	virtual const char *format(int number) = 0;
 };
 
-class AMPMFormat : public NumFormat<5>
-{
+class AMPMFormat : public NumFormat<5> {
 public:
 	constexpr AMPMFormat(void)
 		: NumFormat() {
@@ -304,7 +303,7 @@ public:
 		buffer[4] = '\0';
 	}
 
-	const char *format(int number) {
+	const char *format(int number) final {
 		bool pm = number > 11;
 		if (number > 11)
 			number -= 12;
@@ -317,6 +316,34 @@ public:
 			buffer[0] = ' ';
 		buffer[1] = '0' + number % 10;
 		buffer[2] = pm ? 'P' : 'A';
+		return get();
+	}
+};
+
+class DateFormat : public NumFormat<9> {
+public:
+	constexpr DateFormat(char splitter = '/')
+		: NumFormat() {
+		buffer[2] = splitter;
+		buffer[5] = splitter;
+		buffer[8] = '\0';
+	}
+
+	// Takes in 24-bit number: 0xMMDDYY
+	const char *format(int number) final {
+		int n = (number >> 16) & 0xFF;
+
+		buffer[0] = '0' + n / 10;
+		buffer[1] = '0' + n % 10;
+
+		n = (number >> 8) & 0xFF;
+		buffer[3] = '0' + n / 10;
+		buffer[4] = '0' + n % 10;
+
+		n = number & 0xFF;
+		buffer[6] = '0' + n / 10;
+		buffer[7] = '0' + n % 10;
+
 		return get();
 	}
 };

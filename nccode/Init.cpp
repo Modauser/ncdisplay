@@ -81,6 +81,7 @@ void loop()
 
 	if (screenCurrent != oldScreen) {
 		// Switched to a new screen, let it prepare for showing
+		// This includes queries to the main board
 		screenCurrent->prepare();
 	}
 

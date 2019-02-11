@@ -110,8 +110,8 @@ static Button buttonsDispense[] = {
 	})
 };
 
+static DateFormat dDate ('-');
 static char dTime[] = { 0, 0, ':', 0, 0, 0, 'M', '\0' };
-static char dDate[] = { 0, 0, '-', 0, 0, '-', 0, 0, '\0' };
 static unsigned int timeDateCounter = 3000;
 static Error dispError = Error::get(0);
 
@@ -149,7 +149,7 @@ Screen screenDispense (
 		// Time and date
 		GD.ColorRGB(BLACK);
 		GD.cmd_text(15, 450, FONT_TIME, 0, dTime);
-		GD.cmd_text(202, 450, FONT_TIME, 0, dDate);
+		GD.cmd_text(202, 450, FONT_TIME, 0, dDate.get());
 
 #ifdef USE_SERIAL
 		++timeDateCounter;
@@ -190,14 +190,9 @@ void updateDateTime(void)
 		dTime[5] = (val ? 'P' : 'A');
 
 	printf("@D");
-	val = serialGet(); // Month
-	dDate[0] = val / 10 + '0';
-	dDate[1] = val % 10 + '0';
-	val = serialGet(); // Day
-	dDate[3] = val / 10 + '0';
-	dDate[4] = val % 10 + '0';
-	val = serialGet(); // Year
-	dDate[6] = val / 10 + '0';
-	dDate[7] = val % 10 + '0';
+	val = serialGet() << 16; // Month
+	val |= serialGet() << 8; // Day
+	val |= serialGet(); // Year
+	dDate.format(val);
 }
 

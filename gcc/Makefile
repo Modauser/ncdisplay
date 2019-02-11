@@ -290,8 +290,27 @@ DEPS_AS_ARGS +=  \
 "nccode/Errors.d" \
 "nccode/Init.d"
 
-OUTPUT_FILE_NAME :=AtmelStart
-QUOTE := "
+CROSS = arm-none-eabi-
+CC = gcc
+CXX = g++
+AS = as
+OBJCOPY = objcopy
+
+CINCLUDES = \
+	-I"../" -I"../config" \
+	-I"../hal/include" -I"../hal/utils/include" \
+	-I"../hpl/cmcc" -I"../hpl/spi" -I"../hpl/core" -I"../hpl/dmac" -I"../hpl/gclk" -I"../hpl/mclk" -I"../hpl/osc32kctrl" -I"../hpl/oscctrl" -I"../hpl/pm" -I"../hpl/port" -I"../hpl/ramecc" -I"../hpl/sdhc" -I"../hpl/sercom" -I"../hpl/systick" -I"../hpl/usb" \
+	-I"../hri" \
+	-I"../usb" -I"../usb/class/hub" -I"../usb/class/msc" -I"../usb/class/msc/host" -I"../usb/host" \
+	-I"../diskio" -I"../stdio_redirect" -I"../sd_mmc" \
+       	-I"../CMSIS/Include" -I"../include"
+
+MCUFLAGS = -D__SAME54P20A__ -mcpu=cortex-m4 -mthumb -mfloat-abi=softfp -mfpu=fpv4-sp-d16 -mlong-calls
+CXXFLAGS = -std=c++17 -fno-rtti -fno-exceptions -ffunction-sections
+CFLAGS = -std=gnu99 -ffunction-sections
+DFLAGS = -DDEBUG -ggdb -g3 -Wall
+
+OUTPUT_FILE_NAME := AtmelStart
 OUTPUT_FILE_PATH +=$(OUTPUT_FILE_NAME).elf
 OUTPUT_FILE_PATH_AS_ARGS +=$(OUTPUT_FILE_NAME).elf
 
@@ -306,62 +325,46 @@ all: $(SUB_DIRS) $(OUTPUT_FILE_PATH)
 # Linker target
 
 $(OUTPUT_FILE_PATH): $(OBJS)
-	@echo Building target: $@
-	@$(QUOTE)arm-none-eabi-gcc$(QUOTE) -o $(OUTPUT_FILE_NAME).elf $(OBJS_AS_ARGS) -DSTACK_SIZE=4096 \
+	@echo $@
+	@$(CROSS)$(CC) -o $(OUTPUT_FILE_NAME).elf $(OBJS_AS_ARGS) -DSTACK_SIZE=4096 \
 -Wl,--start-group -lm -Wl,--end-group -mthumb \
 -Wl,-Map="$(OUTPUT_FILE_NAME).map" --specs=nano.specs -Wl,--gc-sections -mcpu=cortex-m4 \
  \
 -T"../gcc/gcc/same54p20a_flash.ld" \
 -L"../gcc/gcc"
-	@echo Finished building target: $@
 
-	@"arm-none-eabi-objcopy" -O binary "$(OUTPUT_FILE_NAME).elf" "$(OUTPUT_FILE_NAME).bin"
-	@"arm-none-eabi-objcopy" -O ihex -R .eeprom -R .fuse -R .lock -R .signature  \
+	@echo Finished building target: $@
+	@$(CROSS)$(OBJCOPY) -O binary "$(OUTPUT_FILE_NAME).elf" "$(OUTPUT_FILE_NAME).bin"
+	@$(CROSS)$(OBJCOPY) -O ihex -R .eeprom -R .fuse -R .lock -R .signature  \
         "$(OUTPUT_FILE_NAME).elf" "$(OUTPUT_FILE_NAME).hex"
-	@"arm-none-eabi-objcopy" -j .eeprom --set-section-flags=.eeprom=alloc,load --change-section-lma \
+	@$(CROSS)$(OBJCOPY) -j .eeprom --set-section-flags=.eeprom=alloc,load --change-section-lma \
         .eeprom=0 --no-change-warnings -O binary "$(OUTPUT_FILE_NAME).elf" \
         "$(OUTPUT_FILE_NAME).eep" || exit 0
-	@"arm-none-eabi-objdump" -h -S "$(OUTPUT_FILE_NAME).elf" > "$(OUTPUT_FILE_NAME).lss"
-	@"arm-none-eabi-size" "$(OUTPUT_FILE_NAME).elf"
-
-	
+	@$(CROSS)objdump -h -S "$(OUTPUT_FILE_NAME).elf" > "$(OUTPUT_FILE_NAME).lss"
+	@$(CROSS)size "$(OUTPUT_FILE_NAME).elf"
 
 # Compiler targets
 
-
-
 %.o: %.cpp
-	@echo Building C++ file: $<
-	@$(QUOTE)arm-none-eabi-g++$(QUOTE) -mthumb -DDEBUG -ggdb -ffunction-sections -mlong-calls -g3 -Wall -c -std=c++17 \
--Wextra -Wno-unused-variable -Wno-unused-parameter -fno-rtti -fno-exceptions \
--D__SAME54P20A__ -mcpu=cortex-m4 -mfloat-abi=softfp -mfpu=fpv4-sp-d16 \
--I"../" -I"../config" -I"../hal/include" -I"../hal/utils/include" -I"../hpl/cmcc" -I"../hpl/spi" -I"../hpl/core" -I"../hpl/dmac" -I"../hpl/gclk" -I"../hpl/mclk" -I"../hpl/osc32kctrl" -I"../hpl/oscctrl" -I"../hpl/pm" -I"../hpl/port" -I"../hpl/ramecc" -I"../hpl/sdhc" -I"../hpl/sercom" -I"../hpl/systick" -I"../hpl/usb" -I"../hri" -I"../" -I"../config" -I"../usb" -I"../usb/class/hub" -I"../usb/class/msc" -I"../usb/class/msc/host" -I"../usb/host" -I"../" -I"../diskio" -I"../" -I"../config" -I"../stdio_redirect" -I"../" -I"../config" -I"../sd_mmc" -I"../" -I"../CMSIS/Include" -I"../include"  \
--MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"  -o "$@" "$<"
-	@echo Finished building: $<
+	@echo $<
+	@$(CROSS)$(CXX) $(MCUFLAGS) $(CXXFLAGS) $(DFLAGS) $(CINCLUDES) -c \
+	-Wextra -Wno-unused-variable -Wno-unused-parameter \
+	-MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"  -o "$@" "$<"
 
 %.o: %.c
-	@echo Building C file: $<
-	@$(QUOTE)arm-none-eabi-gcc$(QUOTE) -x c -mthumb -DDEBUG -ggdb -ffunction-sections -mlong-calls -g3 -Wall -c \
--std=gnu99 -D__SAME54P20A__ -mcpu=cortex-m4 -mfloat-abi=softfp -mfpu=fpv4-sp-d16 \
--I"../" -I"../config" -I"../hal/include" -I"../hal/utils/include" -I"../hpl/cmcc" -I"../hpl/spi" -I"../hpl/core" -I"../hpl/dmac" -I"../hpl/gclk" -I"../hpl/mclk" -I"../hpl/osc32kctrl" -I"../hpl/oscctrl" -I"../hpl/pm" -I"../hpl/port" -I"../hpl/ramecc" -I"../hpl/sdhc" -I"../hpl/sercom" -I"../hpl/systick" -I"../hpl/usb" -I"../hri" -I"../" -I"../config" -I"../usb" -I"../usb/class/hub" -I"../usb/class/msc" -I"../usb/class/msc/host" -I"../usb/host" -I"../" -I"../diskio" -I"../" -I"../config" -I"../stdio_redirect" -I"../" -I"../config" -I"../sd_mmc" -I"../" -I"../CMSIS/Include" -I"../include"  \
--MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"  -o "$@" "$<"
-	@echo Finished building: $<
+	@echo $<
+	@$(CROSS)$(CC) $(MCUFLAGS) $(CFLAGS) $(DFLAGS) $(CINCLUDES) -c \
+	-MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"  -o "$@" "$<"
 
 %.o: %.s
-	@echo Building .s file: $<
-	@$(QUOTE)arm-none-eabi-as$(QUOTE) -x c -mthumb -DDEBUG -Os -ffunction-sections -mlong-calls -g3 -Wall -c -std=gnu99 \
--D__SAME54P20A__ -mcpu=cortex-m4 -mfloat-abi=softfp -mfpu=fpv4-sp-d16 \
--I"../" -I"../config" -I"../hal/include" -I"../hal/utils/include" -I"../hpl/cmcc" -I"../hpl/core" -I"../hpl/dmac" -I"../hpl/gclk" -I"../hpl/mclk" -I"../hpl/osc32kctrl" -I"../hpl/oscctrl" -I"../hpl/pm" -I"../hpl/port" -I"../hpl/ramecc" -I"../hpl/sdhc" -I"../hpl/sercom" -I"../hpl/systick" -I"../hpl/usb" -I"../hri" -I"../" -I"../config" -I"../usb" -I"../usb/class/hub" -I"../usb/class/msc" -I"../usb/class/msc/host" -I"../usb/host" -I"../" -I"../diskio" -I"../" -I"../config" -I"../stdio_redirect" -I"../" -I"../config" -I"../sd_mmc" -I"../" -I"../CMSIS/Include" -I"../include"  \
--MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"  -o "$@" "$<"
-	@echo Finished building: $<
+	@echo $<
+	@$(CROSS)$(AS) -x c $(MCUFLAGS) $(CFLAGS) $(DFLAGS) $(CINCLUDES) -c -Os \
+	-MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"  -o "$@" "$<"
 
 %.o: %.S
-	@echo Building .S file: $<
-	@$(QUOTE)arm-none-eabi-gcc$(QUOTE) -x c -mthumb -DDEBUG -Os -ffunction-sections -mlong-calls -g3 -Wall -c -std=gnu99 \
--D__SAME54P20A__ -mcpu=cortex-m4 -mfloat-abi=softfp -mfpu=fpv4-sp-d16 \
--I"../" -I"../config" -I"../hal/include" -I"../hal/utils/include" -I"../hpl/cmcc" -I"../hpl/core" -I"../hpl/dmac" -I"../hpl/gclk" -I"../hpl/mclk" -I"../hpl/osc32kctrl" -I"../hpl/oscctrl" -I"../hpl/pm" -I"../hpl/port" -I"../hpl/ramecc" -I"../hpl/sdhc" -I"../hpl/sercom" -I"../hpl/systick" -I"../hpl/usb" -I"../hri" -I"../" -I"../config" -I"../usb" -I"../usb/class/hub" -I"../usb/class/msc" -I"../usb/class/msc/host" -I"../usb/host" -I"../" -I"../diskio" -I"../" -I"../config" -I"../stdio_redirect" -I"../" -I"../config" -I"../sd_mmc" -I"../" -I"../CMSIS/Include" -I"../include"  \
--MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"  -o "$@" "$<"
-	@echo Finished building: $<
+	@echo $<
+	@$(CROSS)$(CC) -x c $(MCUFLAGS) $(CFLAGS) $(DFLAGS) $(CINCLUDES) -c -Os \
+	-MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"  -o "$@" "$<"
 
 # Detect changes in the dependent files and recompile the respective object files.
 ifneq ($(MAKECMDGOALS),clean)
@@ -374,9 +377,10 @@ $(SUB_DIRS):
 	$(MK_DIR) "$@"
 
 clean:
-	rm -f $(OBJS_AS_ARGS)
-	rm -f $(OUTPUT_FILE_PATH)
-	rm -f $(DEPS_AS_ARGS)
-	rm -f $(OUTPUT_FILE_NAME).a $(OUTPUT_FILE_NAME).hex $(OUTPUT_FILE_NAME).bin \
-        $(OUTPUT_FILE_NAME).lss $(OUTPUT_FILE_NAME).eep $(OUTPUT_FILE_NAME).map \
-        $(OUTPUT_FILE_NAME).srec
+	@echo "Cleaning..."
+	@rm -f $(OBJS_AS_ARGS)
+	@rm -f $(OUTPUT_FILE_PATH)
+	@rm -f $(DEPS_AS_ARGS)
+	@rm -f $(OUTPUT_FILE_NAME).a $(OUTPUT_FILE_NAME).hex $(OUTPUT_FILE_NAME).bin \
+        @$(OUTPUT_FILE_NAME).lss $(OUTPUT_FILE_NAME).eep $(OUTPUT_FILE_NAME).map \
+        @$(OUTPUT_FILE_NAME).srec

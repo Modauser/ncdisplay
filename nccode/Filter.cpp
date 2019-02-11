@@ -33,7 +33,7 @@ static const char *filterReorder[] = {
 
 static unsigned int filterGalsRem = 0;
 static unsigned int filterMonthsRem = 0;
-static char filterLastChanged[] = { 0, 0, '/', 0, 0, '/', 0, 0, '\0' };
+static DateFormat filterLastChanged;
 static bool filterMetric;
 
 Screen screenFilter (
@@ -58,15 +58,10 @@ Screen screenFilter (
 		filterMonthsRem = serialGet();
 
 		printf("@(");
-		int val = serialGet();
-		filterLastChanged[0] = val / 10 + '0';
-		filterLastChanged[1] = val % 10 + '0';
-		val = serialGet();
-		filterLastChanged[3] = val / 10 + '0';
-		filterLastChanged[4] = val % 10 + '0';
-		val = serialGet();
-		filterLastChanged[6] = val / 10 + '0';
-		filterLastChanged[7] = val % 10 + '0';
+		int val = serialGet() << 16; // Month
+		val |= serialGet() << 8; // Day
+		val |= serialGet(); // Year
+		filterLastChanged.format(val);
 
 		printf("@X");
 		filterMetric = (serialGet() != 0);
@@ -129,7 +124,7 @@ Screen screenFilter (
 		GD.cmd_text(180, 130, FONT_SMALL, 0, filterReorder[piFilterType]);
 	      GD.cmd_number(180, 150, FONT_SMALL, 0, filterGalsRem);
 	      GD.cmd_number(180, 170, FONT_SMALL, 0, filterMonthsRem);
-		GD.cmd_text(180, 190, FONT_SMALL, 0, filterLastChanged);
+		GD.cmd_text(180, 190, FONT_SMALL, 0, filterLastChanged.get());
 
 		GD.cmd_text(20, 230, FONT_LARGE, 0, LanguageString({
 			"CONTAMINANTS REMOVED",

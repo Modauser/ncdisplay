@@ -19,7 +19,7 @@ static unsigned char serviceTempIce = 0;
 static unsigned char serviceTempHot = 0;
 static bool serviceMetric;
 
-static char serviceLastChanged[] = { 0, 0, '/', 0, 0, '/', 0, 0, '\0' };
+static DateFormat serviceLastChanged;
 
 struct ServiceLogEntry {
 	char date[32];
@@ -103,15 +103,10 @@ Screen screenServiceDetails (
 		serviceTempHot = serialGet();
 
 		printf("@(");
-		int val = serialGet();
-		serviceLastChanged[0] = val / 10 + '0';
-		serviceLastChanged[1] = val % 10 + '0';
-		val = serialGet();
-		serviceLastChanged[3] = val / 10 + '0';
-		serviceLastChanged[4] = val % 10 + '0';
-		val = serialGet();
-		serviceLastChanged[6] = val / 10 + '0';
-		serviceLastChanged[7] = val % 10 + '0';
+		int val = serialGet() << 16;
+		val |= serialGet() << 8;
+		val |= serialGet();
+		serviceLastChanged.format(val);
 
 		for (int i = 0; i < 3; i++)
 			getServiceLog(serviceLog[i]);
@@ -186,7 +181,7 @@ Screen screenServiceDetails (
 
 		GD.cmd_number(20, 215, FONT_SMALL, 0, serviceTempIce);
 		GD.cmd_number(20, 265, FONT_SMALL, 0, serviceTempHot);
-		GD.cmd_text(20, 315, FONT_SMALL, 0, serviceLastChanged);
+		GD.cmd_text(20, 315, FONT_SMALL, 0, serviceLastChanged.get());
 
 		for (int i = 0; i < 3; i++) {
 			if (*serviceLog[i].date == '\0')
