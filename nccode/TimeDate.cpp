@@ -161,13 +161,13 @@ static Button buttonsTimeDate[] = {
 				buttonsTimeDate[9].setText(lStringSave);
 			} else {
 #ifdef USE_SERIAL
-				printf("@.%02u%02u%02u",
+				serialPrintf("@.%02u%02u%02u",
 					timeDate[3], timeDate[4], timeDate[5]);
 				if (ampm) {
-					printf("@<%02u%02u%01u", timeDate[0],
+					serialPrintf("@<%02u%02u%01u", timeDate[0],
 						timeDate[1], timeDate[2]);
 				} else {
-					printf("@-%02u%02u", timeDate[0],
+					serialPrintf("@-%02u%02u", timeDate[0],
 						timeDate[1]);
 				}
 #endif // USE_SERIAL
@@ -219,14 +219,14 @@ Screen screenTimeDate (
 		ampm = true;
 
 #ifdef USE_SERIAL
-		printf("@T");
+		serialPrintf("@T");
 		timeDate[0] = serialGet(); // Hour
 		timeDate[1] = serialGet(); // Minute
 		serialGet(); // Second, unused
 		timeDate[2] = serialGet(); // AM/PM
 		ampm = timeDate[2] < 2;
 	
-		printf("@D");
+		serialPrintf("@D");
 		timeDate[3] = serialGet(); // Month
 		timeDate[4] = serialGet(); // Day
 		timeDate[5] = serialGet(); // Year

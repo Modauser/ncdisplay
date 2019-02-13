@@ -44,26 +44,26 @@ Screen screenFilter (
 	// Initialization function
 	[](void) {
 #ifdef USE_SERIAL
-		printf("@%%");
+		serialPrintf("@%%");
 		piFilterType = serialGet();
 
-		printf("@&");
+		serialPrintf("@&");
 		filterGalsRem = serialGet() << 8;
 		filterGalsRem |= serialGet();
 
 		if (filterMetric)
 			filterGalsRem *= GAL_TO_L;
 
-		printf("@`");
+		serialPrintf("@`");
 		filterMonthsRem = serialGet();
 
-		printf("@(");
+		serialPrintf("@(");
 		int val = serialGet() << 16; // Month
 		val |= serialGet() << 8; // Day
 		val |= serialGet(); // Year
 		filterLastChanged.format(val);
 
-		printf("@X");
+		serialPrintf("@X");
 		filterMetric = (serialGet() != 0);
 #else
 		piFilterType = 0;

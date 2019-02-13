@@ -80,7 +80,7 @@ static Button buttonsSystemOptions[] = {
 	Button(9, {0, 422}, Button::drawFullWidth, lStringSave, [](bool press) {
 		if (!press) {
 #ifdef USE_SERIAL
-			printf("@Y%1u@Z%1u@A%1u@B%1u@g%1u@C%1u",
+			serialPrintf("@Y%1u@Z%1u@A%1u@B%1u@g%1u@C%1u",
 				sysOptionToggles[0], sysOptionToggles[1],
 				sysOptionToggles[2], sysOptionToggles[3],
 				sysOptionToggles[4], sysOptionMetric);
@@ -98,17 +98,17 @@ Screen screenSystemOptions (
 	// Initialization function
 #ifdef USE_SERIAL
 	[](void)  {
-		printf("@S");
+		serialPrintf("@S");
 		sysOptionToggles[0] = serialGet();
-		printf("@U");
+		serialPrintf("@U");
 		sysOptionToggles[1] = serialGet();
-		printf("@V");
+		serialPrintf("@V");
 		sysOptionToggles[2] = serialGet();
-		printf("@W");
+		serialPrintf("@W");
 		sysOptionToggles[3] = serialGet();
-		printf("@h");
+		serialPrintf("@h");
 		sysOptionToggles[4] = serialGet();
-		printf("@X");
+		serialPrintf("@X");
 		sysOptionMetric = serialGet();
 	},
 #else

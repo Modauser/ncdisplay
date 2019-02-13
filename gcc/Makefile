@@ -21,7 +21,6 @@ endif
 
 # List the subdirectories for creating object files
 SUB_DIRS +=  \
- \
 hpl/ramecc \
 hpl/nvmctrl \
 sd_mmc \
@@ -48,6 +47,9 @@ hpl/mclk \
 usb/host \
 hpl/sercom \
 hpl/core \
+fatfs
+
+SUB_DIRS_USER += \
 fatfs \
 gameduino2 \
 nccode
@@ -105,6 +107,11 @@ hpl/cmcc/hpl_cmcc.o \
 fatfs/diskio.o \
 fatfs/ff.o \
 fatfs/ffsystem.o \
+fatfs/ffunicode.o
+
+OBJS_USER += \
+fatfs/ff.o \
+fatfs/ffsystem.o \
 fatfs/ffunicode.o \
 gameduino2/GD2.o \
 nccode/Assets.o \
@@ -129,7 +136,9 @@ nccode/FilterChangeTimer.o \
 nccode/USBUpdate.o \
 nccode/Warning.o \
 nccode/Errors.o \
-nccode/Init.o
+nccode/Init.o \
+nccode/SystemCalls.o \
+nccode/Preinit.o \
 
 OBJS_AS_ARGS +=  \
 "hal/src/hal_io.o" \
@@ -166,7 +175,6 @@ OBJS_AS_ARGS +=  \
 "hal/src/hal_init.o" \
 "diskio_start.o" \
 "gcc/gcc/startup_same54.o" \
-"main.o" \
 "hpl/osc32kctrl/hpl_osc32kctrl.o" \
 "diskio/sdmmc_diskio.o" \
 "hpl/oscctrl/hpl_oscctrl.o" \
@@ -181,6 +189,12 @@ OBJS_AS_ARGS +=  \
 "atmel_start.o" \
 "hpl/cmcc/hpl_cmcc.o" \
 "fatfs/diskio.o" \
+"fatfs/ff.o" \
+"fatfs/ffsystem.o" \
+"fatfs/ffunicode.o" \
+"main.o"
+
+OBJS_AS_ARGS_USER += \
 "fatfs/ff.o" \
 "fatfs/ffsystem.o" \
 "fatfs/ffunicode.o" \
@@ -207,10 +221,13 @@ OBJS_AS_ARGS +=  \
 "nccode/USBUpdate.o" \
 "nccode/Warning.o" \
 "nccode/Errors.o" \
-"nccode/Init.o"
+"nccode/Init.o" \
+"nccode/SystemCalls.o" \
+"nccode/Preinit.o"
 
 # List the dependency files
 DEPS := $(OBJS:%.o=%.d)
+DEPS_USER := $(OBJS_USER:%.o=%.d)
 
 DEPS_AS_ARGS +=  \
 "usb/host/usbhc.d" \
@@ -261,7 +278,12 @@ DEPS_AS_ARGS +=  \
 "hpl/oscctrl/hpl_oscctrl.d" \
 "gcc/system_same54.d" \
 "atmel_start.d" \
-"fatfs/diskio.d" \
+"fatfs/ff.d" \
+"fatfs/ffsystem.d" \
+"fatfs/ffunicode.d" \
+"fatfs/diskio.d"
+
+DEPS_AS_ARGS_USER += \
 "fatfs/ff.d" \
 "fatfs/ffsystem.d" \
 "fatfs/ffunicode.d" \
@@ -288,7 +310,9 @@ DEPS_AS_ARGS +=  \
 "nccode/USBUpdate.d" \
 "nccode/Warning.d" \
 "nccode/Errors.d" \
-"nccode/Init.d"
+"nccode/Init.d" \
+"nccode/SystemCalls.d" \
+"nccode/Preinit.d"
 
 CROSS = arm-none-eabi-
 CC = gcc
@@ -313,6 +337,8 @@ DFLAGS = -DDEBUG -ggdb -g3 -Wall
 OUTPUT_FILE_NAME := AtmelStart
 OUTPUT_FILE_PATH +=$(OUTPUT_FILE_NAME).elf
 OUTPUT_FILE_PATH_AS_ARGS +=$(OUTPUT_FILE_NAME).elf
+OUTPUT_FILE_NAME_USER := User
+OUTPUT_FILE_PATH_USER := $(OUTPUT_FILE_NAME_USER).elf
 
 vpath %.cpp ../
 vpath %.c ../
@@ -322,20 +348,34 @@ vpath %.S ../
 # All Target
 all: $(SUB_DIRS) $(OUTPUT_FILE_PATH)
 
+user: $(SUB_DIRS_USER) $(OUTPUT_FILE_PATH_USER)
+
 # Linker target
+
+$(OUTPUT_FILE_PATH_USER): $(OBJS_USER)
+	@echo $@
+	@$(CROSS)$(CC) -o $(OUTPUT_FILE_PATH_USER) $(OBJS_AS_ARGS_USER) -DSTACK_SIZE=4096 \
+-Wl,--start-group -lm -Wl,--end-group -mthumb \
+--specs=nano.specs -Wl,--gc-sections -mcpu=cortex-m4 \
+-T"../gcc/gcc/same54p20a_user.ld" \
+-L"../gcc/gcc"
+	@echo Finished building target: $@
+	@$(CROSS)$(OBJCOPY) -O binary "$(OUTPUT_FILE_NAME_USER).elf" "$(OUTPUT_FILE_NAME_USER).bin"
+	@$(CROSS)$(OBJCOPY) -O ihex -R .eeprom -R .fuse -R .lock -R .signature \
+        "$(OUTPUT_FILE_NAME_USER).elf" "$(OUTPUT_FILE_NAME_USER).hex"
+	@$(CROSS)size $(OUTPUT_FILE_PATH_USER)
 
 $(OUTPUT_FILE_PATH): $(OBJS)
 	@echo $@
-	@$(CROSS)$(CC) -o $(OUTPUT_FILE_NAME).elf $(OBJS_AS_ARGS) -DSTACK_SIZE=4096 \
+	$(CROSS)$(CC) -o $(OUTPUT_FILE_NAME).elf $(OBJS_AS_ARGS) -DSTACK_SIZE=4096 \
 -Wl,--start-group -lm -Wl,--end-group -mthumb \
 -Wl,-Map="$(OUTPUT_FILE_NAME).map" --specs=nano.specs -Wl,--gc-sections -mcpu=cortex-m4 \
- \
 -T"../gcc/gcc/same54p20a_flash.ld" \
 -L"../gcc/gcc"
 
 	@echo Finished building target: $@
 	@$(CROSS)$(OBJCOPY) -O binary "$(OUTPUT_FILE_NAME).elf" "$(OUTPUT_FILE_NAME).bin"
-	@$(CROSS)$(OBJCOPY) -O ihex -R .eeprom -R .fuse -R .lock -R .signature  \
+	@$(CROSS)$(OBJCOPY) -O ihex -R .eeprom -R .fuse -R .lock -R .signature \
         "$(OUTPUT_FILE_NAME).elf" "$(OUTPUT_FILE_NAME).hex"
 	@$(CROSS)$(OBJCOPY) -j .eeprom --set-section-flags=.eeprom=alloc,load --change-section-lma \
         .eeprom=0 --no-change-warnings -O binary "$(OUTPUT_FILE_NAME).elf" \
@@ -378,9 +418,10 @@ $(SUB_DIRS):
 
 clean:
 	@echo "Cleaning..."
-	@rm -f $(OBJS_AS_ARGS)
-	@rm -f $(OUTPUT_FILE_PATH)
-	@rm -f $(DEPS_AS_ARGS)
+	@rm -f $(OBJS_AS_ARGS) $(OBJS_AS_ARGS_USER)
+	@rm -f $(OUTPUT_FILE_PATH) $(OUTPUT_FILE_PATH_USER)
+	@rm -f $(DEPS_AS_ARGS) $(DEPS_AS_ARGS_USER)
 	@rm -f $(OUTPUT_FILE_NAME).a $(OUTPUT_FILE_NAME).hex $(OUTPUT_FILE_NAME).bin \
-        @$(OUTPUT_FILE_NAME).lss $(OUTPUT_FILE_NAME).eep $(OUTPUT_FILE_NAME).map \
-        @$(OUTPUT_FILE_NAME).srec
+        $(OUTPUT_FILE_NAME).lss $(OUTPUT_FILE_NAME).eep $(OUTPUT_FILE_NAME).map \
+        $(OUTPUT_FILE_NAME).srec
+	@rm -f $(OUTPUT_FILE_NAME_USER).bin $(OUTPUT_FILE_NAME_USER).hex

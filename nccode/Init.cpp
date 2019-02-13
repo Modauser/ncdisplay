@@ -1,5 +1,4 @@
 #include <gameduino2/GD2.h>
-#include <main.h>
 #include <cstdio>
 
 #include "Assets.h"
@@ -16,6 +15,8 @@ void showFatalError(const char *msg);
  * Modified by other screens to transition between them.
  */
 Screen *screenCurrent = &screenDispense;
+
+extern int initDisks(void);
 
 void setup()
 {
@@ -38,9 +39,8 @@ void setup()
 		showFatalError("Failed to access SD card.");
 
 	// Check for update
-	// Currently doesn't work. Can't write to flash... TODO
 	extern bool USBUpdateCheck(void);
-	//USBUpdateCheck();
+	USBUpdateCheck();
 
 	// Handshake test
 	// EDIT! made in hal/src/hal_usart_sync.c to prevent hang on USART read
@@ -65,7 +65,7 @@ void setup()
 	loadAssets();
 
 	// Get required language
-	printf("#6");
+	serialPrintf("#6");
 	LanguageString::setCurrentLanguage(static_cast<Language>(serialGet()));
 }
 

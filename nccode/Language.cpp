@@ -7,7 +7,7 @@
 void languageSet(const Language& l)
 {
 #ifdef USE_SERIAL
-	printf("@2%1u", static_cast<unsigned int>(l));
+	serialPrintf("@2%1u", static_cast<unsigned int>(l));
 #endif // USE_SERIAL
 
 	LanguageString::setCurrentLanguage(l);

@@ -193,7 +193,7 @@ dstatus_t msc_disk_status(uint8_t drv)
  *
  * \return 0 for success, otherwise DRESULT error code.
  */
-dstatus_t msc_disk_read(uint8_t drv, uint8_t *buff, uint32_t sector, uint8_t count)
+dresult_t msc_disk_read(uint8_t drv, uint8_t *buff, uint32_t sector, uint8_t count)
 {
 	struct mschf_lun *lun = msc_diskio_select(drv, false);
 	int32_t           rc;
@@ -227,7 +227,7 @@ dstatus_t msc_disk_read(uint8_t drv, uint8_t *buff, uint32_t sector, uint8_t cou
  *
  * \return 0 for success, otherwise DRESULT error code.
  */
-dstatus_t msc_disk_write(uint8_t drv, uint8_t const *buff, uint32_t sector, uint8_t count)
+dresult_t msc_disk_write(uint8_t drv, uint8_t const *buff, uint32_t sector, uint8_t count)
 {
 	struct mschf_lun *lun = msc_diskio_select(drv, false);
 	int32_t           rc;
@@ -275,7 +275,7 @@ dstatus_t msc_disk_write(uint8_t drv, uint8_t const *buff, uint32_t sector, uint
  *
  * \return 0 for success, otherwise DRESULT error code.
  */
-dstatus_t msc_disk_ioctl(uint8_t drv, uint8_t ctrl, void *buff)
+dresult_t msc_disk_ioctl(uint8_t drv, uint8_t ctrl, void *buff)
 {
 	struct mschf_lun *lun = msc_diskio_select(drv, false);
 	dstatus_t         res = 0;

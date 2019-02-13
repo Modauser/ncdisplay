@@ -5,6 +5,8 @@
 #define FFCONF_DEF	86604	/* Revision ID */
 
 // Drive strings
+#define DEV_SD 0
+#define DEV_USB 1
 #define DRV_SD  "0:/"
 #define DRV_USB "1:/"
 

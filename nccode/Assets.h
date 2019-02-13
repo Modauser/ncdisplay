@@ -7,6 +7,8 @@
 
 #include "LanguageString.h"
 
+extern int (*serialPrintf)(const char *, ...);
+
 /**
  * Enables serial communication with the main board.
  * WARNING: Display will currently hang if this is enabled and the main board

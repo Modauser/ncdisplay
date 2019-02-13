@@ -201,7 +201,7 @@ dstatus_t sdmmc_disk_status(uint8_t drv)
  *
  * \return ERR_NONE for success, otherwise DRESULT error code.
  */
-dstatus_t sdmmc_disk_read(uint8_t drv, uint8_t *buff, uint32_t sector, uint8_t count)
+dresult_t sdmmc_disk_read(uint8_t drv, uint8_t *buff, uint32_t sector, uint8_t count)
 {
 	uint8_t  uc_sector_size = SECTOR_SIZE_512;
 	uint32_t i;
@@ -239,7 +239,7 @@ dstatus_t sdmmc_disk_read(uint8_t drv, uint8_t *buff, uint32_t sector, uint8_t c
  *
  * \return ERR_NONE for success, otherwise DRESULT error code.
  */
-dstatus_t sdmmc_disk_write(uint8_t drv, uint8_t const *buff, uint32_t sector, uint8_t count)
+dresult_t sdmmc_disk_write(uint8_t drv, uint8_t const *buff, uint32_t sector, uint8_t count)
 {
 	uint8_t  uc_sector_size = SECTOR_SIZE_512;
 	uint32_t i;
@@ -287,7 +287,7 @@ dstatus_t sdmmc_disk_write(uint8_t drv, uint8_t const *buff, uint32_t sector, ui
  *
  * \return ERR_NONE for success, otherwise DRESULT error code.
  */
-dstatus_t sdmmc_disk_ioctl(uint8_t drv, uint8_t ctrl, void *buff)
+dresult_t sdmmc_disk_ioctl(uint8_t drv, uint8_t ctrl, void *buff)
 {
 	dstatus_t res = ERR_INVALID_ARG;
 

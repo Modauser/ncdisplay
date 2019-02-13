@@ -22,13 +22,13 @@ void doPress(char letter, bool pressed)
 			mainAniImage = ANI1_HANDLE;
 			mainAniCounter = 0;
 #ifdef USE_SERIAL
-			printf("$%c", letter);
+			serialPrintf("$%c", letter);
 #endif // USE_SERIAL
 		}
 	} else {
 		mainDispensing = false;
 #ifdef USE_SERIAL
-		printf("$R$R");
+		serialPrintf("$R$R");
 #endif // USE_SERIAL
 	}
 }
@@ -155,7 +155,7 @@ Screen screenDispense (
 		++timeDateCounter;
 		// Check for errors
 		if ((timeDateCounter % 500) == 0) {
-			printf("%%?");
+			serialPrintf("%%?");
 			dispError = Error::get(serialGet());
 		}
 
@@ -175,7 +175,7 @@ void updateDateTime(void)
 {
 	int val;
 
-	printf("@T");
+	serialPrintf("@T");
 	val = serialGet(); // Hour
 	dTime[0] = val / 10 + '0';
 	dTime[1] = val % 10 + '0';
@@ -189,7 +189,7 @@ void updateDateTime(void)
 	else
 		dTime[5] = (val ? 'P' : 'A');
 
-	printf("@D");
+	serialPrintf("@D");
 	val = serialGet() << 16; // Month
 	val |= serialGet() << 8; // Day
 	val |= serialGet(); // Year

@@ -148,8 +148,8 @@ dstatus_t sdmmc_disk_initialize(uint8_t drv);
  *
  * \return RES_OK for success, otherwise DRESULT error code.
  */
-dstatus_t msc_disk_read(uint8_t drv, uint8_t *buff, uint32_t sector, uint8_t count);
-dstatus_t sdmmc_disk_read(uint8_t drv, uint8_t *buff, uint32_t sector, uint8_t count);
+dresult_t msc_disk_read(uint8_t drv, uint8_t *buff, uint32_t sector, uint8_t count);
+dresult_t sdmmc_disk_read(uint8_t drv, uint8_t *buff, uint32_t sector, uint8_t count);
 
 /**
  * \brief  Write sector(s).
@@ -166,8 +166,8 @@ dstatus_t sdmmc_disk_read(uint8_t drv, uint8_t *buff, uint32_t sector, uint8_t c
  *
  * \return RES_OK for success, otherwise DRESULT error code.
  */
-dstatus_t msc_disk_write(uint8_t drv, uint8_t const *buff, uint32_t sector, uint8_t count);
-dstatus_t sdmmc_disk_write(uint8_t drv, uint8_t const *buff, uint32_t sector, uint8_t count);
+dresult_t msc_disk_write(uint8_t drv, uint8_t const *buff, uint32_t sector, uint8_t count);
+dresult_t sdmmc_disk_write(uint8_t drv, uint8_t const *buff, uint32_t sector, uint8_t count);
 
 /**
  * \brief  Miscellaneous functions, which support the following commands:
@@ -194,8 +194,8 @@ dstatus_t sdmmc_disk_write(uint8_t drv, uint8_t const *buff, uint32_t sector, ui
  *
  * \return RES_OK for success, otherwise DRESULT error code.
  */
-dstatus_t msc_disk_ioctl(uint8_t drv, uint8_t ctrl, void *buff);
-dstatus_t sdmmc_disk_ioctl(uint8_t drv, uint8_t ctrl, void *buff);
+dresult_t msc_disk_ioctl(uint8_t drv, uint8_t ctrl, void *buff);
+dresult_t sdmmc_disk_ioctl(uint8_t drv, uint8_t ctrl, void *buff);
 
 #ifdef __cplusplus
 }

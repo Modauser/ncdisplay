@@ -17,7 +17,7 @@ static const uint32_t UPDATE_MAX_SIZE = 0x20030000 - (uint32_t)UPDATE_LOAD_ADDR;
 
 constexpr const char *USBUpdatePath = DRV_SD "update.bin";
 
-void USBUpdateWriteToFlash(uint32_t size);
+extern void firmwareUpdate(uint32_t addr, uint32_t count);
 
 bool USBUpdateCheck(void)
 {
@@ -45,25 +45,17 @@ bool USBUpdateCheck(void)
 	if (result != FR_OK || bytesRead != size)
 		return false;
 
+	GD.Clear();
+	GD.cmd_text(0, 0, FONT_MESG, 0, "Update found. Loading...");
 	GD.cmd_text(0, 20, FONT_MESG, 0, "Ready. Updating...");
 	GD.cmd_text(0, 40, FONT_MESG, 0, "Will reset when finished.");
 	GD.swap();
 
-	USBUpdateWriteToFlash(size);
-
 	f_close(&fd);
+	f_unlink(USBUpdatePath);
+
+	firmwareUpdate((uint32_t)UPDATE_LOAD_ADDR, size);
+
 	return true;
-}
-
-__attribute__ ((section(".usbupdate")))
-void USBUpdateWriteToFlash(uint32_t size)
-{
-	uint32_t pageSize = flash_get_page_size(&FLASH_0);
-	uint8_t *src = (uint8_t *)UPDATE_LOAD_ADDR;
-	for (uint32_t written = 0x1000; written < size; written += pageSize)
-		flash_write(&FLASH_0, written, src + written, pageSize);
-
-	// We can't really return... so reset
-	__NVIC_SystemReset();
 }
 

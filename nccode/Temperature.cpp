@@ -43,7 +43,7 @@ static Button buttonsTemperature[] = {
 		if (!press) {
 #ifdef USE_SERIAL
 			for (int i = 0; i < 3; i++)
-				printf("@%1u%1u", i + 3, tempLevels[i]);
+				serialPrintf("@%1u%1u", i + 3, tempLevels[i]);
 #endif // USE_SERIAL
 			screenCurrent = &screenSettings;
 		}
@@ -93,11 +93,11 @@ Screen screenTemperature (
 #ifdef USE_SERIAL
 	[](void) {
 		for (int i = 0; i < 3; i++) {
-			printf("@%1u", i + 6);
+			serialPrintf("@%1u", i + 6);
 			tempLevels[i] = serialGet();
 		}
 
-		printf("@X");
+		serialPrintf("@X");
 		tempMetric = serialGet() ? true : false;
 	},
 #else

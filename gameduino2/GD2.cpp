@@ -456,10 +456,11 @@ void GDClass::swap(void) {
 
 uint32_t GDClass::measure_freq(void)
 {
-  unsigned long t0 = GDTR.rd32(REG_CLOCK);
-  delay_us(15625);
-  unsigned long t1 = GDTR.rd32(REG_CLOCK);
-  return (t1 - t0) << 6;
+//  unsigned long t0 = GDTR.rd32(REG_CLOCK);
+//  delay_us(15625);
+//  unsigned long t1 = GDTR.rd32(REG_CLOCK);
+//  return (t1 - t0) << 6;
+  return 0;
 }
 
 #define LOW_FREQ_BOUND  47040000UL
@@ -467,11 +468,11 @@ uint32_t GDClass::measure_freq(void)
 
 void GDClass::tune(void)
 {
-  uint32_t f;
-  for (byte i = 0; (i < 31) && ((f = measure_freq()) < LOW_FREQ_BOUND); i++) {
-    GDTR.wr(REG_TRIM, i);
-  }
-  GDTR.wr32(REG_FREQUENCY, f);
+//  uint32_t f;
+//  for (byte i = 0; (i < 31) && ((f = measure_freq()) < LOW_FREQ_BOUND); i++) {
+//    GDTR.wr(REG_TRIM, i);
+//  }
+//  GDTR.wr32(REG_FREQUENCY, f);
 }
 
 void GDClass::begin(uint8_t options) {

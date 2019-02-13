@@ -39,26 +39,26 @@ Screen screenProductInfo (
 	// Initialization function
 	[](void) {
 #ifdef USE_SERIAL
-		printf("@!");
+		serialPrintf("@!");
 		piModel = serialGet();
 
-		printf("@E");
+		serialPrintf("@E");
 		for (int i = 0; i < 15; i++)
 			piSerial[i] = serialGet();
 		piSerial[15] = '\0';
 
-		printf("@#");
+		serialPrintf("@#");
 		piSoftware[0] = '0' + serialGet();
 		piSoftware[2] = '0' + serialGet();
 
-		printf("@%%");
+		serialPrintf("@%%");
 		piFilterType = serialGet();
 
-		printf("@&");
+		serialPrintf("@&");
 		piFilterRemaining = serialGet() << 8;
 		piFilterRemaining |= serialGet();
 
-		printf("@F");
+		serialPrintf("@F");
 		unsigned int val = serialGet();
 		piFlowRate[3] = (val % 10) + '0';
 		val /= 10;
@@ -66,7 +66,7 @@ Screen screenProductInfo (
 		val /= 10;
 		piFlowRate[0] = (val == 0) ? ' ' : (val % 10) + '0';
 		
-		printf("@X");
+		serialPrintf("@X");
 		if (serialGet() != 0) {
 			piFlowRate[5] = 'L';
 		} else {

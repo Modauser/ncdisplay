@@ -21,7 +21,7 @@ static Button buttonsLock[] = {
 #ifdef USE_SERIAL
 	[](bool press) {
 		if (!press) {
-			printf("@L%1u", lockEnabled ? 1 : 0);
+			serialPrintf("@L%1u", lockEnabled ? 1 : 0);
 			screenCurrent = &screenAdvanced;
 		}
 	}
@@ -39,7 +39,7 @@ Screen screenLock (
 	// Initialization function
 #ifdef USE_SERIAL
 	[](void) {
-		printf("@K");
+		serialPrintf("@K");
 		lockEnabled = (serialGet() != 0);
 	},
 #else
@@ -65,7 +65,7 @@ Screen screenLock (
 void doPasscodeTest(Screen *s)
 {
 #ifdef USE_SERIAL
-	printf("@K");
+	serialPrintf("@K");
 	if (serialGet() == 0) {
 		screenCurrent = s;
 	} else {

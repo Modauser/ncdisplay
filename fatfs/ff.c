@@ -29,6 +29,12 @@
 
 ---------------------------------------------------------------------------*/
 
+extern dstatus_t disk_status(BYTE pdrv);
+extern dstatus_t disk_initialize(BYTE pdrv);
+extern dresult_t disk_read(BYTE pdrv, BYTE *buff, DWORD sector, UINT count);
+extern dresult_t disk_write(BYTE pdrv, const BYTE *buff, DWORD sector, UINT count);
+extern dresult_t disk_ioctl(BYTE pdrv, BYTE cmd, void *buff);
+
 #if FF_DEFINED != 86604	/* Revision ID */
 #error Wrong include file (ff.h).
 #endif

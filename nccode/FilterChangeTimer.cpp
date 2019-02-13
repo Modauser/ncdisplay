@@ -20,7 +20,7 @@ static Button buttonsFilterChangeTimer[] = {
 	}, [](bool press) {
 		if (!press) {
 #ifdef USE_SERIAL
-			//printf("@+%1u@*%1u@$%1u",,, filterType);
+			//serialPrintf("@+%1u@*%1u@$%1u",,, filterType);
 #endif // USE_SERIAL
 			screenCurrent = &screenFilter;
 		}

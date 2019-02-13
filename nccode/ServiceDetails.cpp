@@ -28,6 +28,7 @@ struct ServiceLogEntry {
 
 static ServiceLogEntry serviceLog[3];
 
+#ifdef USE_SERIAL
 static void getFlowRate(unsigned char v, char *s)
 {
 	s[3] = (v % 10) + '0';
@@ -52,8 +53,7 @@ static void getServiceLog(ServiceLogEntry& e)
 
 	unsigned int i = 0;
 
-#ifdef USE_SERIAL
-	printf("@f");
+	serialPrintf("@f");
 	if (getchar() == '$') {
 
 		// Pull date
@@ -77,8 +77,8 @@ static void getServiceLog(ServiceLogEntry& e)
 
 		e.description[i] = '\0';
 	}
-#endif // USE_SERIAL
 }
+#endif // USE_SERIAL
 
 Screen screenServiceDetails (
 	// Parent screen
@@ -88,21 +88,21 @@ Screen screenServiceDetails (
 	// Initialization function
 #ifdef USE_SERIAL
 	[](void) {
-		printf("@X");
+		serialPrintf("@X");
 		serviceMetric = (serialGet() != 0);
 
-		printf("@a");
+		serialPrintf("@a");
 		getFlowRate(serialGet(), serviceFlowCold);
-		printf("@b");
+		serialPrintf("@b");
 		getFlowRate(serialGet(), serviceFlowAmbi);
-		printf("@c");
+		serialPrintf("@c");
 		getFlowRate(serialGet(), serviceFlowHot);
-		printf("@d");
+		serialPrintf("@d");
 		serviceTempIce = serialGet();
-		printf("@e");
+		serialPrintf("@e");
 		serviceTempHot = serialGet();
 
-		printf("@(");
+		serialPrintf("@(");
 		int val = serialGet() << 16;
 		val |= serialGet() << 8;
 		val |= serialGet();

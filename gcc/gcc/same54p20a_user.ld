@@ -1,7 +1,7 @@
 /**
  * \file
  *
- * \brief Linker script for running in internal SRAM on the SAME54P20A
+ * \brief Linker script for running in internal FLASH on the SAME54P20A
  *
  * Copyright (c) 2018 Microchip Technology Inc.
  *
@@ -35,16 +35,13 @@ SEARCH_DIR(.)
 /* Memory Spaces Definitions */
 MEMORY
 {
-  ram      (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00040000
+  /* ROM split in half for separate banks, keeping system code in lower bank */
+  rom      (rx)  : ORIGIN = 0x00080000, LENGTH = 0x00080000
+  ram      (rwx) : ORIGIN = 0x20008000, LENGTH = 0x00038000
   bkupram  (rwx) : ORIGIN = 0x47000000, LENGTH = 0x00002000
-  qspi     (rwx) : ORIGIN = 0x04000000, LENGTH = 0x01000000
 }
 
 /* The stack size used by the application. NOTE: you need to adjust according to your application. */
-/* EDIT! by Clyne:
- *   - Changed stack size to 4K here, not sure how to define for linker
- */
-/*STACK_SIZE = DEFINED(STACK_SIZE) ? STACK_SIZE : DEFINED(__stack_size__) ? __stack_size__ : 0x10000;*/
 STACK_SIZE = 0x1000;
 
 /* Section Definitions */
@@ -54,10 +51,8 @@ SECTIONS
     {
         . = ALIGN(4);
         _sfixed = .;
-        KEEP(*(.vectors .vectors.*))
-
-	/* Hello */
-	*(.usbupdate);
+	KEEP(*(.ncident))
+        KEEP(*(.ncstart))
 
         *(.text .text.* .gnu.linkonce.t.*)
         *(.glue_7t) *(.glue_7)
@@ -101,14 +96,14 @@ SECTIONS
 
         . = ALIGN(4);
         _efixed = .;            /* End of text section */
-    } > ram
+    } > rom
 
     /* .ARM.exidx is sorted, so has to go in its own output section.  */
     PROVIDE_HIDDEN (__exidx_start = .);
     .ARM.exidx :
     {
       *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-    } > ram
+    } > rom
     PROVIDE_HIDDEN (__exidx_end = .);
 
     . = ALIGN(4);
@@ -132,15 +127,6 @@ SECTIONS
         . = ALIGN(8);
         _ebkupram = .;
     } > bkupram
-
-    .qspi (NOLOAD):
-    {
-        . = ALIGN(8);
-        _sqspi = .;
-        *(.qspi .qspi.*);
-        . = ALIGN(8);
-        _eqspi = .;
-    } > qspi
 
     /* .bss section which is used for uninitialized data */
     .bss (NOLOAD) :
