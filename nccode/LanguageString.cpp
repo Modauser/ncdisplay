@@ -16,9 +16,9 @@ const LanguageString lStringSave ({
 	"GAURDAR"
 });
 
-const char *LanguageString::operator()(void) const
+const char *LanguageString::operator()(Language lang) const
 {
-	unsigned int index = static_cast<unsigned int>(currentLanguage);
+	unsigned int index = static_cast<unsigned int>(lang);
 	return (*strings[index] != '\0') ? strings[index] : strings[0];
 }
 

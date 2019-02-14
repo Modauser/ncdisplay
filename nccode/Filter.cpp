@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include "Assets.h"
+#include "Settings.h"
 #include "Screens.h"
 
 static Button buttonsFilter[] = {
@@ -81,44 +82,11 @@ Screen screenFilter (
 			"INFOMACI" o_ACUTE "N DEL FILTRO"
 		})());
 
-		GD.cmd_text(20,  110, FONT_SMALL, 0, LanguageString({
-			"Current Type:",
-			"Jetziger Typ:",
-			"Type:",
-			"Tipo:"
-		})());
-		GD.cmd_text(20,  130, FONT_SMALL, 0, LanguageString({
-			"Re-Order Number:",
-			"Nummer:",
-			"Num" e_ACUTE "ro:",
-			"Numero para pedido:"
-		})());
-		GD.cmd_text(20,  150, FONT_SMALL, 0, (filterMetric ? 
-			LanguageString({
-				"Liters Remaining:",
-				"Verbleibende Liter:",
-				"Litres restants:",
-				"Litros quedantes:"
-			}) :
-			LanguageString({
-				"Gallons Remaining:",
-				"Verbleibende Gallon:",
-				"Gallons restants:",
-				"Gallons quedantes:"
-			})
-		)());
-		GD.cmd_text(20,  170, FONT_SMALL, 0, LanguageString({
-			"Months Remaining:",
-			"Verbleibende Monate:",
-			"Mois restants:",
-			"Meses quedantes:"
-		})());
-		GD.cmd_text(20,  190, FONT_SMALL, 0, LanguageString({
-			"Last Filter Change:",
-			"Letzter Filterwechsel:",
-			"Dernier changement",
-			"Ultimo cambio:"
-		})());
+		GD.cmd_text(20,  110, FONT_SMALL, 0, Settings::getLabel(6));
+		GD.cmd_text(20,  130, FONT_SMALL, 0, Settings::getLabel(7));
+		GD.cmd_text(20,  150, FONT_SMALL, 0, Settings::getLabel(8));
+		GD.cmd_text(20,  170, FONT_SMALL, 0, Settings::getLabel(9));
+		GD.cmd_text(20,  190, FONT_SMALL, 0, Settings::getLabel(10));
 
 		GD.cmd_text(180, 110, FONT_SMALL, 0, piFilterTypes[piFilterType]);
 		GD.cmd_text(180, 130, FONT_SMALL, 0, filterReorder[piFilterType]);
@@ -132,6 +100,8 @@ Screen screenFilter (
 			"CONTAMINANTS " E_ACUTE "LIMIN" e_ACUTE "S",
 			"CONTAMINANTES ELIMINADOS"
 		})());
+
+		// TODO
 		GD.cmd_text(20, 260, FONT_SMALL, 0, LanguageString({
 			"Chlorine, Taste, Odor, Lead, Cysts",
 			"Chlor, Geschmack, Geruch, Blei, Zysten",

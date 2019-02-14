@@ -2,6 +2,7 @@
 #include <cstdio>
 
 #include "Assets.h"
+#include "Settings.h"
 #include "Screens.h"
 
 /**
@@ -63,6 +64,8 @@ void setup()
 
 	// Load fonts and images from SD card
 	loadAssets();
+
+	Settings::loadLabels();
 
 	// Get required language
 	serialPrintf("#6");

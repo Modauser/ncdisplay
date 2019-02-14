@@ -59,7 +59,7 @@ public:
 	}
 
 	// Fetches the string for the current language
-	const char *operator()(void) const; 
+	const char *operator()(Language lang = currentLanguage) const; 
 
 	// Returns true if this object was initialized with non-empty values
 	bool empty(void) const; 

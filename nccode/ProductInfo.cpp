@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include "Assets.h"
+#include "Settings.h"
 #include "Screens.h"
 
 constexpr const char *piServiceFile = DRV_SD "Service.txt";
@@ -101,24 +102,9 @@ Screen screenProductInfo (
 			"INFO"
 		})());
 
-		GD.cmd_text(20,  110, FONT_SMALL, 0, LanguageString({
-			"Model:",
-			"Modell:",
-			"Mod" e_GRAVE "le:",
-			"Modelo:"
-		})());
-		GD.cmd_text(21,  130, FONT_SMALL, 0, LanguageString({
-			"Serial:",
-			"Serien NR:",
-			"S" e_ACUTE "rie:",
-			"Serie:"
-		})());
-		GD.cmd_text(20,  150, FONT_SMALL, 0, LanguageString({
-			"Software:",
-			"Software:",
-			"Logiciel:",
-			"Software:",
-		})());
+		GD.cmd_text(20,  110, FONT_SMALL, 0, Settings::getLabel(0));
+		GD.cmd_text(21,  130, FONT_SMALL, 0, Settings::getLabel(1));
+		GD.cmd_text(20,  150, FONT_SMALL, 0, Settings::getLabel(2));
 
 	      GD.cmd_number(140, 110, FONT_SMALL, 0, piModel);
 		GD.cmd_text(140, 130, FONT_SMALL, 0, piSerial);
@@ -131,24 +117,9 @@ Screen screenProductInfo (
 			"INFORMACION DEL FILTRO"
 		})());
 
-		GD.cmd_text(20,  220, FONT_SMALL, 0, LanguageString({
-			"Type:",
-			"Modell:",
-			"Type actuel:",
-			"Tipo:"
-		})());
-		GD.cmd_text(20,  240, FONT_SMALL, 0, LanguageString({
-			"Remaining:",
-			"Verbleibend:",
-			"Restant:",
-			"Restante:"
-		})());
-		GD.cmd_text(20,  260, FONT_SMALL, 0, LanguageString({
-			"Flow Rate:",
-			"Flussrate:",
-			"D" e_ACUTE "bit:",
-			"Tasa de flujo:"
-		})());
+		GD.cmd_text(20,  220, FONT_SMALL, 0, Settings::getLabel(3));
+		GD.cmd_text(20,  240, FONT_SMALL, 0, Settings::getLabel(4));
+		GD.cmd_text(20,  260, FONT_SMALL, 0, Settings::getLabel(5));
 
 	        GD.cmd_text(140, 220, FONT_SMALL, 0, piFilterTypes[piFilterType]);
 	      GD.cmd_number(140, 240, FONT_SMALL, 0, piFilterRemaining);

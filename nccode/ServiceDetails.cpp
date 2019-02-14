@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include "Assets.h"
+#include "Settings.h"
 #include "Screens.h"
 
 static Button buttonsServiceDetails[] = {
@@ -131,53 +132,18 @@ Screen screenServiceDetails (
 			"(DERNI" E_GRAVE "RES 24 HEURES)",
 			"(ULTIMAS 24 HORAS)"
 		})());
-		GD.cmd_text(20, 120, FONT_LIGHT, 0, LanguageString({
-			"Cold:",
-			"Kalt:",
-			"Froid:",
-			"Fr" i_ACUTE "a:"
-		})());
-		GD.cmd_text(20, 140, FONT_LIGHT, 0, LanguageString({
-			"Ambient:",
-			"Ambient:",
-			"Ambiante:",
-			"Ambiente:"
-		})());
-		GD.cmd_text(20, 160, FONT_LIGHT, 0, LanguageString({
-			"Hot:",
-			"Hot:",
-			"Chaud:",
-			"Caliente:"
-		})());
+		GD.cmd_text(20, 120, FONT_LIGHT, 0, Settings::getLabel(16));
+		GD.cmd_text(20, 140, FONT_LIGHT, 0, Settings::getLabel(17));
+		GD.cmd_text(20, 160, FONT_LIGHT, 0, Settings::getLabel(18));
 
 		GD.cmd_text(120, 120, FONT_SMALL, 0, serviceFlowCold);
 		GD.cmd_text(120, 140, FONT_SMALL, 0, serviceFlowAmbi);
 		GD.cmd_text(120, 160, FONT_SMALL, 0, serviceFlowHot);
 
-		GD.cmd_text(20, 195, FONT_LIGHT, 0, LanguageString({
-			"Ice Tank Temp:",
-			"Eis-Tanktemperatur:",
-			"Temp. du bac " a_GRAVE " glace:",
-			"Temp. del tanque de hielo:"
-		})());
-		GD.cmd_text(20, 245, FONT_LIGHT, 0, LanguageString({
-			"Hot Tank Temp:",
-			"Heiss-Tanktemperatur:",
-			"Temp. du bac chaud:",
-			"Temp. del tanque de agua caliente:"
-		})());
-		GD.cmd_text(20, 295, FONT_LIGHT, 0, LanguageString({
-			"Last Filter Change:",
-			"Letzter Filterwechsel:",
-			"Dernier changement de filtre:",
-			U_ACUTE "ltimo cambio de filtro:"
-		})());
-		GD.cmd_text(20, 345, FONT_LIGHT, 0, LanguageString({
-			"Recent Error Log:",
-			"K" u_UMLAUT "rzliches Fehlerprotokoll:",
-			"Registre des erreurs r" e_ACUTE "centes:",
-			"Registro de errores recientes:"
-		})());
+		GD.cmd_text(20, 195, FONT_LIGHT, 0, Settings::getLabel(19));
+		GD.cmd_text(20, 245, FONT_LIGHT, 0, Settings::getLabel(20));
+		GD.cmd_text(20, 295, FONT_LIGHT, 0, Settings::getLabel(22));
+		GD.cmd_text(20, 345, FONT_LIGHT, 0, Settings::getLabel(21));
 
 		GD.cmd_number(20, 215, FONT_SMALL, 0, serviceTempIce);
 		GD.cmd_number(20, 265, FONT_SMALL, 0, serviceTempHot);

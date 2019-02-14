@@ -139,6 +139,7 @@ nccode/Errors.o \
 nccode/Init.o \
 nccode/SystemCalls.o \
 nccode/Preinit.o \
+nccode/Settings.o
 
 OBJS_AS_ARGS +=  \
 "hal/src/hal_io.o" \
@@ -223,7 +224,8 @@ OBJS_AS_ARGS_USER += \
 "nccode/Errors.o" \
 "nccode/Init.o" \
 "nccode/SystemCalls.o" \
-"nccode/Preinit.o"
+"nccode/Preinit.o" \
+"nccode/Settings.o"
 
 # List the dependency files
 DEPS := $(OBJS:%.o=%.d)
@@ -312,7 +314,8 @@ DEPS_AS_ARGS_USER += \
 "nccode/Errors.d" \
 "nccode/Init.d" \
 "nccode/SystemCalls.d" \
-"nccode/Preinit.d"
+"nccode/Preinit.d" \
+"nccode/Settings.d"
 
 CROSS = arm-none-eabi-
 CC = gcc

@@ -1,6 +1,7 @@
 #include <gameduino2/GD2.h>
 
 #include "Assets.h"
+#include "Settings.h"
 #include "Screens.h"
 
 static bool sleepModeOn = false;
