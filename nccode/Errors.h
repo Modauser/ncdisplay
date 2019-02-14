@@ -8,35 +8,44 @@ enum class ErrorType : char {
 	System
 };
 
-class Error {
-private:
-	unsigned char code;
+using ErrorCode = unsigned char;
+
+struct ErrorData {
+	ErrorCode code;
 	ErrorType type;
 	bool showOnStartup;
-	char message[64];
 
-	void loadErrorText(void);
+	constexpr ErrorData(ErrorCode _code, ErrorType _type, bool _startup)
+		: code(_code), type(_type), showOnStartup(_startup) {}
+};
+
+class Error {
+private:
+	static char message[128];
+	static ErrorData lastError;
+
+	static bool dispenseFlag;
+
+	static void loadMessage(unsigned int index);
+
+	[[noreturn]]
+	static void showSystemError(void);
 
 public:
-	constexpr Error(unsigned char _code, ErrorType _type, bool _startup)
-		: code(_code), type(_type), showOnStartup(_startup),
-       		  message{'\0'} {}
-
-	constexpr operator bool(void) const {
-		return code != 0;
+	static bool check(void);
+	inline static bool hasError(void) {
+		return lastError.code != 0x00;
 	}
 
-	constexpr bool operator==(unsigned char c) const {
-		return code == c;
+	static void show(void);
+	static void showStartup(void);
+
+	inline static bool checkDispenseFlag(void) {
+		return dispenseFlag;
 	}
-
-	constexpr bool shouldShowOnStartup(void) const {
-		return showOnStartup;
+	inline static void clearDispenseFlag(void) {
+		dispenseFlag = false;
 	}
-
-	void show(void) const;
-
-	static const Error& get(unsigned char code);
 };
 
 #endif // ERROR_H_

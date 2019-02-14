@@ -1,50 +1,104 @@
-#include "Errors.h"
 #include "Assets.h"
+#include "Errors.h"
 
-#include <algorithm>
 #include <array>
 #include <fatfs/ff.h>
 #include <gameduino2/GD2.h>
 
+static const LanguageString errorFile ({
+	DRV_SD "English0.txt",
+	DRV_SD "German00.txt",
+	DRV_SD "French00.txt",
+	DRV_SD "Spanish0.txt"
+});
+
 /**
  * Known error codes.
+ * Order is important and should not be changed.
  */
-static std::array<Error, 24> ErrorTable = {{
-/* LED_NO_ERRORS */ 		{0x00, ErrorType::None, false},
-
-/* LED_ICE_LEVEL_ERROR */	{0x75, ErrorType::Red, false},
-/* LED_ICE_FILL */		{0x7A, ErrorType::None, false},
-
-/* LED_HOT_LEVEL_ERROR */ 	{0x19, ErrorType::Red, false},
-/* LED_HOT_FILL */		{0x7B, ErrorType::Red, true}, // 3?
-
-/* LED_CARB_FILL */		{0x7E, ErrorType::None, false},
-/* LED_CARB_FILL_TIME */	{0x7E, ErrorType::Red, true}, // 3?
-
-/* LED_FILT_ERROR */		{0x15, ErrorType::Green, false},
-/* LED_LEAK_ERROR */		{0x31, ErrorType::Green, false},
-
-/* LED_INIT */			{0x1F, ErrorType::None, false},
-/* LED_NORMAL */		{0x1A, ErrorType::None, false},
-/* LED_DARK_MODE */		{0x0A, ErrorType::None, false},
-/* LED_DISP_ERROR */		{0x5A, ErrorType::Green, false}, // DISPense
-/* LED_REFRESH */		{0xFF, ErrorType::None, false},
-/* LED_LOW_FLOW */		{0x1B, ErrorType::Red, false},
-/* LED_CLEAN_FAN_ERROR */	{0x33, ErrorType::Green, false},
-
-/* LED_BOARD_ERROR */		{0x7F, ErrorType::System, true},
-/* LED_NO_CAL_ERROR */		{0x9F, ErrorType::System, true},
-/* LED_CARB_LVL_ERROR */	{0x95, ErrorType::System, true},
-/* LED_ICE_ERROR */	   	{0x55, ErrorType::System, true},
-/* LED_ICE_COMP_ERROR */	{0x56, ErrorType::System, true},
-/* LED_HOT_ERROR */	   	{0x35, ErrorType::System, false},
-/* LED_HOT_TANK_ERROR */	{0x36, ErrorType::System, true},
-/* LED_HOT_FILL_ERROR */	{0x54, ErrorType::/*System*/None, true}
+static const std::array<ErrorData, 25> ErrorTable = {{
+/* LED_ICE_ERROR */	   	ErrorData(0x55, ErrorType::System, true),
+/* LED_ICE_COMP_ERROR */	ErrorData(0x56, ErrorType::System, true),
+/* LED_HOT_ERROR */	   	ErrorData(0x35, ErrorType::System, false),
+/* LED_HOT_TANK_ERROR */	ErrorData(0x36, ErrorType::System, true),
+/* LED_ICE_LEVEL_ERROR */	ErrorData(0x75, ErrorType::Red, false),
+/* LED_HOT_FILL_ERROR */	ErrorData(0x54, ErrorType::/*System*/None, true),
+/* LED_CARB_LVL_ERROR */	ErrorData(0x95, ErrorType::System, true),
+/* LED_BOARD_ERROR */		ErrorData(0x7F, ErrorType::System, true),
+/* LED_NO_CAL_ERROR */		ErrorData(0x9F, ErrorType::System, true),
+/* LED_CARB_FILL_TIME */	ErrorData(0x96, ErrorType::Red, true), // 3?
+/* LED_FILT_ERROR */		ErrorData(0x15, ErrorType::Green, false),
+/* LED_LEAK_ERROR */		ErrorData(0x31, ErrorType::Green, false),
+/* LED_INIT */			ErrorData(0x1F, ErrorType::None, false),
+/* LED_HOT_FILL */		ErrorData(0x7B, ErrorType::Red, true), // 3?
+/* LED_ICE_FILL */		ErrorData(0x7A, ErrorType::None, false),
+/* LED_NORMAL */		ErrorData(0x1A, ErrorType::None, false),
+/* LED_DARK_MODE */		ErrorData(0x0A, ErrorType::None, false),
+/* LED_DISP_ERROR */		ErrorData(0x5A, ErrorType::Green, false), // DISPense
+/* LED_REFRESH */		ErrorData(0xFF, ErrorType::None, false),
+/* LED_LOW_FLOW */		ErrorData(0x1B, ErrorType::Red, false),
+/* LED_CLEAN_FAN_ERROR */	ErrorData(0x33, ErrorType::Green, false),
+/* LED_CARB_FILL */		ErrorData(0x7E, ErrorType::None, false),
+/* LED_HOT_LEVEL_ERROR */ 	ErrorData(0x19, ErrorType::Red, false),
+/* LED_ICE_LEVEL_ERROR */	ErrorData(0x74, ErrorType::Red, false), // again?
+/* LED_NO_ERRORS */ 		ErrorData(0x00, ErrorType::None, false),
 }};
 
-void Error::show(void) const
+char Error::message[128] = "";
+ErrorData Error::lastError = ErrorTable.back();
+bool Error::dispenseFlag = false;
+
+static unsigned int GetErrorCodeIndex(ErrorCode code)
 {
-	auto messageBox = [this](uint32_t border) {
+	for (unsigned int i = 0; i < ErrorTable.size(); i++) {
+		if (ErrorTable[i].code == code)
+			return i;
+	}
+
+	return ErrorTable.size() - 1;
+}
+
+void Error::loadMessage(unsigned int index)
+{
+	FIL fil;
+	auto result = f_open(&fil, errorFile(), FA_READ);
+	if (result != FR_OK)
+		return; 
+
+	for (unsigned int i = 0; !f_eof(&fil) && i < index; i++)
+		f_gets(message, sizeof(message) / sizeof(char), &fil);
+	
+	if (f_eof(&fil))
+		message[0] = '\0';
+
+	f_close(&fil);
+}
+
+bool Error::check(void)
+{
+	serialPrintf("%%?");
+	if (auto code = serialGet(); code != lastError.code) {
+		auto index = GetErrorCodeIndex(code);
+		lastError = ErrorTable[index];
+		loadMessage(index);
+
+		if (lastError.code == 0x5A)
+			dispenseFlag = true;
+	}
+
+	return lastError.code != 0x00;
+}
+
+void Error::showStartup(void)
+{
+	if (!lastError.showOnStartup)
+		return;
+	show();
+}
+
+void Error::show(void)
+{
+	auto messageBox = [](uint32_t border) {
 		// Draw message box
 		GD.ColorRGB(border);
 		GD.Begin(RECTS);
@@ -59,9 +113,7 @@ void Error::show(void) const
 		GD.cmd_text(135, 238, FONT_MESG, OPT_CENTER, message);
 	};
 
-	switch (type) {
-	case ErrorType::None:
-		break;
+	switch (lastError.type) {
 	case ErrorType::Green:
 		messageBox(0x00FF00);
 		break;
@@ -69,67 +121,47 @@ void Error::show(void) const
 		messageBox(0xFF0000);
 		break;
 	case ErrorType::System:
+		showSystemError();
+		break;
+	case ErrorType::None:
 		break;
 	}
 }
 
-const Error& Error::get(unsigned char code)
+void Error::showSystemError(void)
 {
-	for (auto& e : ErrorTable) {
-		if (e == code) {
-			e.loadErrorText();
-			return e;
-		}
-	}
+	GD.ClearColorRGB(NC_BKGND_COLOR);
+	GD.ColorRGB(NC_FDGND_COLOR);
+	GD.Clear();
 
-	return ErrorTable[0];
-}
-
-//This opens a text file with lines terminated by a LF character
-//The file must end with a : FOLLOWED BY A LF !!!!!!!!!!!!!!!!!
-//Reads each line into a string ErrorString, uses string pointer ErrorStringPointer
-//and selects the line that matches ErrorCode
-//0 is the first line
-
-static const std::array<char, 16> hexDigits = {
-	'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-	'A', 'B', 'C', 'D', 'E', 'F'
-};
-
-int getHexByte(const char *s)
-{
-	if (s[0] != '0' || s[1] != 'x')
-		return 0;
-
-	return (std::distance(hexDigits.begin(), std::find(
-			hexDigits.begin(), hexDigits.end(), s[2])) << 4)
-		| std::distance(hexDigits.begin(), std::find(
-			hexDigits.begin(), hexDigits.end(), s[3]));
-}
-
-static const LanguageString errorFile ({
-	DRV_SD "English.txt",
-	DRV_SD "German.txt",
-	DRV_SD "French.txt",
-	DRV_SD "Spanish.txt"
-});
-
-void Error::loadErrorText(void) 
-{
-	if (message[0] != '\0')
-		return;
+	GD.cmd_text(136, 10, FONT_MESG, OPT_CENTERX, message);
 
 	FIL fil;
 	auto result = f_open(&fil, errorFile(), FA_READ);
-	if (result != FR_OK)
-		return; 
-	
-	do {
-		f_gets(message, 64, &fil);
-	} while (getHexByte(message) != code && !f_eof(&fil));
+	if (result != FR_OK) {
+		GD.cmd_text(0, 30, FONT_MESG, 0, "Failed to open error message file");
+		GD.swap();
+		while (1);
+	}
 
-	if (f_eof(&fil))
-		message[0] = '\0';
+	auto targetLine = GetErrorCodeIndex(lastError.code) * 10;
+	for (unsigned int i = 0; !f_eof(&fil) && i < targetLine; i++)
+		f_gets(message, sizeof(message) / sizeof(char), &fil);
+	
+	if (f_eof(&fil)) {
+		GD.cmd_text(0, 30, FONT_MESG, 0, "Failed to load error message file");
+		GD.swap();
+		while (1);
+	}
+
+	for (unsigned int i = 0; i < 10; i++) {
+		f_gets(message, sizeof(message) / sizeof(char), &fil);
+		GD.cmd_text(0, 30 + i * 20, FONT_SMALL, 0, message);
+	}
+
+	GD.swap();
 
 	f_close(&fil);
+	while (1);
 }
+

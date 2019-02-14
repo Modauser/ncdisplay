@@ -113,7 +113,6 @@ static Button buttonsDispense[] = {
 static DateFormat dDate ('-');
 static char dTime[] = { 0, 0, ':', 0, 0, 0, 'M', '\0' };
 static unsigned int timeDateCounter = 3000;
-static Error dispError = Error::get(0);
 
 Screen screenDispense (
 	// Parent screen
@@ -154,13 +153,11 @@ Screen screenDispense (
 #ifdef USE_SERIAL
 		++timeDateCounter;
 		// Check for errors
-		if ((timeDateCounter % 500) == 0) {
-			serialPrintf("%%?");
-			dispError = Error::get(serialGet());
-		}
+		if ((timeDateCounter % 500) == 0)
+			Error::check();
 
-		if (dispError)
-			dispError.show();
+		if (Error::hasError())
+			Error::show();
 
 		// Update date/time
 		if (timeDateCounter >= 2000) {
