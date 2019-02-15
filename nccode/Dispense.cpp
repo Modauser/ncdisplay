@@ -84,7 +84,7 @@ static Button buttonsDispense[] = {
 		"SODAWASSER",
 		"P" E_ACUTE "TILLANT",
 		"CARBONATADA",
-		"KOOLZUUR HOUDEND",
+		"KOOLZUUR\n\nHOUDEND",
 		"KOLSYRA",
 		"KULLSYRE",
 		"MED BRUS"
@@ -96,7 +96,7 @@ static Button buttonsDispense[] = {
 		"AMBIENT",
 		"AMBIANTE",
 		"AMBIENTE",
-		"KAMER TEMPERATUUR",
+		"KAMER\n\nTEMPERATUUR",
 		"SVALT",
 		"TEMPERERT",
 		"STUETEMP"

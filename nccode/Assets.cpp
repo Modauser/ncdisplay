@@ -236,9 +236,14 @@ void Button::drawScrollButton(const vec2& xy, bool pressed)
 
 void Button::drawDispenserItem(const vec2& xy, bool pressed, const LanguageString& text)
 {
+	// Rectangle
+	GD.ColorRGB(pressed ? 0x0c3d6b : NC_FRGND_COLOR);
+	GD.Begin(RECTS);
+	GD.Vertex2ii(xy.x, xy.y);
+	GD.Vertex2ii(xy.x + 134, xy.y + 70);
+
 	GD.ColorRGB(WHITE);
-	GD.cmd_fgcolor(pressed ? 0x0c3d6b : NC_FRGND_COLOR);
-	GD.cmd_button(xy.x, xy.y, 135, 70, FONT_SMALL, OPT_FLAT, text());
+	GD.cmd_text(xy.x + 67, xy.y + 35, FONT_SMALL, OPT_CENTER, text(), 20);
 }
 
 void Button::drawFullWidth(const vec2& xy, bool pressed, const LanguageString& text)

@@ -1253,6 +1253,10 @@ void GDClass::cmd_text(int16_t x, int16_t y, byte font, uint16_t options, const 
 
   for (unsigned int i = 0;; i++) {
     if (s[i] == '\n' || s[i] == '\0') {
+      if (s[i + 1] == '\n') {
+        y -= inc / 2;
+	i++;
+      }
       buf[idx] = '\0';
       idx = 0;
 

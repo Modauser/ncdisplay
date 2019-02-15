@@ -6,7 +6,7 @@
 #include "Settings.h"
 #include "Screens.h"
 
-constexpr const char *piServiceFile = DRV_SD "Service.txt";
+constexpr const char *piServiceFile = DRV_SD "Service0.txt";
 
 static Button buttonsProductInfo[] = {
 	Button(1, {0, 0}, Button::drawBackArrow, [](bool press) {
@@ -83,10 +83,12 @@ Screen screenProductInfo (
 			UINT unused;
 			f_read(&fil, piServiceContact, 200, &unused);
 			unsigned int i;
-			for (i = 0; piServiceContact[i]; i++) {
+			for (i = 0; piServiceContact[i] != '\0' &&
+				piServiceContact[i] != ':'; i++) {
 				if (piServiceContact[i] == '\r')
 					piServiceContact[i] = ' ';
 			}
+			piServiceContact[i] = '\0';
 			f_close(&fil);
 		}
 	},
