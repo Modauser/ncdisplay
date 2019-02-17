@@ -1,7 +1,7 @@
 #include <gameduino2/GD2.h>
-#include <stdio.h>
 
 #include "Assets.h"
+#include "MainBoard.h"
 #include "Settings.h"
 #include "Screens.h"
 
@@ -21,22 +21,6 @@ static Button buttonsFilter[] = {
 	})
 };
 
-extern const char *piFilterTypes[];
-extern unsigned int piFilterType;
-
-static const char *filterReorder[] = {
-	"5335",
-	"6905",
-	"6906",
-	"5341",
-	"Unknown"
-};
-
-static unsigned int filterGalsRem = 0;
-static unsigned int filterMonthsRem = 0;
-static DateFormat filterLastChanged;
-static bool filterMetric;
-
 Screen screenFilter (
 	// Parent screen
 	&screenSettings,
@@ -44,31 +28,11 @@ Screen screenFilter (
 	buttonsFilter, 2,
 	// Initialization function
 	[](void) {
-#ifdef USE_SERIAL
-		serialPrintf("@%%");
-		piFilterType = serialGet();
-
-		serialPrintf("@&");
-		filterGalsRem = serialGet() << 8;
-		filterGalsRem |= serialGet();
-
-		if (filterMetric)
-			filterGalsRem *= GAL_TO_L;
-
-		serialPrintf("@`");
-		filterMonthsRem = serialGet();
-
-		serialPrintf("@(");
-		int val = serialGet() << 16; // Month
-		val |= serialGet() << 8; // Day
-		val |= serialGet(); // Year
-		filterLastChanged.format(val);
-
-		serialPrintf("@X");
-		filterMetric = (serialGet() != 0);
-#else
-		piFilterType = 0;
-#endif // USE_SERIAL
+		MainBoard::updateMetric();
+		MainBoard::updateFilterType();
+		MainBoard::updateFilterRemaining();
+		MainBoard::updateFilterMonthsRemaining();
+		MainBoard::updateFilterLastChanged();
 	},
 	// Pre-draw function
 	[](void) {
@@ -88,11 +52,11 @@ Screen screenFilter (
 		GD.cmd_text(20,  170, FONT_SMALL, 0, Settings::getLabel(9));
 		GD.cmd_text(20,  190, FONT_SMALL, 0, Settings::getLabel(10));
 
-		GD.cmd_text(180, 110, FONT_SMALL, 0, piFilterTypes[piFilterType]);
-		GD.cmd_text(180, 130, FONT_SMALL, 0, filterReorder[piFilterType]);
-	      GD.cmd_number(180, 150, FONT_SMALL, 0, filterGalsRem);
-	      GD.cmd_number(180, 170, FONT_SMALL, 0, filterMonthsRem);
-		GD.cmd_text(180, 190, FONT_SMALL, 0, filterLastChanged.get());
+		GD.cmd_text(180, 110, FONT_SMALL, 0, MainBoard::getFilterName());
+		GD.cmd_text(180, 130, FONT_SMALL, 0, MainBoard::getFilterReorder());
+	      GD.cmd_number(180, 150, FONT_SMALL, 0, MainBoard::getFilterRemaining());
+	      GD.cmd_number(180, 170, FONT_SMALL, 0, MainBoard::getFilterMonthsRemaining());
+		GD.cmd_text(180, 190, FONT_SMALL, 0, MainBoard::getFilterLastChanged());
 
 		GD.cmd_text(20, 230, FONT_LARGE, 0, LanguageString({
 			"CONTAMINANTS REMOVED",

@@ -1,7 +1,7 @@
 #include <gameduino2/GD2.h>
-#include <stdio.h>
 
 #include "Assets.h"
+#include "MainBoard.h"
 #include "Screens.h"
 
 void languageSet(const Language& l)

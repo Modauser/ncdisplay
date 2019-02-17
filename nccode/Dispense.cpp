@@ -1,14 +1,11 @@
 #include <gameduino2/GD2.h>
 #include "Assets.h"
 #include "Errors.h"
+#include "MainBoard.h"
 #include "Screens.h"
-
-// UART redirected to stdio
-#include <cstdio>
 
 void showErrorStatus(void);
 void showFlowAnimation(int on);
-void updateDateTime(void);
 
 static bool mainDispensing = false;
 static int mainAniImage = 0;
@@ -110,8 +107,6 @@ static Button buttonsDispense[] = {
 	})
 };
 
-static DateFormat dDate ('-');
-static char dTime[] = { 0, 0, ':', 0, 0, 0, 'M', '\0' };
 static unsigned int timeDateCounter = 3000;
 
 Screen screenDispense (
@@ -151,8 +146,8 @@ Screen screenDispense (
 
 		// Time and date
 		GD.ColorRGB(BLACK);
-		GD.cmd_text(15, 450, FONT_TIME, 0, dTime);
-		GD.cmd_text(202, 450, FONT_TIME, 0, dDate.get());
+		GD.cmd_text(15, 450, FONT_TIME, 0, MainBoard::getTime());
+		GD.cmd_text(202, 450, FONT_TIME, 0, MainBoard::getDate());
 
 #ifdef USE_SERIAL
 		++timeDateCounter;
@@ -166,34 +161,9 @@ Screen screenDispense (
 		// Update date/time
 		if (timeDateCounter >= 2000) {
 			timeDateCounter = 0;
-			updateDateTime();
+			MainBoard::updateDateTime();
 		}
 #endif // USE_SERIAL
 	}
 );
-
-void updateDateTime(void)
-{
-	int val;
-
-	serialPrintf("@T");
-	val = serialGet(); // Hour
-	dTime[0] = val / 10 + '0';
-	dTime[1] = val % 10 + '0';
-	val = serialGet(); // Minute
-	dTime[3] = val / 10 + '0';
-	dTime[4] = val % 10 + '0';
-	serialGet(); // Second, unused
-	val = serialGet(); // AM/PM
-	if (val == 2)
-		dTime[5] = '\0';
-	else
-		dTime[5] = (val ? 'P' : 'A');
-
-	serialPrintf("@D");
-	val = serialGet() << 16; // Month
-	val |= serialGet() << 8; // Day
-	val |= serialGet(); // Year
-	dDate.format(val);
-}
 

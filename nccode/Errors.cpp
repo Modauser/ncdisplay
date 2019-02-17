@@ -1,5 +1,6 @@
 #include "Assets.h"
 #include "Errors.h"
+#include "MainBoard.h"
 
 #include <array>
 #include <fatfs/ff.h>

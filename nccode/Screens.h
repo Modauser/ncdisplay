@@ -33,10 +33,18 @@ extern Screen screenLock;
 //extern Screen screenAutofill;
 
 extern Screen screenWarning;
+extern Screen screenFill;
 
 // Passcode entry screen
 extern Screen screenLockscreen;
 void doPasscodeTest(Screen *s);
+
+// Fill screen stuff
+extern const LanguageString *fillMessage;
+extern uint32_t fillTint;
+extern const LanguageString fillCold;
+extern const LanguageString fillHot;
+extern const LanguageString fillSparkling;
 
 #endif // SCREENS_H_
 

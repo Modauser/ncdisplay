@@ -4,8 +4,6 @@
 
 #include "NirmalaMod.h"
 
-#include <cstdio>
-
 // Load extra images right after the gd3asset file
 static uint32_t imageNextAddress = ASSETS_END;
 void loadImage(int handle, const char *path)
@@ -21,17 +19,6 @@ void loadImage(int handle, const char *path)
   GD.finish();
   
   imageNextAddress = base + width * height * 2;
-}
-
-char serialGet(void)
-{
-#ifdef USE_SERIAL
-	if (getchar() != '$')
-		return '\0';
-	return getchar();
-#else
-	return '\0';
-#endif // USE_SERIAL
 }
 
 void displayInit(void)

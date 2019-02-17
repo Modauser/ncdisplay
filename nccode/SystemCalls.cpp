@@ -12,6 +12,16 @@ uint32_t getPrintf(void)
 	return addr;
 }
 
+int serialGetchar(void)
+{
+	uint32_t ret = 0;
+	asm("\
+		mov r0, %0; \
+		svc 5; \
+	" :: "r" (&ret));
+	return ret;
+}
+
 void firmwareUpdate(uint32_t addr, uint32_t count)
 {
 	asm("\

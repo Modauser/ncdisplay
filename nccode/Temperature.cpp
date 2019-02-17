@@ -1,8 +1,7 @@
 #include <gameduino2/GD2.h>
 
-#include <stdio.h>
-
 #include "Assets.h"
+#include "MainBoard.h"
 #include "Screens.h"
 
 static unsigned int tempLevels[3] = {
@@ -20,7 +19,6 @@ static const char *tempNumbersC[12] = {
 	 "1" DEGREE,  "2" DEGREE,  "3" DEGREE,  "4" DEGREE,
 	 "0" DEGREE, "-1" DEGREE, "-2" DEGREE, "-3" DEGREE
 };
-static bool tempMetric;
 
 void tempIncrease(unsigned int index)
 {
@@ -41,10 +39,7 @@ static Button buttonsTemperature[] = {
 	}),
 	Button(2, {0, 420}, Button::drawFullWidth, lStringSave, [](bool press) {
 		if (!press) {
-#ifdef USE_SERIAL
-			for (int i = 0; i < 3; i++)
-				serialPrintf("@%1u%1u", i + 3, tempLevels[i]);
-#endif // USE_SERIAL
+			MainBoard::setTankTemperatures(tempLevels);
 			screenCurrent = &screenSettings;
 		}
 	}),
@@ -92,13 +87,9 @@ Screen screenTemperature (
 	// Initialization function
 #ifdef USE_SERIAL
 	[](void) {
-		for (int i = 0; i < 3; i++) {
-			serialPrintf("@%1u", i + 6);
-			tempLevels[i] = serialGet();
-		}
-
-		serialPrintf("@X");
-		tempMetric = serialGet() ? true : false;
+		auto levels = MainBoard::getTankTemperatures();
+		for (int i = 0; i < 3; i++)
+			tempLevels[i] = levels[i];
 	},
 #else
 	nullptr,
@@ -111,8 +102,8 @@ Screen screenTemperature (
 		GD.cmd_text(136, 70,  FONT_TITLE, OPT_CENTERX, tHotTemp());
 		GD.cmd_text(136, 170, FONT_TITLE, OPT_CENTERX, tColdTempOn());
 		GD.cmd_text(136, 270, FONT_TITLE, OPT_CENTERX, tColdTempOff());
-		GD.cmd_text(252, 70, FONT_TITLE, OPT_CENTERX, tempMetric ? "(C)"
-			: "(F)");
+		GD.cmd_text(252, 70, FONT_TITLE, OPT_CENTERX, MainBoard::isMetric()
+			? "(C)" : "(F)");
 
 		for (int y = 100; y < 400; y += 100) {
 			// Main box
@@ -142,8 +133,8 @@ Screen screenTemperature (
 			GD.Vertex2ii(px, y + 19);
 		}
 
-		const char **tempNumbers = tempMetric ? tempNumbersC :
-			tempNumbersF;
+		const char **tempNumbers = MainBoard::isMetric() ? tempNumbersC
+			: tempNumbersF;
 		GD.ColorRGB(NC_FRGND_COLOR);
 		for (int i = 0; i < 12; i++) {
 			GD.cmd_text((i % 4) * 48 + 62, (i / 4) * 100 + 130,

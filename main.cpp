@@ -88,6 +88,10 @@ void SVCall_Handler(void)
 		break;
 	case 4:
 		*((uint32_t *)args[0]) = (uint32_t)printf;
+		break;
+	case 5:
+		*((uint32_t *)args[0]) = getchar();
+		break;
 	default:
 		break;
 	}

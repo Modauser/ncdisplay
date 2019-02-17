@@ -5,16 +5,16 @@
 #ifndef ASSETS_H_
 #define ASSETS_H_
 
+#include "Formatters.h"
 #include "LanguageString.h"
 
-extern int (*serialPrintf)(const char *, ...);
 
 /**
  * Enables serial communication with the main board.
  * WARNING: Display will currently hang if this is enabled and the main board
  * is disconnected!
  */
-//#define USE_SERIAL
+#define USE_SERIAL
 
 /**
  * Defines how long to attempt handshaking with the main board, in 10ms
@@ -51,13 +51,6 @@ extern int (*serialPrintf)(const char *, ...);
 #define NC_ONTOG_COLOR 0x5EF6B8
 #define NC_OFTOG_COLOR 0xBBBBBB
 #define NC_GREEN_COLOR NC_ONTOG_COLOR
-
-/**
- * Pulls a character response from serial.
- * Responses from the main board come in the form "$_", where '_' is some value.
- * This call checks for the '$', then returns the next byte.
- */
-char serialGet(void);
 
 /**
  * Does basic initialization of the display.
@@ -280,75 +273,6 @@ public:
 
 	// A provided routine for clearing the display and showing the ion logo.
 	static void clearWithIonHeader(bool line = true);
-};
-
-template<std::size_t N>
-class NumFormat {
-protected:
-	char buffer[N];
-
-public:
-	constexpr NumFormat(void)
-		: buffer{""} {}
-
-	constexpr const char *get(void) const {
-		return buffer;
-	}
-
-	virtual const char *format(int number) = 0;
-};
-
-class AMPMFormat : public NumFormat<5> {
-public:
-	constexpr AMPMFormat(void)
-		: NumFormat() {
-		buffer[3] = 'M';
-		buffer[4] = '\0';
-	}
-
-	const char *format(int number) final {
-		bool pm = number > 11;
-		if (number > 11)
-			number -= 12;
-		if (number == 0)
-			number = 12;
-
-		if (auto div = number / 10; div != 0)
-			buffer[0] = '0' + div;
-		else
-			buffer[0] = ' ';
-		buffer[1] = '0' + number % 10;
-		buffer[2] = pm ? 'P' : 'A';
-		return get();
-	}
-};
-
-class DateFormat : public NumFormat<9> {
-public:
-	constexpr DateFormat(char splitter = '/')
-		: NumFormat() {
-		buffer[2] = splitter;
-		buffer[5] = splitter;
-		buffer[8] = '\0';
-	}
-
-	// Takes in 24-bit number: 0xMMDDYY
-	const char *format(int number) final {
-		int n = (number >> 16) & 0xFF;
-
-		buffer[0] = '0' + n / 10;
-		buffer[1] = '0' + n % 10;
-
-		n = (number >> 8) & 0xFF;
-		buffer[3] = '0' + n / 10;
-		buffer[4] = '0' + n % 10;
-
-		n = number & 0xFF;
-		buffer[6] = '0' + n / 10;
-		buffer[7] = '0' + n % 10;
-
-		return get();
-	}
 };
 
 #endif // ASSETS_H_

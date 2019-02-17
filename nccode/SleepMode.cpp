@@ -167,7 +167,7 @@ Screen screenSleepMode (
 			GD.cmd_text(20, 215, FONT_LIGHT, 0, smWeekdays());
 			GD.cmd_text(20, 235, FONT_LIGHT, 0, smWeekend());
 		} else {
-			GD.cmd_text(136, 130, FONT_TITLE, OPT_CENTER, LanguageString({
+			GD.cmd_text(136, 150, FONT_TITLE, OPT_CENTER, LanguageString({
 				"Set Operating Hours",
 				"Set Betriebsstunden",
 				"Programmer Heures de Fonctionnement",

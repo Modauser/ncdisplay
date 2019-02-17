@@ -1,9 +1,9 @@
 #include <gameduino2/GD2.h>
-#include <stdio.h>
 
 #include "Assets.h"
-#include "Settings.h"
+#include "MainBoard.h"
 #include "Screens.h"
+#include "Settings.h"
 
 static Button buttonsServiceDetails[] = {
 	Button(1, {0, 0}, Button::drawBackArrow, [](bool press) {
@@ -55,25 +55,25 @@ static void getServiceLog(ServiceLogEntry& e)
 	unsigned int i = 0;
 
 	serialPrintf("@f");
-	if (getchar() == '$') {
+	if (serialGetchar() == '$') {
 
 		// Pull date
-		int c = getchar();
+		int c = serialGetchar();
 		while (c != ',') {
 			e.date[i++] = c;
-			c = getchar();
+			c = serialGetchar();
 		}
 
 		e.date[i] = '\0';
-		if (getchar() == '$')
+		if (serialGetchar() == '$')
 			return;
 
 		// Pull description
-		c = getchar();
+		c = serialGetchar();
 		i = 0;
 		while (c != '$') {
 			e.description[i++] = c;
-			c = getchar();
+			c = serialGetchar();
 		}
 
 		e.description[i] = '\0';
