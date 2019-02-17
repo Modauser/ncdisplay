@@ -55,7 +55,7 @@ static const LanguageString mainDispense2 ({
 });
 
 static Button buttonsDispense[] = {
-	Button(1, {0,   296}, Button::drawDispenserItem, {
+	Button(1, {0,   298}, Button::drawDispenserItem, {
 		"COLD",
 		"KALT",
 		"FROID",
@@ -67,7 +67,7 @@ static Button buttonsDispense[] = {
 	}, [](bool pressed) {
 		doPress('C', pressed);
 	}),
-	Button(2,  {0,   369}, Button::drawDispenserItem, {
+	Button(2,  {0,   370}, Button::drawDispenserItem, {
 		"HOT",
 		"HEI" ESZETT,
 		"CHAUD",
@@ -79,7 +79,7 @@ static Button buttonsDispense[] = {
 	}, [](bool pressed) {
 		doPress('H', pressed);
 	}),
-	Button(3, {137, 296}, Button::drawDispenserItem, {
+	Button(3, {138, 298}, Button::drawDispenserItem, {
 		"SPARKLING",
 		"SODAWASSER",
 		"P" E_ACUTE "TILLANT",
@@ -91,7 +91,7 @@ static Button buttonsDispense[] = {
 	}, [](bool pressed) {
 		doPress('S', pressed);
 	}),
-	Button(4, {137, 369}, Button::drawDispenserItem, {
+	Button(4, {138, 370}, Button::drawDispenserItem, {
 		"AMBIENT",
 		"AMBIENT",
 		"AMBIANTE",
@@ -125,7 +125,11 @@ Screen screenDispense (
 	},
 	// Pre-draw function
 	[](void) {
-		Screen::clearWithIonHeader();
+		Screen::clearWithIonHeader(false);
+
+		GD.Begin(RECTS);
+		GD.Vertex2ii(0, 296);
+		GD.Vertex2ii(272, 372);
 
 		GD.Begin(BITMAPS);
 		if (mainDispensing) {

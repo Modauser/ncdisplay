@@ -74,7 +74,7 @@ Screen screenLockscreen (
 		Screen::clearWithIonHeader();
 
 		GD.ColorRGB(NC_FRGND_COLOR);
-		GD.cmd_text(136, 70, FONT_TITLE, OPT_CENTERX, "Enter Passcode");
+		GD.cmd_text(136, 90, FONT_TITLE, OPT_CENTER, "Enter Passcode");
 
 		GD.ColorRGB(NC_FDGND_COLOR);
 		for (int i = 0; i < lockscreenIndex; i++) {

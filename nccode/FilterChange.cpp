@@ -28,15 +28,15 @@ static Button buttonsFilterChange[] = {
 		if (!pressed)
 			screenCurrent = &screenFilter;
 	}),
-	Button(2, {0, 62}, Button::drawMenuItem, "CarbonPlus",
+	Button(2, {0, 60}, Button::drawMenuItem, "CarbonPlus",
 	[](bool press) { if (!press) goTimerLong(0); } ),
-	Button(3, {0, 122}, Button::drawMenuItem, "CarbonPro",
+	Button(3, {0, 120}, Button::drawMenuItem, "CarbonPro",
 	[](bool press) { if (!press) goTimerShort(1); } ),
-	Button(4, {0, 182}, Button::drawMenuItem, "FiberTek",
+	Button(4, {0, 180}, Button::drawMenuItem, "FiberTek",
 	[](bool press) { if (!press) goTimerLong(2); } ),
-	Button(5, {0, 242}, Button::drawMenuItem, "CarbonSilv",
+	Button(5, {0, 240}, Button::drawMenuItem, "CarbonSilv",
 	[](bool press) { if (!press) goTimerShort(4); } ),
-	Button(6, {0, 302}, Button::drawMenuItem, "CarbonPhos",
+	Button(6, {0, 300}, Button::drawMenuItem, "CarbonPhos",
 	[](bool press) { if (!press) goTimerShort(3); } ),
 };
 

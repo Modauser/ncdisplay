@@ -4,11 +4,11 @@
 #include "Screens.h"
 
 static Button buttonsWarning[] = {
-	Button(1, {0, 362}, Button::drawFullWidth, "YES", [](bool pressed) {
+	Button(1, {0, 360}, Button::drawFullWidth, "YES", [](bool pressed) {
 		if (!pressed)
 			screenCurrent = &screenAdvanced;
 	}),
-	Button(2, {0, 422}, Button::drawFullWidth, "CANCEL", [](bool pressed) {
+	Button(2, {0, 420}, Button::drawFullWidth, "CANCEL", [](bool pressed) {
 		if (!pressed)
 			screenCurrent = &screenAdvanced;
 	})

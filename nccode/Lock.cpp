@@ -17,7 +17,7 @@ static Button buttonsLock[] = {
 			buttonsLock[1].setForcePressed(lockEnabled);
 		}
 	}),
-	Button(3, {0, 422}, Button::drawFullWidth, lStringSave,
+	Button(3, {0, 420}, Button::drawFullWidth, lStringSave,
 #ifdef USE_SERIAL
 	[](bool press) {
 		if (!press) {
@@ -50,7 +50,7 @@ Screen screenLock (
 		Screen::clearWithIonHeader();
 
 		GD.ColorRGB(NC_FRGND_COLOR);
-		GD.cmd_text(20, 70, FONT_TITLE, 0, LanguageString({
+		GD.cmd_text(20, 90, FONT_TITLE, OPT_CENTERY, LanguageString({
 			"Passcode",
 			"Passcode",
 			"Code d'acc" e_GRAVE "s",

@@ -39,7 +39,7 @@ static Button buttonsTemperature[] = {
 		if (!press)
 			screenCurrent = &screenSettings;
 	}),
-	Button(2, {0, 422}, Button::drawFullWidth, lStringSave, [](bool press) {
+	Button(2, {0, 420}, Button::drawFullWidth, lStringSave, [](bool press) {
 		if (!press) {
 #ifdef USE_SERIAL
 			for (int i = 0; i < 3; i++)

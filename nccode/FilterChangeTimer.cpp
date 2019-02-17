@@ -12,7 +12,7 @@ static Button buttonsFilterChangeTimer[] = {
 		if (!pressed)
 			screenCurrent = &screenFilterChange;
 	}),
-	Button(2, {0, 62}, Button::drawFullWidth, {
+	Button(2, {0, 420}, Button::drawFullWidth, {
 		"SET TIMER",
 		"TIMER EINSTELLEN",
 		"PROGRAMMER LE TEMPORISATEUR",
@@ -47,7 +47,7 @@ Screen screenFilterChangeTimer (
 		Screen::clearWithIonHeader();
 
 		GD.ColorRGB(NC_FRGND_COLOR);
-		GD.cmd_text(136, 70, FONT_TITLE, OPT_CENTERX, LanguageString({
+		GD.cmd_text(136, 90, FONT_TITLE, OPT_CENTER, LanguageString({
 			"Set Filter Timer",
 			"Filtertimer Einstellen",
 			"Programmer le temporisateur du filtre",

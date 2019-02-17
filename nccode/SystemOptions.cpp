@@ -77,7 +77,7 @@ static Button buttonsSystemOptions[] = {
 				sysOptionMetric);
 		}
 	}),
-	Button(9, {0, 422}, Button::drawFullWidth, lStringSave, [](bool press) {
+	Button(9, {0, 420}, Button::drawFullWidth, lStringSave, [](bool press) {
 		if (!press) {
 #ifdef USE_SERIAL
 			serialPrintf("@Y%1u@Z%1u@A%1u@B%1u@g%1u@C%1u",

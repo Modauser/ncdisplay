@@ -31,7 +31,7 @@ static Button buttonsSleepMode[] = {
 			}
 		}
 	}),
-	Button(2, {180, 80}, Button::drawToggle, [](bool press) {
+	Button(2, {180, 85}, Button::drawToggle, [](bool press) {
 		if (!press) {
 			sleepModeOn ^= true;
 
@@ -53,7 +53,7 @@ static Button buttonsSleepMode[] = {
 			sleepSetVisibilities();
 		}
 	}),
-	Button(4, {0, 422}, Button::drawFullWidth, lStringSave, [](bool press) {
+	Button(4, {0, 420}, Button::drawFullWidth, lStringSave, [](bool press) {
 		if (press)
 			return;
 
@@ -150,8 +150,12 @@ Screen screenSleepMode (
 	[](void) {
 		Screen::clearWithIonHeader();
 
+		GD.Begin(RECTS);
+		GD.Vertex2ii(0, 120);
+		GD.Vertex2ii(272, 120);
+
 		GD.ColorRGB(NC_FRGND_COLOR);
-		GD.cmd_text(20, 70, FONT_TITLE, 0, "SleepMode");
+		GD.cmd_text(20, 90, FONT_TITLE, OPT_CENTERY, "SleepMode");
 
 		if (!sleepSettingHours) {
 			GD.cmd_text(20, 185, FONT_LARGE, 0, LanguageString({

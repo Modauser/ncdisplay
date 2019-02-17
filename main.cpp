@@ -34,15 +34,13 @@ int main(void)
 	// Initializes MCU, drivers and middleware
 	atmel_start_init();
 
+	// Needed so USB interrupts can happen within fatfs service call
 	NVIC_SetPriority(SVCall_IRQn, 250);
 
 	// Enable SPI
 	SPI_0_enable();
 
 	initDisks();
-
-	FIL fd;
-	auto result = f_open(&fd, DRV_USB "update.bin", FA_READ);
 
 	// Confirm existance of display code, then jump to it
 	if (*ncident == NCIdentifier)

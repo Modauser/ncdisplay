@@ -196,13 +196,15 @@ void Button::drawMenuItem(const vec2& xy, bool pressed, const LanguageString& te
 	(void)pressed;
 
 	// Rectangle
-	GD.ColorRGB(NC_FRGND_COLOR);
 	GD.Begin(RECTS);
+	GD.ColorRGB(NC_FRGND_COLOR);
+	GD.Vertex2ii(0, xy.y + 1);
+	GD.Vertex2ii(272, xy.y + 59);
+	GD.ColorRGB(WHITE);
 	GD.Vertex2ii(0, xy.y);
-	GD.Vertex2ii(272, xy.y + 56);
+	GD.Vertex2ii(272, xy.y);
 
 	// Right arrow
-	GD.ColorRGB(WHITE);
 	GD.LineWidth(12 * 2);
 	GD.Begin(LINE_STRIP);
 	GD.Vertex2ii(272 - 29, xy.y + 23);
@@ -210,7 +212,7 @@ void Button::drawMenuItem(const vec2& xy, bool pressed, const LanguageString& te
 	GD.Vertex2ii(272 - 29, xy.y + 37);
 
 	// Text
-	GD.cmd_text(30, xy.y + 28, FONT_SMALL, OPT_CENTERY, text());
+	GD.cmd_text(30, xy.y + 30, FONT_SMALL, OPT_CENTERY, text());
 }
 
 void Button::drawScrollButton(const vec2& xy, bool pressed)
@@ -220,8 +222,11 @@ void Button::drawScrollButton(const vec2& xy, bool pressed)
 	// Rectangle
 	GD.ColorRGB(NC_FRGND_COLOR);
 	GD.Begin(RECTS);
+	GD.Vertex2ii(0, xy.y + 1);
+	GD.Vertex2ii(272, xy.y + 59);
+	GD.ColorRGB(WHITE);
 	GD.Vertex2ii(0, xy.y);
-	GD.Vertex2ii(272, xy.y + 56);
+	GD.Vertex2ii(272, xy.y);
 
 	// Arrow (x > 0 -> up, x < 0 -> down)
 	GD.ColorRGB(WHITE);
@@ -237,13 +242,13 @@ void Button::drawScrollButton(const vec2& xy, bool pressed)
 void Button::drawDispenserItem(const vec2& xy, bool pressed, const LanguageString& text)
 {
 	// Rectangle
-	GD.ColorRGB(pressed ? 0x0c3d6b : NC_FRGND_COLOR);
 	GD.Begin(RECTS);
+	GD.ColorRGB(pressed ? 0x0c3d6b : NC_FRGND_COLOR);
 	GD.Vertex2ii(xy.x, xy.y);
-	GD.Vertex2ii(xy.x + 134, xy.y + 70);
+	GD.Vertex2ii(xy.x + 134, xy.y + 68);
 
 	GD.ColorRGB(WHITE);
-	GD.cmd_text(xy.x + 67, xy.y + 35, FONT_SMALL, OPT_CENTER, text(), 20);
+	GD.cmd_text(xy.x + 67, xy.y + 33, FONT_SMALL, OPT_CENTER, text(), 20);
 }
 
 void Button::drawFullWidth(const vec2& xy, bool pressed, const LanguageString& text)
@@ -253,12 +258,15 @@ void Button::drawFullWidth(const vec2& xy, bool pressed, const LanguageString& t
 	// Rectangle
 	GD.ColorRGB(NC_FRGND_COLOR);
 	GD.Begin(RECTS);
+	GD.Vertex2ii(0, xy.y + 1);
+	GD.Vertex2ii(272, xy.y + 59);
+	GD.ColorRGB(WHITE);
 	GD.Vertex2ii(0, xy.y);
-	GD.Vertex2ii(272, xy.y + 56);
+	GD.Vertex2ii(272, xy.y);
 
 	// Text
 	GD.ColorRGB(WHITE);
-	GD.cmd_text(136, xy.y + 28, FONT_SMALL, OPT_CENTER, text());
+	GD.cmd_text(136, xy.y + 30, FONT_SMALL, OPT_CENTER, text());
 }
 
 void Button::drawSmallLeft(const vec2& xy, bool pressed)
@@ -424,7 +432,7 @@ void Screen::show(void)
 	}
 }
 
-void Screen::clearWithIonHeader(void)
+void Screen::clearWithIonHeader(bool line)
 {
 	GD.ClearColorRGB(NC_BKGND_COLOR);
 	GD.Clear();
@@ -433,9 +441,10 @@ void Screen::clearWithIonHeader(void)
 	GD.ColorRGB(WHITE);
 	GD.Vertex2ii(202, 17, IONLOGO_HANDLE);
 
-	// A white line; UI feature or no?
-//	GD.Begin(RECTS);
-//	GD.Vertex2ii(0, 59);
-//	GD.Vertex2ii(272, 60);
+	if (line) {
+		GD.Begin(RECTS);
+		GD.Vertex2ii(0, 60);
+		GD.Vertex2ii(272, 60);
+	}
 }
 

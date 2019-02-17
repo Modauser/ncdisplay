@@ -10,7 +10,7 @@ static Button buttonsFilter[] = {
 		if (!pressed)
 			screenCurrent = &screenSettings;
 	}),
-	Button(2, {0, 422}, Button::drawFullWidth, {
+	Button(2, {0, 420}, Button::drawFullWidth, {
 		"CHANGE FILTER",
 		"FILTER WECHSELN",
 		"CHANGER LE FILTRE",

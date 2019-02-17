@@ -18,7 +18,7 @@ static Button buttonsAdvanced[] = {
 		if (!press)
 			screenCurrent = &screenSettings;
 	}),
-	Button(2, {0, 122}, Button::drawMenuItem, {
+	Button(2, {0, 120}, Button::drawMenuItem, {
 		"USB UPLOAD",
 		"USB HOCHLADEN",
 		"T" E_ACUTE "L" E_ACUTE "CHARGEMENT USB",
@@ -27,7 +27,7 @@ static Button buttonsAdvanced[] = {
 		if (!press)
 			screenCurrent = &screenUSBUpload;
 	}),
-	Button(3, {0, 182}, Button::drawMenuItem, {
+	Button(3, {0, 180}, Button::drawMenuItem, {
 		"RESET FACTORY SETTINGS",
 		"RESETTEN",
 		"R" E_ACUTE "INITIALISER",
@@ -38,7 +38,7 @@ static Button buttonsAdvanced[] = {
 			screenCurrent = &screenWarning;
 		}
 	}),
-	Button(4, {0, 242}, Button::drawMenuItem, {
+	Button(4, {0, 240}, Button::drawMenuItem, {
 		"SERVICE DETAILS",
 		"SERVICE-DETAILS",
 		"INFORMATIONS SAV",
@@ -47,7 +47,7 @@ static Button buttonsAdvanced[] = {
 		if (!press)
 			screenCurrent = &screenServiceDetails;
 	}),
-	Button(5, {0, 302}, Button::drawMenuItem, {
+	Button(5, {0, 300}, Button::drawMenuItem, {
 		"SYSTEM OPTIONS",
 		"SYSTEMOPTIONEN",
 		"OPTIONS DU SYST" E_GRAVE "ME",
@@ -56,7 +56,7 @@ static Button buttonsAdvanced[] = {
 		if (!press)
 			screenCurrent = &screenSystemOptions;
 	}),
-	Button(6, {0, 362}, Button::drawMenuItem, {
+	Button(6, {0, 360}, Button::drawMenuItem, {
 		"PASSCODE",
 		"PASSCODE",
 		"CODE D'ACC" E_GRAVE "S",
@@ -65,7 +65,7 @@ static Button buttonsAdvanced[] = {
 		if (!press)
 			screenCurrent = &screenLock;
 	}),
-	Button(7, {0, 422}, Button::drawMenuItem, "AUTOFILL", [](bool press) {
+	Button(7, {0, 420}, Button::drawMenuItem, "AUTOFILL", [](bool press) {
 		if (!press) {
 			warningMessage = &warningAutofill;
 			screenCurrent = &screenWarning;
@@ -73,7 +73,7 @@ static Button buttonsAdvanced[] = {
 	}),
 };
 
-static const LanguageString aAdvanced ({
+static const LanguageString lAdvanced ({
 	"Advanced",
 	"Fortschritt",
 	"Avanc" e_ACUTE,
@@ -92,7 +92,7 @@ Screen screenAdvanced (
 		Screen::clearWithIonHeader();
 
 		GD.ColorRGB(NC_FRGND_COLOR);
-		GD.cmd_text(136, 70, FONT_TITLE, OPT_CENTERX, aAdvanced());
+		GD.cmd_text(136, 90, FONT_TITLE, OPT_CENTER, lAdvanced());
 	}
 );
 

@@ -93,7 +93,8 @@ void loadImage(int handle, const char *path);
 #define ANI3_HANDLE 3
 #define HOMEWTR_HANDLE 4
 #define IONLOGO_HANDLE 5
-#define FREEFONT_HANDLE 6
+#define RECT_HANDLE 6
+#define FREEFONT_HANDLE 7
 
 /* Font used for smaller general text */
 #define FONT_SMALL (FREEFONT_HANDLE)
@@ -278,7 +279,7 @@ public:
 	void show(void);
 
 	// A provided routine for clearing the display and showing the ion logo.
-	static void clearWithIonHeader(void);
+	static void clearWithIonHeader(bool line = true);
 };
 
 template<std::size_t N>

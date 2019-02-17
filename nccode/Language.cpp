@@ -21,47 +21,47 @@ static Button buttonsLanguage[] = {
 		if (!press)
 			screenCurrent = &screenSettings;
 	}),
-	Button(2, {0, 122}, Button::drawMenuItem, "ENGLISH", [](bool press) {
+	Button(2, {0, 120}, Button::drawMenuItem, "ENGLISH", [](bool press) {
 		if (!press)
 			languageSet(Language::English);
 	}),
-	Button(3, {0, 182}, Button::drawMenuItem, "FRAN" CEDILLA "AIS",
+	Button(3, {0, 180}, Button::drawMenuItem, "FRAN" CEDILLA "AIS",
 	[](bool press) {
 		if (!press)
 			languageSet(Language::French);
 	}),
-	Button(4, {0, 242}, Button::drawMenuItem, "ESPA" N_TILDE "OL",
+	Button(4, {0, 240}, Button::drawMenuItem, "ESPA" N_TILDE "OL",
 	[](bool press) {
 		if (!press)
 			languageSet(Language::Spanish);
 	}),
-	Button(5, {0, 302}, Button::drawMenuItem, "DEUTSCH", [](bool press) {
+	Button(5, {0, 300}, Button::drawMenuItem, "DEUTSCH", [](bool press) {
 		if (!press)
 			languageSet(Language::German);
 	}),
-	Button(6, {0, 362}, Button::drawMenuItem, "NEDERLANDS",
+	Button(6, {0, 360}, Button::drawMenuItem, "NEDERLANDS",
 	[](bool press) {
 		if (!press)
 			languageSet(Language::Dutch);
 	}),
-	Button(7, {-1, 422}, Button::drawScrollButton, [](bool press) {
+	Button(7, {-1, 420}, Button::drawScrollButton, [](bool press) {
 		if (!press)
 			languageShowPage(false);
 	}),
 
-	Button(8, {1, 122}, Button::drawScrollButton, [](bool press) {
+	Button(8, {1, 120}, Button::drawScrollButton, [](bool press) {
 		if (!press)
 			languageShowPage(true);
 	}),
-	Button(9, {0, 182}, Button::drawMenuItem, "SVENSKT", [](bool press) {
+	Button(9, {0, 180}, Button::drawMenuItem, "SVENSKT", [](bool press) {
 		if (!press)
 			languageSet(Language::Swedish);
 	}),
-	Button(10, {0, 242}, Button::drawMenuItem, "NORSK", [](bool press) {
+	Button(10, {0, 240}, Button::drawMenuItem, "NORSK", [](bool press) {
 		if (!press)
 			languageSet(Language::Norweigan);
 	}),
-	Button(11, {0, 302}, Button::drawMenuItem, "DANSK", [](bool press) {
+	Button(11, {0, 300}, Button::drawMenuItem, "DANSK", [](bool press) {
 		if (!press)
 			languageSet(Language::Danish);
 	}),
@@ -96,7 +96,7 @@ Screen screenLanguage (
 		Screen::clearWithIonHeader();
 
 		GD.ColorRGB(NC_FRGND_COLOR);
-		GD.cmd_text(136, 70, FONT_TITLE, OPT_CENTERX, lSelectLang());
+		GD.cmd_text(136, 90, FONT_TITLE, OPT_CENTER, lSelectLang());
 	}
 );
 

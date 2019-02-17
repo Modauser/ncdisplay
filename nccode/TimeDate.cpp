@@ -149,7 +149,7 @@ static Button buttonsTimeDate[] = {
 		buttonsTimeDate[5].setVisibility(ampm);
 		buttonsTimeDate[6].setVisibility(ampm);
 	}),
-	Button(10, {0, 422}, Button::drawFullWidth, lStringNext,
+	Button(10, {0, 420}, Button::drawFullWidth, lStringNext,
 	[](bool press) {
 		if (!press) {
 			if (timeSetting) {
@@ -246,7 +246,7 @@ Screen screenTimeDate (
 		Screen::clearWithIonHeader();
 
 		GD.ColorRGB(NC_FRGND_COLOR);
-		GD.cmd_text(136, 70, FONT_TITLE, OPT_CENTERX, timeSetting ?
+		GD.cmd_text(136, 90, FONT_TITLE, OPT_CENTER, timeSetting ?
 			tdSetTime() : tdSetDate());
 
 		if (!timeSetting) {

@@ -8,7 +8,7 @@ static Button buttonsSettings[] = {
 		if (!press)
 			screenCurrent = &screenDispense;
 	}),
-	Button(2, {0, 62}, Button::drawMenuItem, {
+	Button(2, {0, 60}, Button::drawMenuItem, {
 		"PRODUCT INFO",
 		"INFO",
 		"INFO",
@@ -17,7 +17,7 @@ static Button buttonsSettings[] = {
 		if (!press)
 			screenCurrent = &screenProductInfo;
 	}),
-	Button(3, {0, 122}, Button::drawMenuItem, {
+	Button(3, {0, 120}, Button::drawMenuItem, {
 		"FILTER",
 		"FILTER",
 		"FILTRE",
@@ -26,7 +26,7 @@ static Button buttonsSettings[] = {
 		if (!press)
 			doPasscodeTest(&screenFilter);
 	}),
-	Button(4, {0, 182}, Button::drawMenuItem, {
+	Button(4, {0, 180}, Button::drawMenuItem, {
 		"TIME + DATE",
 		"ZEIT + DATUM",
 		"HEURE + DATE",
@@ -35,7 +35,7 @@ static Button buttonsSettings[] = {
 		if (!press)
 			screenCurrent = &screenTimeDate;
 	}),
-	Button(5, {0, 242}, Button::drawMenuItem, {
+	Button(5, {0, 240}, Button::drawMenuItem, {
 		"LANGUAGE",
 		"SPRACHE",
 		"LANGUE",
@@ -44,11 +44,11 @@ static Button buttonsSettings[] = {
 		if (!press)
 			screenCurrent = &screenLanguage;
 	}),
-	Button(6, {0, 302}, Button::drawMenuItem, "SLEEPMODE", [](bool press) {
+	Button(6, {0, 300}, Button::drawMenuItem, "SLEEPMODE", [](bool press) {
 		if (!press)
 			doPasscodeTest(&screenSleepMode);
 	}),
-	Button(7, {0, 362}, Button::drawMenuItem, {
+	Button(7, {0, 360}, Button::drawMenuItem, {
 		"TEMPERATURE",
 		"TEMPERATUR",
 		"TEMP" E_ACUTE "RATURE",
@@ -57,7 +57,7 @@ static Button buttonsSettings[] = {
 		if (!press)
 			doPasscodeTest(&screenTemperature);
 	}),
-	Button(8, {0, 422}, Button::drawMenuItem, {
+	Button(8, {0, 420}, Button::drawMenuItem, {
 		"ADVANCED",
 		"FORTSCHRITT",
 		"AVANC" E_ACUTE,
@@ -76,6 +76,8 @@ Screen screenSettings (
 	// Initialization function
 	nullptr,
 	// Pre-draw function
-	Screen::clearWithIonHeader
+	[](void) {
+		Screen::clearWithIonHeader();
+	}
 );
 
