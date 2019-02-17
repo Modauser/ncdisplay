@@ -15,7 +15,7 @@ extern unsigned char _estack;
 static void *UPDATE_LOAD_ADDR = (void *)((uint32_t)((char *)&_estack + 15) & ~(15));
 static const uint32_t UPDATE_MAX_SIZE = 0x20030000 - (uint32_t)UPDATE_LOAD_ADDR;
 
-constexpr const char *USBUpdatePath = DRV_SD "update.bin";
+constexpr const char *USBUpdatePath = DRV_USB "update.bin";
 
 extern void firmwareUpdate(uint32_t addr, uint32_t count);
 

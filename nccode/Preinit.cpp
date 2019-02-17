@@ -27,7 +27,7 @@ extern void setup(void);
 extern void loop(void);
 
 __attribute__((section(".ncident")))
-static const uint32_t NCIdentifier = 0x31415926;
+static volatile uint32_t NCIdentifier = 0x31415926;
 
 __attribute__((section(".ncstart")))
 __attribute__((naked))

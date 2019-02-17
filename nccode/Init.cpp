@@ -34,11 +34,6 @@ void setup()
 	GD.cmd_spinner(GD.h / 2, (GD.w / 2), 0, 0);
 	GD.swap();
 
-	// Prepare SD card and USB drive
-	int diskStatus = initDisks();
-	if (diskStatus < 0)
-		showFatalError("Failed to access SD card.");
-
 	// Check for update
 	extern bool USBUpdateCheck(void);
 	USBUpdateCheck();

@@ -106,7 +106,7 @@ typedef struct mschf {
 	/** Function is enabled */
 	volatile uint8_t is_enabled : 1;
 	/** Busy on read/write */
-	uint8_t is_busy : 1;
+	volatile uint8_t is_busy : 1;
 	/** Clear IN HALT operation pending */
 	uint8_t clr_in_halt : 1;
 	/** Retry after clear in halt */

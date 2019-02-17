@@ -110,9 +110,6 @@ fatfs/ffsystem.o \
 fatfs/ffunicode.o
 
 OBJS_USER += \
-fatfs/ff.o \
-fatfs/ffsystem.o \
-fatfs/ffunicode.o \
 gameduino2/GD2.o \
 nccode/Assets.o \
 nccode/Dispense.o \
@@ -196,9 +193,6 @@ OBJS_AS_ARGS +=  \
 "main.o"
 
 OBJS_AS_ARGS_USER += \
-"fatfs/ff.o" \
-"fatfs/ffsystem.o" \
-"fatfs/ffunicode.o" \
 "gameduino2/GD2.o" \
 "nccode/Assets.o" \
 "nccode/Dispense.o" \
@@ -286,9 +280,6 @@ DEPS_AS_ARGS +=  \
 "fatfs/diskio.d"
 
 DEPS_AS_ARGS_USER += \
-"fatfs/ff.d" \
-"fatfs/ffsystem.d" \
-"fatfs/ffunicode.d" \
 "gameduino2/GD2.d" \
 "nccode/Assets.d" \
 "nccode/Dispense.d" \
@@ -335,7 +326,7 @@ CINCLUDES = \
 MCUFLAGS = -D__SAME54P20A__ -mcpu=cortex-m4 -mthumb -mfloat-abi=softfp -mfpu=fpv4-sp-d16 -mlong-calls
 CXXFLAGS = -std=c++17 -fno-rtti -fno-exceptions -ffunction-sections
 CFLAGS = -std=gnu99 -ffunction-sections
-DFLAGS = -DDEBUG -ggdb -g3 -Wall
+DFLAGS = -DDEBUG -ggdb -g3 -Wall -Wextra
 
 OUTPUT_FILE_NAME := AtmelStart
 OUTPUT_FILE_PATH +=$(OUTPUT_FILE_NAME).elf
@@ -401,12 +392,12 @@ $(OUTPUT_FILE_PATH): $(OBJS)
 
 %.o: %.s
 	@echo $<
-	@$(CROSS)$(AS) -x c $(MCUFLAGS) $(CFLAGS) $(DFLAGS) $(CINCLUDES) -c -Os \
+	@$(CROSS)$(AS) -x c $(MCUFLAGS) $(CFLAGS) $(DFLAGS) $(CINCLUDES) -c \
 	-MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"  -o "$@" "$<"
 
 %.o: %.S
 	@echo $<
-	@$(CROSS)$(CC) -x c $(MCUFLAGS) $(CFLAGS) $(DFLAGS) $(CINCLUDES) -c -Os \
+	@$(CROSS)$(CC) -x c $(MCUFLAGS) $(CFLAGS) $(DFLAGS) $(CINCLUDES) -c \
 	-MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"  -o "$@" "$<"
 
 # Detect changes in the dependent files and recompile the respective object files.
