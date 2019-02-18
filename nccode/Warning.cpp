@@ -43,7 +43,7 @@ Screen screenWarning (
 
 		if (warningMessage != nullptr) {
 			GD.cmd_text(136, 180, FONT_LIGHT, OPT_CENTERX,
-				(*warningMessage)(), 25);
+				(*warningMessage)(), 30);
 		}
 
 		GD.ColorRGB(0xFF0000);

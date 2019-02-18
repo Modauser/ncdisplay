@@ -50,6 +50,11 @@ Screen screenFilterChange (
 	// Pre-draw function
 	[](void) {
 		Screen::clearWithIonHeader();
+
+		GD.ColorRGB(WHITE);
+		GD.Begin(BITMAPS);
+		GD.Vertex2ii(20, 400, FLTSTRIP_HANDLE, 0);
+		GD.Vertex2ii(136, 400, FLTSTRIP_HANDLE, 1);
 	}
 );
 

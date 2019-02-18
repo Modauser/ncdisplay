@@ -18,6 +18,8 @@ const LanguageString fillSparkling ({
 	"FILLING SPARKLING\n\nWATER SYSTEM"
 });
 
+static int fillCounter = 0;
+
 Screen screenFill (
 	// Parent screen
 	&screenDispense,
@@ -34,8 +36,11 @@ Screen screenFill (
 		GD.Begin(BITMAPS);
 		GD.ColorRGB(fillTint);
 		GD.Vertex2ii(0, 130, HOMEWTR_HANDLE);
-
 		GD.ColorRGB(WHITE);
+		GD.Vertex2ii(83, 174, DROPSTRP_HANDLE, fillCounter);
+
+		if (++fillCounter >= 7)
+			fillCounter = 0;
 
 		if (fillMessage != nullptr) {
 			GD.cmd_text(136, 340, FONT_LARGE, OPT_CENTER,

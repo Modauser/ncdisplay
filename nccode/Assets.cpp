@@ -62,6 +62,18 @@ void loadAssets(void)
 {
 	GD.safeload("assets.gd3");
 
+	GD.BitmapHandle(SETSTRIP_HANDLE);
+	GD.BitmapLayout(ARGB4, 26 * 2, 26);
+	GD.BitmapSize(NEAREST, BORDER, BORDER, 26, 26);
+
+	GD.BitmapHandle(FLTSTRIP_HANDLE);
+	GD.BitmapLayout(L8, 69, 68);
+	GD.BitmapSize(NEAREST, BORDER, BORDER, 69, 68);
+
+	GD.BitmapHandle(DROPSTRP_HANDLE);
+	GD.BitmapLayout(ARGB2, 107, 133);
+	GD.BitmapSize(NEAREST, BORDER, BORDER, 107, 133);
+
 	uint32_t freeAddress = ASSETS_END;
 
 	freeAddress = fontLoad(FONT_SMALL, Nirmala14Header, "nirmala14.dat", freeAddress);
@@ -199,7 +211,11 @@ void Button::drawMenuItem(const vec2& xy, bool pressed, const LanguageString& te
 	GD.Vertex2ii(272 - 29, xy.y + 37);
 
 	// Text
-	GD.cmd_text(30, xy.y + 30, FONT_SMALL, OPT_CENTERY, text());
+	GD.cmd_text(xy.x == 0 ? 30 : 60, xy.y + 30, FONT_SMALL, OPT_CENTERY, text());
+	if (xy.x != 0) {
+		GD.Begin(BITMAPS);
+		GD.Vertex2ii(20, xy.y + 17, SETSTRIP_HANDLE, xy.x - 1);
+	}
 }
 
 void Button::drawScrollButton(const vec2& xy, bool pressed)

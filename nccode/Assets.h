@@ -14,7 +14,7 @@
  * WARNING: Display will currently hang if this is enabled and the main board
  * is disconnected!
  */
-#define USE_SERIAL
+//#define USE_SERIAL
 
 /**
  * Defines how long to attempt handshaking with the main board, in 10ms
@@ -44,7 +44,7 @@
 #define BLACK          0x000000
 #define WHITE          0xFFFFFF
 #define NC_BKGND_COLOR 0xD7ECF9
-#define NC_FRGND_COLOR 0x026FB6
+#define NC_FRGND_COLOR 0x0268BD
 #define NC_FDGND_COLOR 0x002860
 //#define NC_BKGND_COLOR 0xD8EFFC
 //#define NC_BKGND_COLOR 0xD7ECF9
@@ -89,9 +89,9 @@ void loadImage(int handle, const char *path);
 #define ANI3_HANDLE 3
 #define HOMEWTR_HANDLE 4
 #define IONLOGO_HANDLE 5
-#define RESTART_HANDLE 6
-#define FLTSTRIP_HANDLE 7
-#define DROPSTRP_HANDLE 8
+#define RESTART_HANDLE 6  // TODO
+#define FLTSTRIP_HANDLE 7 // TODO in progress
+#define DROPSTRP_HANDLE 8 // TODO
 #define SETSTRIP_HANDLE 9
 #define FREEFONT_HANDLE 10
 
