@@ -75,19 +75,25 @@ void loadImage(int handle, const char *path);
 /**
  * Defines from gd3asset
  * gd3asset command: gd3asset.exe -f assets.gd3 -o assets.h
- * 	sleep1.jpg ani1.jpg ani2.jpg ani3.jpg HomeWtr.jpg uIonLogo.jpg
+ * 	sleep1.jpg ani1.jpg ani2.jpg ani3.jpg HomeWtr.jpg IonLogo.jpg
+ * 	restart.png,format=ARGB2 fltstrip.png,format=L8
+ * 	dropstrp.png,format=ARGB2 setstrip.png
  */
 
-#define ASSETS_END 552936UL
+#define ASSETS_END 679962UL
 
+// TODO startup; use sleep space
 #define SLEEP_HANDLE 0
 #define ANI1_HANDLE 1
 #define ANI2_HANDLE 2
 #define ANI3_HANDLE 3
 #define HOMEWTR_HANDLE 4
 #define IONLOGO_HANDLE 5
-#define RECT_HANDLE 6
-#define FREEFONT_HANDLE 7
+#define RESTART_HANDLE 6
+#define FLTSTRIP_HANDLE 7
+#define DROPSTRP_HANDLE 8
+#define SETSTRIP_HANDLE 9
+#define FREEFONT_HANDLE 10
 
 /* Font used for smaller general text */
 #define FONT_SMALL (FREEFONT_HANDLE)
