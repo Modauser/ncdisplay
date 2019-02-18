@@ -1,0 +1,5 @@
+gcc/AtmelStart*
+gcc/User*
+gcc/**/*.d
+gcc/**/*.o
+
