@@ -1,8 +1,13 @@
-#include <gameduino2/GD2.h>
-
-#include "Assets.h"
+/**
+ * @file Language.cpp
+ * @brief The language selection menu.
+ */
+#include "type/Assets.h"
+#include "type/Screen.h"
 #include "MainBoard.h"
-#include "Screens.h"
+#include "Settings.h"
+
+#include <gameduino2/GD2.h>
 
 void languageSet(const Language& l)
 {
@@ -11,68 +16,8 @@ void languageSet(const Language& l)
 #endif // USE_SERIAL
 
 	LanguageString::setCurrentLanguage(l);
-	screenCurrent = &screenSettings;
-}
-
-void languageShowPage(bool top);
-
-static Button buttonsLanguage[] = {
-	Button(1, {0, 0}, Button::drawBackArrow, [](bool press) {
-		if (!press)
-			screenCurrent = &screenSettings;
-	}),
-	Button(2, {0, 120}, Button::drawMenuItem, "ENGLISH", [](bool press) {
-		if (!press)
-			languageSet(Language::English);
-	}),
-	Button(3, {0, 180}, Button::drawMenuItem, "FRAN" CEDILLA "AIS",
-	[](bool press) {
-		if (!press)
-			languageSet(Language::French);
-	}),
-	Button(4, {0, 240}, Button::drawMenuItem, "ESPA" N_TILDE "OL",
-	[](bool press) {
-		if (!press)
-			languageSet(Language::Spanish);
-	}),
-	Button(5, {0, 300}, Button::drawMenuItem, "DEUTSCH", [](bool press) {
-		if (!press)
-			languageSet(Language::German);
-	}),
-	Button(6, {0, 360}, Button::drawMenuItem, "NEDERLANDS",
-	[](bool press) {
-		if (!press)
-			languageSet(Language::Dutch);
-	}),
-	Button(7, {-1, 420}, Button::drawScrollButton, [](bool press) {
-		if (!press)
-			languageShowPage(false);
-	}),
-
-	Button(8, {1, 120}, Button::drawScrollButton, [](bool press) {
-		if (!press)
-			languageShowPage(true);
-	}),
-	Button(9, {0, 180}, Button::drawMenuItem, "SVENSKT", [](bool press) {
-		if (!press)
-			languageSet(Language::Swedish);
-	}),
-	Button(10, {0, 240}, Button::drawMenuItem, "NORSK", [](bool press) {
-		if (!press)
-			languageSet(Language::Norweigan);
-	}),
-	Button(11, {0, 300}, Button::drawMenuItem, "DANSK", [](bool press) {
-		if (!press)
-			languageSet(Language::Danish);
-	}),
-};
-
-void languageShowPage(bool top)
-{
-	for (unsigned int i = 1; i < 7; i++)
-		buttonsLanguage[i].setVisibility(top);
-	for (unsigned int i = 7; i < 11; i++)
-		buttonsLanguage[i].setVisibility(!top);
+	Settings::loadLabels();
+	ScreenManager::setCurrent(ScreenID::Settings);
 }
 
 static const LanguageString lSelectLang ({
@@ -82,21 +27,80 @@ static const LanguageString lSelectLang ({
 	"Seleccionar idioma"
 });
 
-Screen screenLanguage (
+void languageShowPage(bool top);
+
+static Screen Language (
+	// This screen
+	ScreenID::Language,
 	// Parent screen
-	&screenSettings,
-	// Buttons
-	buttonsLanguage, 11,
+	ScreenID::Settings,
 	// Initialization function
 	[](void) {
 		languageShowPage(true);
 	},
 	// Pre-draw function
 	[](void) {
-		Screen::clearWithIonHeader();
+		clearScreenWithIonHeader();
 
 		GD.ColorRGB(NC_FRGND_COLOR);
 		GD.cmd_text(136, 90, FONT_TITLE, OPT_CENTER, lSelectLang());
-	}
+	},
+	// Buttons
+	Button({0, 0}, Button::drawBackArrow, [](bool press) {
+		if (!press)
+			ScreenManager::setCurrent(ScreenID::Settings);
+	}),
+	Button({0, 120}, Button::drawMenuItem, "ENGLISH", [](bool press) {
+		if (!press)
+			languageSet(Language::English);
+	}),
+	Button({0, 180}, Button::drawMenuItem, "FRAN" CEDILLA "AIS",
+	[](bool press) {
+		if (!press)
+			languageSet(Language::French);
+	}),
+	Button({0, 240}, Button::drawMenuItem, "ESPA" N_TILDE "OL",
+	[](bool press) {
+		if (!press)
+			languageSet(Language::Spanish);
+	}),
+	Button({0, 300}, Button::drawMenuItem, "DEUTSCH", [](bool press) {
+		if (!press)
+			languageSet(Language::German);
+	}),
+	Button({0, 360}, Button::drawMenuItem, "NEDERLANDS",
+	[](bool press) {
+		if (!press)
+			languageSet(Language::Dutch);
+	}),
+	Button({-1, 420}, Button::drawScrollButton, [](bool press) {
+		if (!press)
+			languageShowPage(false);
+	}),
+
+	Button({1, 120}, Button::drawScrollButton, [](bool press) {
+		if (!press)
+			languageShowPage(true);
+	}),
+	Button({0, 180}, Button::drawMenuItem, "SVENSKT", [](bool press) {
+		if (!press)
+			languageSet(Language::Swedish);
+	}),
+	Button({0, 240}, Button::drawMenuItem, "NORSK", [](bool press) {
+		if (!press)
+			languageSet(Language::Norweigan);
+	}),
+	Button({0, 300}, Button::drawMenuItem, "DANSK", [](bool press) {
+		if (!press)
+			languageSet(Language::Danish);
+	})
 );
+
+void languageShowPage(bool top)
+{
+	for (unsigned int i = 1; i < 7; i++)
+		Language.getButton(i).setVisibility(top);
+	for (unsigned int i = 7; i < 11; i++)
+		Language.getButton(i).setVisibility(!top);
+}
 

@@ -1,10 +1,13 @@
+/**
+ * @file USBUpdate.cpp
+ * @brief Code to check for and then apply potential firmware updates.
+ */
+#include "type/Assets.h"
+
 #include <gameduino2/GD2.h>
 #include <fatfs/ff.h>
 #include <stdint.h>
 #include <string.h>
-
-#include "Assets.h"
-#include "driver_init.h"
 
 // Should RAM space become an issue, some form of streamable decompression will
 // be implemented. The current candidate is QuickLZ, which allows for streamed

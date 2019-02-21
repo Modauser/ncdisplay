@@ -211,5 +211,6 @@ int initDisks(void)
 	}
 #endif // ALLOW_USB
 
+	(void)result;
 	return ret;
 }

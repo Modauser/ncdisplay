@@ -13,9 +13,10 @@
 #define pgm_read_word_near(x) (*((uint16_t *)((void *)(x))))
 #define pgm_read_byte pgm_read_byte_near
 
-#include <ctype.h>
-#include <stdarg.h>
-#include <stdint.h>
+#include <algorithm>
+#include <cctype>
+#include <cstdarg>
+#include <cstdint>
 
 #include <hal_delay.h>
 
@@ -24,8 +25,6 @@ typedef uint8_t byte;
 #define RGB(r, g, b)    ((uint32_t)((((r) & 0xffL) << 16) | (((g) & 0xffL) << 8) | ((b) & 0xffL)))
 #define F8(x)           (int((x) * 256L))
 #define F16(x)          ((int32_t)((x) * 65536L))
-
-#include <utils.h>
 
 #define GD_CALIBRATE    1
 #define GD_TRIM         2
@@ -711,19 +710,19 @@ class Poly {
       GD.StencilFunc(ALWAYS, 255, 255);
     }
     void v(int _x, int _y) {
-      x0 = min(x0, _x >> 4);
-      x1 = max(x1, _x >> 4);
-      y0 = min(y0, _y >> 4);
-      y1 = max(y1, _y >> 4);
+      x0 = std::min(x0, _x >> 4);
+      x1 = std::max(x1, _x >> 4);
+      y0 = std::min(y0, _y >> 4);
+      y1 = std::max(y1, _y >> 4);
       x[n] = _x;
       y[n] = _y;
       n++;
     }
     void paint() {
-      x0 = max(0, x0);
-      y0 = max(0, y0);
-      x1 = min(16 * 480, x1);
-      y1 = min(16 * 272, y1);
+      x0 = std::max(0, x0);
+      y0 = std::max(0, y0);
+      x1 = std::min(16 * 480, x1);
+      y1 = std::min(16 * 272, y1);
       GD.ScissorXY(x0, y0);
       GD.ScissorSize(x1 - x0 + 1, y1 - y0 + 1);
       GD.Begin(EDGE_STRIP_B);

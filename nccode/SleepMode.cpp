@@ -1,123 +1,23 @@
-#include <gameduino2/GD2.h>
-
-#include "Assets.h"
+/**
+ * @class SleepMode.cpp
+ * @brief Screen for configuring SleepMode.
+ */
+#include "type/Assets.h"
+#include "type/Formatters.h"
+#include "type/Screen.h"
 #include "Settings.h"
-#include "Screens.h"
+
+#include <gameduino2/GD2.h>
 
 static bool sleepModeOn = false;
 static bool sleepSettingHours = false;
 static bool sleepSettingWeekday = false;
 
+static AMPMFormat sleepHourString;
+
 static unsigned int sleepHours[4] = {
 	0, 0, 0, 0
 };
-
-static AMPMFormat sleepHourString;
-
-void sleepSetVisibilities(void);
-
-static Button buttonsSleepMode[] = {
-	Button(1, {0, 0}, Button::drawBackArrow, [](bool press) {
-		if (!press) {
-			if (sleepSettingHours) {
-				if (!sleepSettingWeekday)
-					sleepSettingWeekday = true;
-				else
-					sleepSettingHours = false;
-
-				sleepSetVisibilities();
-			} else {
-				screenCurrent = &screenSettings;
-			}
-		}
-	}),
-	Button(2, {180, 85}, Button::drawToggle, [](bool press) {
-		if (!press) {
-			sleepModeOn ^= true;
-
-			buttonsSleepMode[1].setForcePressed(sleepModeOn);
-			buttonsSleepMode[2].setVisibility(sleepModeOn);
-		}
-	}),
-	Button(3, {0, 120}, Button::drawMenuItem, {
-		"CUSTOMIZE HOURS",
-		"ANPASSEN",
-		"PERSONNALISER",
-		"PERSONALIZAR"
-	},
-	[](bool press) {
-		if (!press) {
-			sleepSettingHours = true;
-			sleepSettingWeekday = true;
-
-			sleepSetVisibilities();
-		}
-	}),
-	Button(4, {0, 420}, Button::drawFullWidth, lStringSave, [](bool press) {
-		if (press)
-			return;
-
-		if (sleepSettingHours & sleepSettingWeekday) {
-			sleepSettingWeekday = false;
-			buttonsSleepMode[3].setText(lStringSave);
-		} else {
-			screenCurrent = &screenSettings;
-		}
-	}),
-	Button(5, {34, 210}, Button::drawUpButton, [](bool press) {
-		if (press)
-			return;
-
-		auto& hour = sleepHours[sleepSettingWeekday ? 0 : 2];
-		if (hour < 23)
-			hour++;
-		else
-			hour = 0;
-	}),
-	Button(6, {34, 282}, Button::drawDownButton, [](bool press) {
-		if (press)
-			return;
-
-		auto& hour = sleepHours[sleepSettingWeekday ? 0 : 2];
-		if (hour > 0)
-			hour--;
-		else
-			hour = 23;
-	}),
-	Button(7, {168, 210}, Button::drawUpButton, [](bool press) {
-		if (press)
-			return;
-
-		auto& hour = sleepHours[sleepSettingWeekday ? 1 : 3];
-		if (hour < 23)
-			hour++;
-		else
-			hour = 0;
-	}),
-	Button(8, {168, 282}, Button::drawDownButton, [](bool press) {
-		if (press)
-			return;
-
-		auto& hour = sleepHours[sleepSettingWeekday ? 1 : 3];
-		if (hour > 0)
-			hour--;
-		else
-			hour = 23;
-	})
-};
-
-void sleepSetVisibilities(void)
-{
-	buttonsSleepMode[1].setVisibility(!sleepSettingHours);
-	buttonsSleepMode[2].setVisibility(sleepModeOn & !sleepSettingHours);
-	buttonsSleepMode[4].setVisibility(sleepSettingHours);
-	buttonsSleepMode[5].setVisibility(sleepSettingHours);
-	buttonsSleepMode[6].setVisibility(sleepSettingHours);
-	buttonsSleepMode[7].setVisibility(sleepSettingHours);
-
-	buttonsSleepMode[3].setText((sleepSettingHours & sleepSettingWeekday) ?
-		lStringNext : lStringSave);
-}
 
 static const LanguageString smWeekdays ({
 	"Monday - Friday:",
@@ -132,23 +32,25 @@ static const LanguageString smWeekend ({
 	"Sabado - Domingo:"
 });
 
-Screen screenSleepMode (
+static void updateAfterToggle(void);
+static void sleepSetVisibilities(void);
+static void updateSaveButtonText(void);
+
+static Screen SleepMode (
+	ScreenID::SleepMode,
 	// Parent screen
-	&screenSettings,
-	// Buttons
-	buttonsSleepMode, 8,
+	ScreenID::Settings,
 	// Initialization function
 	[](void) {
 		sleepModeOn = false;
 		sleepSettingHours = false;
 
-		buttonsSleepMode[1].setForcePressed(sleepModeOn);
-
+		updateAfterToggle();
 		sleepSetVisibilities();
 	},
 	// Pre-draw function
 	[](void) {
-		Screen::clearWithIonHeader();
+		clearScreenWithIonHeader();
 
 		GD.Begin(RECTS);
 		GD.Vertex2ii(0, 120);
@@ -175,7 +77,7 @@ Screen screenSleepMode (
 			})());
 			GD.cmd_text(136, 260, FONT_SMALL, OPT_CENTER, "TO");
 
-			GD.cmd_text(136, 155, FONT_TITLE, OPT_CENTER,
+			GD.cmd_text(136, 180, FONT_TITLE, OPT_CENTER,
 				sleepSettingWeekday ? smWeekdays() : smWeekend());
 
 			GD.ColorRGB(WHITE);
@@ -190,6 +92,117 @@ Screen screenSleepMode (
 			GD.cmd_text(203, 263, FONT_SMALL, OPT_CENTER,
 				sleepHourString.format(sleepHours[i + 1]));
 		}
-	}
+	},
+	// Buttons
+	Button({0, 0}, Button::drawBackArrow, [](bool press) {
+		if (!press) {
+			if (sleepSettingHours) {
+				if (!sleepSettingWeekday)
+					sleepSettingWeekday = true;
+				else
+					sleepSettingHours = false;
+
+				sleepSetVisibilities();
+			} else {
+				ScreenManager::setCurrent(ScreenID::Settings);
+			}
+		}
+	}),
+	Button({180, 85}, Button::drawToggle, [](bool press) {
+		if (!press) {
+			sleepModeOn ^= true;
+			updateAfterToggle();
+		}
+	}),
+	Button({0, 120}, Button::drawMenuItem, {
+		"CUSTOMIZE HOURS",
+		"ANPASSEN",
+		"PERSONNALISER",
+		"PERSONALIZAR"
+	},
+	[](bool press) {
+		if (!press) {
+			sleepSettingHours = true;
+			sleepSettingWeekday = true;
+
+			sleepSetVisibilities();
+		}
+	}),
+	Button({0, 420}, Button::drawFullWidth, lStringSave, [](bool press) {
+		if (press)
+			return;
+
+		if (sleepSettingHours & sleepSettingWeekday) {
+			sleepSettingWeekday = false;
+			updateSaveButtonText();
+		} else {
+			ScreenManager::setCurrent(ScreenID::Settings);
+		}
+	}),
+	Button({34, 210}, Button::drawUpButton, [](bool press) {
+		if (press)
+			return;
+
+		auto& hour = sleepHours[sleepSettingWeekday ? 0 : 2];
+		if (hour < 23)
+			hour++;
+		else
+			hour = 0;
+	}),
+	Button({34, 282}, Button::drawDownButton, [](bool press) {
+		if (press)
+			return;
+
+		auto& hour = sleepHours[sleepSettingWeekday ? 0 : 2];
+		if (hour > 0)
+			hour--;
+		else
+			hour = 23;
+	}),
+	Button({168, 210}, Button::drawUpButton, [](bool press) {
+		if (press)
+			return;
+
+		auto& hour = sleepHours[sleepSettingWeekday ? 1 : 3];
+		if (hour < 23)
+			hour++;
+		else
+			hour = 0;
+	}),
+	Button({168, 282}, Button::drawDownButton, [](bool press) {
+		if (press)
+			return;
+
+		auto& hour = sleepHours[sleepSettingWeekday ? 1 : 3];
+		if (hour > 0)
+			hour--;
+		else
+			hour = 23;
+	})
 );
+
+void updateAfterToggle(void)
+{
+	SleepMode.getButton(1).setForcePressed(sleepModeOn);
+	SleepMode.getButton(2).setVisibility(sleepModeOn);
+}
+
+void sleepSetVisibilities(void)
+{
+	SleepMode.getButton(1).setVisibility(!sleepSettingHours);
+	SleepMode.getButton(2).setVisibility(sleepModeOn & !sleepSettingHours);
+	SleepMode.getButton(4).setVisibility(sleepSettingHours);
+	SleepMode.getButton(5).setVisibility(sleepSettingHours);
+	SleepMode.getButton(6).setVisibility(sleepSettingHours);
+	SleepMode.getButton(7).setVisibility(sleepSettingHours);
+
+	updateSaveButtonText();
+}
+
+void updateSaveButtonText(void)
+{
+	SleepMode.getButton(3).setText((sleepSettingHours & sleepSettingWeekday) ?
+		lStringNext : lStringSave);
+}
+
 

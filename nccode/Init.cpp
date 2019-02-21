@@ -1,9 +1,13 @@
-#include <gameduino2/GD2.h>
-
-#include "Assets.h"
+/**
+ * @file Init.cpp
+ * @brief Initializes the display and contains the main loop for screen viewing.
+ */
+#include "type/Assets.h"
+#include "type/Screen.h"
 #include "MainBoard.h"
 #include "Settings.h"
-#include "Screens.h"
+
+#include <gameduino2/GD2.h>
 
 /**
  * Puts the fatal error message on the screen and halts.
@@ -11,17 +15,11 @@
  */
 void showFatalError(const char *msg);
 
-/**
- * The currently displayed screen.
- * Modified by other screens to transition between them.
- */
-Screen *screenCurrent = &screenDispense;
-
 extern int initDisks(void);
 extern bool USBUpdateCheck(void);
 
-void handshakeTest(void);
-void checkTankLevels(void);
+static void handshakeTest(void);
+static void checkTankLevels(void);
 
 void setup()
 {
@@ -30,7 +28,7 @@ void setup()
 	GD.ClearColorRGB(NC_BKGND_COLOR);
 	GD.Clear();
 	GD.swap();
-	
+
 	// Show the loading spinner
 	GD.ClearColorRGB(NC_BKGND_COLOR);
 	GD.Clear();
@@ -52,24 +50,14 @@ void setup()
 	// Get required language
 	serialPrintf("#6");
 	LanguageString::setCurrentLanguage(static_cast<Language>(serialGet()));
+
+	ScreenManager::setCurrent(ScreenID::Dispense);
 }
 
 void loop()
 {
-	static int sleepImage = 0;
-	static unsigned int sleepCounter = 0;
-
-	auto oldScreen = screenCurrent;
-
 	// Renders the screen and handles potential input
-	screenCurrent->show();
-
-	if (screenCurrent != oldScreen) {
-		// Switched to a new screen, let it prepare for showing
-		// This includes queries to the main board
-		screenCurrent->prepare();
-	}
-
+	ScreenManager::showCurrent();
 	delay_ms(10);
 }
 
@@ -140,4 +128,19 @@ void showFatalError(const char *msg)
 	while (1)
 		delay_ms(1000);
 }
+
+namespace std {
+	void __throw_bad_function_call(void)
+	{
+		while (1);
+	}
+} // namespace std
+
+extern "C" {
+void __cxa_pure_virtual(void)
+{
+	while (1);
+}
+}
+
 

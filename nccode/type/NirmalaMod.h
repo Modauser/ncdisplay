@@ -1,7 +1,15 @@
 /**
- * Fonts modified to contain accents for FT81x usage.
- * Command Line: fnt_cvt.exe -i font -s size -u nirmala-mod-utf8.txt -d 582224
+ * @file NirmalaMod.h
+ * @brief Font table data that pairs with the other font data on the SD card.
+ *
+ * These fonts were modified to contain accents to support multiple languages,
+ * as a font on the FT81x can only have 127 characters (0x01 to 0x7F).
+ *
+ * Example command line used to generate these:
+ * 	fnt_cvt.exe -i font -s size -u nirmala-mod-utf8.txt -d 582224
  */ 
+
+using byte = unsigned char;
 
 // Header blocks are 148 bytes long:
 //  - 128 bytes of character width for each character
@@ -83,3 +91,4 @@ static const byte Roboto20Header[148] = {
 /* Raw Data Address in Decimal: <581958> */ 
 70,225,8,0,
 };
+

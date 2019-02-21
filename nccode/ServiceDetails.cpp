@@ -1,16 +1,13 @@
-#include <gameduino2/GD2.h>
-
-#include "Assets.h"
+/**
+ * @file ServiceDetails.cpp
+ * @brief Displays service details.
+ */
+#include "type/Assets.h"
+#include "type/Screen.h"
 #include "MainBoard.h"
-#include "Screens.h"
 #include "Settings.h"
 
-static Button buttonsServiceDetails[] = {
-	Button(1, {0, 0}, Button::drawBackArrow, [](bool press) {
-		if (!press)
-			screenCurrent = &screenAdvanced;
-	})
-};
+#include <gameduino2/GD2.h>
 
 static char serviceFlowCold[] = { 0, 0, '.', 0, ' ', 0, 0, 0, '\0' };
 static char serviceFlowAmbi[] = { 0, 0, '.', 0, ' ', 0, 0, 0, '\0' };
@@ -81,11 +78,10 @@ static void getServiceLog(ServiceLogEntry& e)
 }
 #endif // USE_SERIAL
 
-Screen screenServiceDetails (
+static Screen ServiceDetails (
+	ScreenID::ServiceDetails,
 	// Parent screen
-	&screenAdvanced,
-	// Buttons
-	buttonsServiceDetails, 1,
+	ScreenID::Advanced,
 	// Initialization function
 #ifdef USE_SERIAL
 	[](void) {
@@ -117,7 +113,7 @@ Screen screenServiceDetails (
 #endif // USE_SERIAL
 	// Pre-draw function
 	[](void) {
-		Screen::clearWithIonHeader();
+		clearScreenWithIonHeader();
 
 		GD.ColorRGB(NC_FDGND_COLOR);
 		GD.cmd_text(136, 70, FONT_LARGE, OPT_CENTER, LanguageString({
@@ -157,6 +153,11 @@ Screen screenServiceDetails (
 			GD.cmd_text(30, 365 + i * 40 + 20, FONT_SMALL, 0,
 				serviceLog[i].description);
 		}
-	}
+	},
+	// Buttons
+	Button({0, 0}, Button::drawBackArrow, [](bool press) {
+		if (!press)
+			ScreenManager::setCurrent(ScreenID::Advanced);
+	})
 );
 

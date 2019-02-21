@@ -1,100 +1,25 @@
+/**
+ * @file SystemOptions.cpp
+ * @brief Screen for configuring system options.
+ */
+#include "type/Assets.h"
+#include "type/Screen.h"
+#include "MainBoard.h"
+
 #include <gameduino2/GD2.h>
 
-#include "Assets.h"
-#include "MainBoard.h"
-#include "Screens.h"
-
+static bool sysOptionMetric = false;
 static unsigned char sysOptionToggles[5] = {
 	0, 0, 0, 0, 0
 };
-static bool sysOptionMetric = false;
 
-static Button buttonsSystemOptions[] = {
-	Button(1, {0, 0}, Button::drawBackArrow, [](bool press) {
-		if (!press)
-			screenCurrent = &screenAdvanced;
-	}),
-	Button(2, {215, 80}, Button::drawToggle, [](bool press) {
-		if (!press) {
-			sysOptionToggles[0] ^= 1;
-			buttonsSystemOptions[1].setForcePressed(
-				sysOptionToggles[0]);
-		}
-	}),
-	Button(3, {215, 140}, Button::drawToggle, [](bool press) {
-		if (!press) {
-			sysOptionToggles[1] ^= 1;
-			buttonsSystemOptions[2].setForcePressed(
-				sysOptionToggles[1]);
-		}
-	}),
-	Button(4, {215, 200}, Button::drawToggle, [](bool press) {
-		if (!press) {
-			sysOptionToggles[2] ^= 1;
-			buttonsSystemOptions[3].setForcePressed(
-				sysOptionToggles[2]);
-		}
-	}),
-	Button(5, {215, 260}, Button::drawToggle, [](bool press) {
-		if (!press) {
-			sysOptionToggles[3] ^= 1;
-			buttonsSystemOptions[4].setForcePressed(
-				sysOptionToggles[3]);
-		}
-	}),
-	Button(6, {215, 315}, Button::drawToggle, [](bool press) {
-		if (!press) {
-			sysOptionToggles[4] ^= 1;
-			buttonsSystemOptions[5].setForcePressed(
-				sysOptionToggles[4]);
-		}
-	}),
-	Button(7, {14, 360}, Button::drawExclusiveOption, {
-		"US Standard",
-		"US-Standard",
-		"Standard USA",
-		"Standard USA"
-	}, [](bool press) {
-		if (!press) {
-			sysOptionMetric = false;
-			buttonsSystemOptions[6].setForcePressed(
-				!sysOptionMetric);
-			buttonsSystemOptions[7].setForcePressed(
-				sysOptionMetric);
-		}
-	}),
-	Button(8, {134, 360}, Button::drawExclusiveOption, {
-		"Metric",
-		"Metrik",
-		"M" e_ACUTE "trique",
-		"M" e_ACUTE "trico"
-	}, [](bool press) {
-		if (!press) {
-			sysOptionMetric = true;
-			buttonsSystemOptions[6].setForcePressed(
-				!sysOptionMetric);
-			buttonsSystemOptions[7].setForcePressed(
-				sysOptionMetric);
-		}
-	}),
-	Button(9, {0, 420}, Button::drawFullWidth, lStringSave, [](bool press) {
-		if (!press) {
-#ifdef USE_SERIAL
-			serialPrintf("@Y%1u@Z%1u@A%1u@B%1u@g%1u@C%1u",
-				sysOptionToggles[0], sysOptionToggles[1],
-				sysOptionToggles[2], sysOptionToggles[3],
-				sysOptionToggles[4], sysOptionMetric);
-#endif // USE_SERIAL
-			screenCurrent = &screenAdvanced;
-		}
-	})
-};
+static void setMetric(bool metric);
+static void toggleOption(unsigned int index);
 
-Screen screenSystemOptions (
+static Screen SystemOptions (
+	ScreenID::SystemOptions,
 	// Parent screen
-	&screenAdvanced,
-	// Buttons
-	buttonsSystemOptions, 9,
+	ScreenID::Advanced,
 	// Initialization function
 #ifdef USE_SERIAL
 	[](void)  {
@@ -116,7 +41,7 @@ Screen screenSystemOptions (
 #endif // USE_SERIAL
 	// Pre-draw function
 	[](void) {
-		Screen::clearWithIonHeader();
+		clearScreenWithIonHeader();
 
 		GD.ColorRGB(NC_FDGND_COLOR);
 		GD.cmd_text(30, 75, FONT_SMALL, 0, LanguageString({
@@ -173,6 +98,76 @@ Screen screenSystemOptions (
 			"RAPPEL DE SERVICE",
 			"SVC REMINDER"
 		})());
-	}
+	},
+	// Buttons
+	Button({0, 0}, Button::drawBackArrow, [](bool press) {
+		if (!press)
+			ScreenManager::setCurrent(ScreenID::Advanced);
+	}),
+	Button({215, 80}, Button::drawToggle, [](bool press) {
+		if (!press)
+			toggleOption(0);
+	}),
+	Button({215, 140}, Button::drawToggle, [](bool press) {
+		if (!press)
+			toggleOption(1);
+	}),
+	Button({215, 200}, Button::drawToggle, [](bool press) {
+		if (!press)
+			toggleOption(2);
+	}),
+	Button({215, 260}, Button::drawToggle, [](bool press) {
+		if (!press)
+			toggleOption(3);
+	}),
+	Button({215, 315}, Button::drawToggle, [](bool press) {
+		if (!press)
+			toggleOption(4);
+	}),
+	Button({14, 360}, Button::drawExclusiveOption, {
+		"US Standard",
+		"US-Standard",
+		"Standard USA",
+		"Standard USA"
+	}, [](bool press) {
+		if (!press)
+			setMetric(false);
+	}),
+	Button({134, 360}, Button::drawExclusiveOption, {
+		"Metric",
+		"Metrik",
+		"M" e_ACUTE "trique",
+		"M" e_ACUTE "trico"
+	}, [](bool press) {
+		if (!press)
+			setMetric(true);
+	}),
+	Button({0, 420}, Button::drawFullWidth, lStringSave, [](bool press) {
+		if (!press) {
+#ifdef USE_SERIAL
+			serialPrintf("@Y%1u@Z%1u@A%1u@B%1u@g%1u@C%1u",
+				sysOptionToggles[0], sysOptionToggles[1],
+				sysOptionToggles[2], sysOptionToggles[3],
+				sysOptionToggles[4], sysOptionMetric);
+#endif // USE_SERIAL
+			ScreenManager::setCurrent(ScreenID::Advanced);
+		}
+	})
 );
+
+void setMetric(bool metric)
+{
+	sysOptionMetric = metric;
+	SystemOptions.getButton(6).setForcePressed(
+		!sysOptionMetric);
+	SystemOptions.getButton(7).setForcePressed(
+		sysOptionMetric);
+}
+
+void toggleOption(unsigned int index)
+{
+	sysOptionToggles[index] ^= 1;
+	SystemOptions.getButton(index + 1).setForcePressed(
+		sysOptionToggles[index]);
+}
 

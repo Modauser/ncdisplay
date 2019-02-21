@@ -1,3 +1,7 @@
+/**
+ * @file Formatters.h
+ * @brief Provides utilities for converting numbers to various textual forms.
+ */
 #ifndef FORMATTERS_H_
 #define FORMATTERS_H_
 

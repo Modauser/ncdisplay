@@ -1,4 +1,9 @@
-#include "Assets.h"
+/**
+ * @file Errors.cpp
+ * @brief Defines known board errors, and provides code to handle them.
+ */
+#include "type/Assets.h"
+#include "type/LanguageString.h"
 #include "Errors.h"
 #include "MainBoard.h"
 

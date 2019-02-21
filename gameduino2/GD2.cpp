@@ -282,11 +282,11 @@ void Bitmap::draw(const xy &p, int16_t angle)
     // Find top-left and bottom-right boundaries
     xy topleft, bottomright;
     topleft.set(
-      min(min(corners[0].x, corners[1].x), min(corners[2].x, corners[3].x)),
-      min(min(corners[0].y, corners[1].y), min(corners[2].y, corners[3].y)));
+      std::min({corners[0].x, corners[1].x, corners[2].x, corners[3].x}),
+      std::min({corners[0].y, corners[1].y, corners[2].y, corners[3].y}));
     bottomright.set(
-      max(max(corners[0].x, corners[1].x), max(corners[2].x, corners[3].x)),
-      max(max(corners[0].y, corners[1].y), max(corners[2].y, corners[3].y)));
+      std::max({corners[0].x, corners[1].x, corners[2].x, corners[3].x}),
+      std::max({corners[0].y, corners[1].y, corners[2].y, corners[3].y}));
 
     // span is the total size of this region
     xy span = bottomright;

@@ -1,3 +1,7 @@
+/**
+ * @file Preinit.cpp
+ * @brief Landing point from main firmware. Does variable initialization/construction.
+ */
 #include <cstdarg>
 #include <cstdint>
 
@@ -55,11 +59,11 @@ int main(void)
 
 	//__libc_init_array();
 	uint32_t count, i;
-        
+
 	count = __preinit_array_end - __preinit_array_start;
 	for (i = 0; i < count; i++)
 		__preinit_array_start[i]();
-	
+
 	count = __init_array_end - __init_array_start;
 	for (i = 0; i < count; i++)
 		__init_array_start[i]();

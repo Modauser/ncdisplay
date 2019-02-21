@@ -1,3 +1,7 @@
+/**
+ * @file LanguageString.cpp
+ * @brief Provides a class for handling strings in multiple languages.
+ */
 #include "LanguageString.h"
 
 Language LanguageString::currentLanguage = Language::English;

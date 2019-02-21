@@ -1,3 +1,7 @@
+/**
+ * @file MainBoard.cpp
+ * @brief Main interface for communicating with the main board.
+ */
 #include "MainBoard.h"
 
 #include <fatfs/ff.h>
@@ -42,9 +46,13 @@ unsigned int MainBoard::tankTemperatures[3] = { 0, 0, 0 };
 
 int serialGet(void)
 {
+#ifdef USE_SERIAL
 	if (serialGetchar() != '$')
 		return 0;
 	return serialGetchar();
+#else
+	return 0;
+#endif // USE_SERIAL
 }
 
 void MainBoard::updateMetric(void)

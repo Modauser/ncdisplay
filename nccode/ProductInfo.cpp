@@ -1,23 +1,19 @@
+/**
+ * @file ProductInfo.cpp
+ * @brief Displays product info.
+ */
+#include "type/Assets.h"
+#include "type/Screen.h"
+#include "MainBoard.h"
+#include "Settings.h"
+
 #include <fatfs/ff.h>
 #include <gameduino2/GD2.h>
 
-#include "Assets.h"
-#include "MainBoard.h"
-#include "Settings.h"
-#include "Screens.h"
-
-static Button buttonsProductInfo[] = {
-	Button(1, {0, 0}, Button::drawBackArrow, [](bool press) {
-		if (!press)
-			screenCurrent = &screenSettings;
-	})
-};
-
-Screen screenProductInfo (
+static Screen ProductInfo (
+	ScreenID::ProductInfo,
 	// Parent screen
-	&screenSettings,
-	// Buttons
-	buttonsProductInfo, 1,
+	ScreenID::Settings,
 	// Initialization function
 	[](void) {
 		MainBoard::updateMetric();
@@ -31,7 +27,7 @@ Screen screenProductInfo (
 	},
 	// Pre-draw function
 	[](void) {
-		Screen::clearWithIonHeader();
+		clearScreenWithIonHeader();
 
 		GD.ColorRGB(NC_FRGND_COLOR);
 		GD.cmd_text(20, 80, FONT_LARGE, 0, LanguageString({
@@ -65,6 +61,11 @@ Screen screenProductInfo (
 		GD.cmd_text(140, 260, FONT_SMALL, 0, MainBoard::getFlowRate());
 
 		GD.cmd_text(20, 380, FONT_SMALL, 0, MainBoard::getServiceContact(), 20);
-	}
+	},
+	// Buttons
+	Button({0, 0}, Button::drawBackArrow, [](bool press) {
+		if (!press)
+			ScreenManager::setCurrent(ScreenID::Settings);
+	})
 );
 

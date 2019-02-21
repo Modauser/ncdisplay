@@ -1,31 +1,18 @@
-#include <gameduino2/GD2.h>
-
-#include "Assets.h"
+/**
+ * @file Filter.cpp
+ * @brief The filter info screen.
+ */
+#include "type/Assets.h"
+#include "type/Screen.h"
 #include "MainBoard.h"
 #include "Settings.h"
-#include "Screens.h"
 
-static Button buttonsFilter[] = {
-	Button(1, {0, 0}, Button::drawBackArrow, [](bool pressed) {
-		if (!pressed)
-			screenCurrent = &screenSettings;
-	}),
-	Button(2, {0, 420}, Button::drawFullWidth, {
-		"CHANGE FILTER",
-		"FILTER WECHSELN",
-		"CHANGER LE FILTRE",
-		"CAMBIAR EL FILTRO"
-	}, [](bool press) {
-		if (!press)
-			screenCurrent = &screenFilterChange;
-	})
-};
+#include <gameduino2/GD2.h>
 
-Screen screenFilter (
+static Screen Filter (
+	ScreenID::Filter,
 	// Parent screen
-	&screenSettings,
-	// Buttons
-	buttonsFilter, 2,
+	ScreenID::Settings,
 	// Initialization function
 	[](void) {
 		MainBoard::updateMetric();
@@ -36,7 +23,7 @@ Screen screenFilter (
 	},
 	// Pre-draw function
 	[](void) {
-		Screen::clearWithIonHeader();
+		clearScreenWithIonHeader();
 
 		GD.ColorRGB(NC_FRGND_COLOR);
 		GD.cmd_text(20, 80, FONT_LARGE, 0, LanguageString({
@@ -72,6 +59,20 @@ Screen screenFilter (
 			"Chlore, Go" u_HAT "t, Odeur, Plomb, Kystes",
 			"Clorina, Sabor, Olor, Plomo, Quistes"
 		})());
-	}
+	},
+	// Buttons
+	Button({0, 0}, Button::drawBackArrow, [](bool pressed) {
+		if (!pressed)
+			ScreenManager::setCurrent(ScreenID::Settings);
+	}),
+	Button({0, 420}, Button::drawFullWidth, {
+		"CHANGE FILTER",
+		"FILTER WECHSELN",
+		"CHANGER LE FILTRE",
+		"CAMBIAR EL FILTRO"
+	}, [](bool press) {
+		if (!press)
+			ScreenManager::setCurrent(ScreenID::FilterChange);
+	})
 );
 

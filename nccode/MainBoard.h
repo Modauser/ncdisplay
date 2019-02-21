@@ -1,7 +1,11 @@
+/**
+ * @file MainBoard.h
+ * @brief Main interface for communicating with the main board.
+ */
 #ifndef MAINBOARD_H_
 #define MAINBOARD_H_
 
-#include "Formatters.h"
+#include "type/Formatters.h"
 
 #include <array>
 

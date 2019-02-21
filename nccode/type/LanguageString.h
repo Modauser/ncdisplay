@@ -1,6 +1,6 @@
 /**
  * @file LanguageString.h
- * @brief Provides a class for handling strings in multiple languages
+ * @brief Provides a class for handling strings in multiple languages.
  */
 #ifndef LANGSTR_H_
 #define LANGSTR_H_

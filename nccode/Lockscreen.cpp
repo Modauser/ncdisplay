@@ -1,17 +1,20 @@
+/**
+ * @file Lockscreen.cpp
+ * @brief The "Enter Passcode" screen.
+ */
+#include "type/Assets.h"
+#include "type/Screen.h"
+
 #include <gameduino2/GD2.h>
-#include <stdio.h>
 
-#include "Assets.h"
-#include "Screens.h"
+static ScreenID lockscreenReturn = ScreenID::Settings;
 
+static int lockscreenIndex = 0;
 static int lockscreenInput[4] = {
 	0, 0, 0, 0
 };
-static int lockscreenIndex = 0;
 
-Screen *lockscreenReturn = nullptr;
-
-void lockscreenEnterKey(char key)
+static void lockscreenEnterKey(char key)
 {
 	if (key == '<') {
 		if (lockscreenIndex > 0)
@@ -21,45 +24,12 @@ void lockscreenEnterKey(char key)
 	}
 }
 
-static Button buttonsLockscreen[] = {
-	Button(1, {0, 0}, Button::drawBackArrow, [](bool press) {
-		if (!press)
-			screenCurrent = &screenSettings;
-	}),
-	Button('1', {0, 0}, Button::noDraw, [](bool press) {
-		if (!press) { lockscreenEnterKey('1'); } }),
-	Button('2', {0, 0}, Button::noDraw, [](bool press) {
-		if (!press) { lockscreenEnterKey('2'); } }),
-	Button('3', {0, 0}, Button::noDraw, [](bool press) {
-		if (!press) { lockscreenEnterKey('3'); } }),
-	Button('4', {0, 0}, Button::noDraw, [](bool press) {
-		if (!press) { lockscreenEnterKey('4'); } }),
-	Button('5', {0, 0}, Button::noDraw, [](bool press) {
-		if (!press) { lockscreenEnterKey('5'); } }),
-	Button('6', {0, 0}, Button::noDraw, [](bool press) {
-		if (!press) { lockscreenEnterKey('6'); } }),
-	Button('7', {0, 0}, Button::noDraw, [](bool press) {
-		if (!press) { lockscreenEnterKey('7'); } }),
-	Button('8', {0, 0}, Button::noDraw, [](bool press) {
-		if (!press) { lockscreenEnterKey('8'); } }),
-	Button('9', {0, 0}, Button::noDraw, [](bool press) {
-		if (!press) { lockscreenEnterKey('9'); } }),
-	Button('0', {0, 0}, Button::noDraw, [](bool press) {
-		if (!press) { lockscreenEnterKey('0'); } }),
-	Button('<', {0, 0}, Button::noDraw, [](bool press) {
-		if (!press) { lockscreenEnterKey('<'); } }),
-};
-
-Screen screenLockscreen (
+static Screen Lockscreen (
+	ScreenID::Lockscreen,
 	// Parent screen
-	&screenSettings,
-	// Buttons
-	buttonsLockscreen, 12,
+	ScreenID::Settings,
 	// Initialization function
 	[](void) {
-		if (lockscreenReturn == nullptr)
-			lockscreenReturn = &screenSettings;
-
 		for (int i = 0; i < 4; i++)
 			lockscreenInput[i] = 0;
 		lockscreenIndex = 0;
@@ -68,10 +38,10 @@ Screen screenLockscreen (
 	[](void) {
 		if (lockscreenIndex > 4) {
 			delay_ms(500);
-			screenCurrent = lockscreenReturn;
+			ScreenManager::setCurrent(lockscreenReturn);
 		}
 
-		Screen::clearWithIonHeader();
+		clearScreenWithIonHeader();
 
 		GD.ColorRGB(NC_FRGND_COLOR);
 		GD.cmd_text(136, 90, FONT_TITLE, OPT_CENTER, "Enter Passcode");
@@ -88,8 +58,33 @@ Screen screenLockscreen (
 		GD.cmd_keys(0, 300, 272, 78, FONT_SMALL, OPT_FLAT, "789");
 		GD.cmd_keys(0, 380, 272, 78, FONT_SMALL, OPT_FLAT, " 0<");
 
+		// Get display inputs
+		GD.get_inputs();
+		if (int tag = GD.inputs.tag; isdigit(tag) || tag == '<')
+			lockscreenEnterKey(tag);
+
 		if (lockscreenIndex == 4)
 			lockscreenIndex++;
-	}
+	},
+	// Buttons
+	Button({0, 0}, Button::drawBackArrow, [](bool press) {
+		if (!press)
+			ScreenManager::setCurrent(ScreenID::Settings);
+	})
 );
+
+void doPasscodeTest(ScreenID id)
+{
+#ifdef USE_SERIAL
+	serialPrintf("@K");
+	if (serialGet() == 0) {
+		ScreenManager::setCurrent(id);
+	} else {
+		lockscreenReturn = s;
+		ScreenManager::setCurrent(ScreenID::Lockscreen);
+	}
+#else
+	ScreenManager::setCurrent(id);
+#endif
+}
 

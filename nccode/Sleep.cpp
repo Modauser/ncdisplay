@@ -1,18 +1,22 @@
-#include <gameduino2/GD2.h>
+/**
+ * @file Sleep.cpp
+ * @brief The sleeping screen. This is shown when the display times out from
+ * user interaction.
+ */
+#include "type/Assets.h"
+#include "type/Screen.h"
 
-#include "Assets.h"
-#include "Screens.h"
+#include <gameduino2/GD2.h>
 
 static char sleepImagePath[] = "sleep0.jpg";
 static int sleepImageCurrent = 1;
 static int sleepImageLast = -1;
 static unsigned int sleepImageCounter;
 
-Screen screenSleep (
+static Screen Sleep (
+	ScreenID::Sleep,
 	// Parent screen
-	&screenDispense,
-	// Buttons
-	nullptr, 0,
+	ScreenID::Dispense,
 	// Initialization function
 	[](void) {
 		sleepImageCounter = 0;
@@ -63,7 +67,7 @@ Screen screenSleep (
 			}
 
 			// Wake up, go to main dispense screen
-			screenCurrent = &screenDispense;
+			ScreenManager::setCurrent(ScreenID::Dispense);
 		}
 	}
 );

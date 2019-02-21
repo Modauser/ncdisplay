@@ -1,3 +1,8 @@
+/**
+ * @file Settings.h
+ * @brief Display-wide settings.
+ */
+#include "MainBoard.h"
 #include "Settings.h"
 
 #include <fatfs/ff.h>
@@ -12,11 +17,20 @@ static const LanguageString SettingsFile ({
 	DRV_SD "SpaSet00.txt"
 });
 
+static const LanguageString SettingsFileMetric ({
+	DRV_SD "EngSetL0.txt",
+	DRV_SD "GerSetL0.txt",
+	DRV_SD "FreSetL0.txt",
+	DRV_SD "SpaSetL0.txt"
+});
+
 void Settings::loadLabels(void)
 {
 	FIL fd;
 
-	if (auto r = f_open(&fd, SettingsFile(), FA_READ); r != FR_OK)
+	const auto& file = MainBoard::isMetric() ? SettingsFileMetric
+		: SettingsFile;
+	if (auto r = f_open(&fd, file(), FA_READ); r != FR_OK)
 		return;
 
 	for (unsigned int i = 0; i < Labels.size(); i++)

@@ -1,8 +1,12 @@
-#include <gameduino2/GD2.h>
-
-#include "Assets.h"
+/**
+ * @file Temperature.cpp
+ * @brief Controls to configure tank temperatures.
+ */
+#include "type/Assets.h"
+#include "type/Screen.h"
 #include "MainBoard.h"
-#include "Screens.h"
+
+#include <gameduino2/GD2.h>
 
 static unsigned int tempLevels[3] = {
 	0, // Hot
@@ -32,34 +36,6 @@ void tempDecrease(unsigned int index)
 		tempLevels[index]--;
 }
 
-static Button buttonsTemperature[] = {
-	Button(1, {0, 0}, Button::drawBackArrow, [](bool press) {
-		if (!press)
-			screenCurrent = &screenSettings;
-	}),
-	Button(2, {0, 420}, Button::drawFullWidth, lStringSave, [](bool press) {
-		if (!press) {
-			MainBoard::setTankTemperatures(tempLevels);
-			screenCurrent = &screenSettings;
-		}
-	}),
-	// Hot
-	Button(3, {0, 100}, Button::drawSmallLeft,
-		[](bool press) { if (!press) tempDecrease(0); }),
-	Button(4, {232, 100}, Button::drawSmallRight,
-		[](bool press) { if (!press) tempIncrease(0); }),
-	// Cold On
-	Button(5, {0, 200}, Button::drawSmallLeft,
-		[](bool press) { if (!press) tempDecrease(1); }),
-	Button(6, {232, 200}, Button::drawSmallRight,
-		[](bool press) { if (!press) tempIncrease(1); }),
-	// Cold Off
-	Button(7, {0, 300}, Button::drawSmallLeft,
-		[](bool press) { if (!press) tempDecrease(2); }),
-	Button(8, {232, 300}, Button::drawSmallRight,
-		[](bool press) { if (!press) tempIncrease(2); }),
-};
-
 static const LanguageString tHotTemp ({
 	"Hot Temp.",
 	"Heisse Temperatur",
@@ -79,24 +55,19 @@ static const LanguageString tColdTempOff ({
 	"Temp. Fr" i_ACUTE "a Desactivada"
 });
 
-Screen screenTemperature (
+static Screen Temperature (
+	ScreenID::Temperature,
 	// Parent screen
-	&screenSettings,
-	// Buttons
-	buttonsTemperature, 8,
+	ScreenID::Settings,
 	// Initialization function
-#ifdef USE_SERIAL
 	[](void) {
 		auto levels = MainBoard::getTankTemperatures();
 		for (int i = 0; i < 3; i++)
 			tempLevels[i] = levels[i];
 	},
-#else
-	nullptr,
-#endif // USE_SERIAL
 	// Pre-draw function
 	[](void) {
-		Screen::clearWithIonHeader();
+		clearScreenWithIonHeader();
 
 		GD.ColorRGB(NC_FRGND_COLOR);
 		GD.cmd_text(136, 70,  FONT_TITLE, OPT_CENTERX, tHotTemp());
@@ -140,6 +111,32 @@ Screen screenTemperature (
 			GD.cmd_text((i % 4) * 48 + 62, (i / 4) * 100 + 130,
 				FONT_LIGHT, OPT_CENTERX, tempNumbers[i]);
 		}
-	}
+	},
+	// Buttons
+	Button({0, 0}, Button::drawBackArrow, [](bool press) {
+		if (!press)
+			ScreenManager::setCurrent(ScreenID::Settings);
+	}),
+	Button({0, 420}, Button::drawFullWidth, lStringSave, [](bool press) {
+		if (!press) {
+			MainBoard::setTankTemperatures(tempLevels);
+			ScreenManager::setCurrent(ScreenID::Settings);
+		}
+	}),
+	// Hot
+	Button({0, 100}, Button::drawSmallLeft,
+		[](bool press) { if (!press) tempDecrease(0); }),
+	Button({232, 100}, Button::drawSmallRight,
+		[](bool press) { if (!press) tempIncrease(0); }),
+	// Cold On
+	Button({0, 200}, Button::drawSmallLeft,
+		[](bool press) { if (!press) tempDecrease(1); }),
+	Button({232, 200}, Button::drawSmallRight,
+		[](bool press) { if (!press) tempIncrease(1); }),
+	// Cold Off
+	Button({0, 300}, Button::drawSmallLeft,
+		[](bool press) { if (!press) tempDecrease(2); }),
+	Button({232, 300}, Button::drawSmallRight,
+		[](bool press) { if (!press) tempIncrease(2); })
 );
 

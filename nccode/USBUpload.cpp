@@ -1,25 +1,21 @@
+/**
+ * @file USBUpload.cpp
+ * @brief Screen explaining USB firmware updating.
+ */
+#include "type/Assets.h"
+#include "type/Screen.h"
+
 #include <gameduino2/GD2.h>
 
-#include "Assets.h"
-#include "Screens.h"
-
-static Button buttonsUSBUpload[] = {
-	Button(1, {0, 0}, Button::drawBackArrow, [](bool pressed) {
-		if (!pressed)
-			screenCurrent = &screenAdvanced;
-	})
-};
-
-Screen screenUSBUpload (
+static Screen USBUpload (
+	ScreenID::USBUpload,
 	// Parent screen
-	&screenAdvanced,
-	// Buttons
-	buttonsUSBUpload, 1,
+	ScreenID::Advanced,
 	// Initialization function
 	nullptr,
 	// Pre-draw function
 	[](void) {
-		Screen::clearWithIonHeader();
+		clearScreenWithIonHeader();
 
 		GD.ColorRGB(NC_FRGND_COLOR);
 		GD.cmd_text(136, 150, FONT_TITLE, OPT_CENTERX, LanguageString({
@@ -36,6 +32,11 @@ Screen screenUSBUpload (
 			"2. Rencender el ION para subir la informaci" o_ACUTE
 			"n"
 		})());
-	}
+	},
+	// Buttons
+	Button({0, 0}, Button::drawBackArrow, [](bool pressed) {
+		if (!pressed)
+			ScreenManager::setCurrent(ScreenID::Advanced);
+	})
 );
 

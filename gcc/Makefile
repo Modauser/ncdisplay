@@ -52,7 +52,8 @@ fatfs
 SUB_DIRS_USER += \
 fatfs \
 gameduino2 \
-nccode
+nccode \
+nccode/type
 
 # List the object files
 OBJS +=  \
@@ -111,7 +112,10 @@ fatfs/ffunicode.o
 
 OBJS_USER += \
 gameduino2/GD2.o \
-nccode/Assets.o \
+nccode/type/Button.o \
+nccode/type/ScreenInterface.o \
+nccode/type/LanguageString.o \
+nccode/type/Assets.o \
 nccode/Dispense.o \
 nccode/SettingsMenu.o \
 nccode/Language.o \
@@ -126,7 +130,6 @@ nccode/ServiceDetails.o \
 nccode/Lock.o \
 nccode/Lockscreen.o \
 nccode/SystemOptions.o \
-nccode/LanguageString.o \
 nccode/Sleep.o \
 nccode/FilterChange.o \
 nccode/FilterChangeTimer.o \
@@ -138,7 +141,9 @@ nccode/SystemCalls.o \
 nccode/Preinit.o \
 nccode/Settings.o \
 nccode/FillScreen.o \
-nccode/MainBoard.o
+nccode/MainBoard.o \
+nccode/WelcomeLanguage.o \
+nccode/Restart.o
 
 OBJS_AS_ARGS +=  \
 "hal/src/hal_io.o" \
@@ -196,7 +201,10 @@ OBJS_AS_ARGS +=  \
 
 OBJS_AS_ARGS_USER += \
 "gameduino2/GD2.o" \
-"nccode/Assets.o" \
+"nccode/type/Button.o" \
+"nccode/type/ScreenInterface.o" \
+"nccode/type/LanguageString.o" \
+"nccode/type/Assets.o" \
 "nccode/Dispense.o" \
 "nccode/SettingsMenu.o" \
 "nccode/Language.o" \
@@ -211,7 +219,6 @@ OBJS_AS_ARGS_USER += \
 "nccode/Lock.o" \
 "nccode/Lockscreen.o" \
 "nccode/SystemOptions.o" \
-"nccode/LanguageString.o" \
 "nccode/Sleep.o" \
 "nccode/FilterChange.o" \
 "nccode/FilterChangeTimer.o" \
@@ -223,7 +230,9 @@ OBJS_AS_ARGS_USER += \
 "nccode/Preinit.o" \
 "nccode/Settings.o" \
 "nccode/FillScreen.o" \
-"nccode/MainBoard.o"
+"nccode/MainBoard.o" \
+"nccode/WelcomeLanguage.o" \
+"nccode/Restart.o"
 
 # List the dependency files
 DEPS := $(OBJS:%.o=%.d)
@@ -285,7 +294,10 @@ DEPS_AS_ARGS +=  \
 
 DEPS_AS_ARGS_USER += \
 "gameduino2/GD2.d" \
-"nccode/Assets.d" \
+"nccode/type/Button.d" \
+"nccode/type/ScreenInterface.d" \
+"nccode/type/LanguageString.d" \
+"nccode/type/Assets.d" \
 "nccode/Dispense.d" \
 "nccode/SettingsMenu.d" \
 "nccode/Language.d" \
@@ -300,7 +312,6 @@ DEPS_AS_ARGS_USER += \
 "nccode/Lock.d" \
 "nccode/Lockscreen.d" \
 "nccode/SystemOptions.d" \
-"nccode/LanguageString.d" \
 "nccode/Sleep.d" \
 "nccode/FilterChange.d" \
 "nccode/FilterChangeTimer.d" \
@@ -312,7 +323,9 @@ DEPS_AS_ARGS_USER += \
 "nccode/Preinit.d" \
 "nccode/Settings.d" \
 "nccode/FillScreen.d" \
-"nccode/MainBoard.d"
+"nccode/MainBoard.d" \
+"nccode/WelcomeLanguage.d" \
+"nccode/Restart.d"
 
 CROSS = arm-none-eabi-
 CC = gcc
@@ -330,9 +343,9 @@ CINCLUDES = \
        	-I"../CMSIS/Include" -I"../include"
 
 MCUFLAGS = -D__SAME54P20A__ -mcpu=cortex-m4 -mthumb -mfloat-abi=softfp -mfpu=fpv4-sp-d16 -mlong-calls
-CXXFLAGS = -std=c++17 -fno-rtti -fno-exceptions -ffunction-sections
+CXXFLAGS = -std=c++17 -fno-rtti -fno-exceptions -ffunction-sections -Werror -Os
 CFLAGS = -std=gnu99 -ffunction-sections
-DFLAGS = -DDEBUG -ggdb -g3 -Wall -Wextra
+DFLAGS = -DDEBUG -ggdb -g3 -Wall -Wextra -pedantic
 
 OUTPUT_FILE_NAME := AtmelStart
 OUTPUT_FILE_PATH +=$(OUTPUT_FILE_NAME).elf

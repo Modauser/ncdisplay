@@ -1,7 +1,11 @@
-#include <gameduino2/GD2.h>
+/**
+ * @file FillScreen.cpp
+ * @brief Screen shown on startup when tanks are being filled.
+ */
+#include "type/Assets.h"
+#include "type/Screen.h"
 
-#include "Assets.h"
-#include "Screens.h"
+#include <gameduino2/GD2.h>
 
 const LanguageString *fillMessage = nullptr;
 uint32_t fillTint = 0xFFFFFF;
@@ -20,18 +24,16 @@ const LanguageString fillSparkling ({
 
 static int fillCounter = 0;
 
-Screen screenFill (
+static Screen screenFill (
+	ScreenID::Fill,
 	// Parent screen
-	&screenDispense,
-	// Buttons
-	nullptr, 0,
+	ScreenID::Dispense,
 	// Initialization function
 	nullptr,
 	// Pre-draw function
 	[](void) {
 		GD.ClearColorRGB(fillTint);
 		GD.Clear();
-
 
 		GD.Begin(BITMAPS);
 		GD.ColorRGB(fillTint);

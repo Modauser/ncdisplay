@@ -1,9 +1,14 @@
+/**
+ * @file Advanced.cpp
+ * @brief The advanced settings menu.
+ */
+#include "type/Assets.h"
+#include "type/Screen.h"
+
 #include <gameduino2/GD2.h>
 
-#include "Assets.h"
-#include "Screens.h"
-
 extern const LanguageString *warningMessage;
+extern ScreenID warningProceedScreen;
 
 static const LanguageString warningReset ({
 	"Resetting to factory defaults will\nclear all saved settings.\n\nContinue?"
@@ -13,66 +18,6 @@ static const LanguageString warningAutofill ({
 	"Internal tanks will be refilled.\nDo not leave unit unattended.\n\nContinue?"
 });
 
-static Button buttonsAdvanced[] = {
-	Button(1, {0, 0}, Button::drawBackArrow, [](bool press) {
-		if (!press)
-			screenCurrent = &screenSettings;
-	}),
-	Button(2, {0, 120}, Button::drawMenuItem, {
-		"USB UPLOAD",
-		"USB HOCHLADEN",
-		"T" E_ACUTE "L" E_ACUTE "CHARGEMENT USB",
-		"CARGAR USB"
-	}, [](bool press) {
-		if (!press)
-			screenCurrent = &screenUSBUpload;
-	}),
-	Button(3, {0, 180}, Button::drawMenuItem, {
-		"RESET FACTORY SETTINGS",
-		"RESETTEN",
-		"R" E_ACUTE "INITIALISER",
-		"REINICIAR"
-	}, [](bool press) {
-		if (!press) {
-			warningMessage = &warningReset;
-			screenCurrent = &screenWarning;
-		}
-	}),
-	Button(4, {0, 240}, Button::drawMenuItem, {
-		"SERVICE DETAILS",
-		"SERVICE-DETAILS",
-		"INFORMATIONS SAV",
-		"ASISTENCIA T" E_ACUTE "CNICA"
-	}, [](bool press) {
-		if (!press)
-			screenCurrent = &screenServiceDetails;
-	}),
-	Button(5, {0, 300}, Button::drawMenuItem, {
-		"SYSTEM OPTIONS",
-		"SYSTEMOPTIONEN",
-		"OPTIONS DU SYST" E_GRAVE "ME",
-		"OPCIONES DEL SISTEMA"
-	}, [](bool press) {
-		if (!press)
-			screenCurrent = &screenSystemOptions;
-	}),
-	Button(6, {0, 360}, Button::drawMenuItem, {
-		"PASSCODE",
-		"PASSCODE",
-		"CODE D'ACC" E_GRAVE "S",
-		"C" O_ACUTE "DIGO DE ACCESO"
-	}, [](bool press) {
-		if (!press)
-			screenCurrent = &screenLock;
-	}),
-	Button(7, {0, 420}, Button::drawMenuItem, "AUTOFILL", [](bool press) {
-		if (!press) {
-			warningMessage = &warningAutofill;
-			screenCurrent = &screenWarning;
-		}
-	}),
-};
-
 static const LanguageString lAdvanced ({
 	"Advanced",
 	"Fortschritt",
@@ -80,19 +25,77 @@ static const LanguageString lAdvanced ({
 	"Avanzado"
 });
 
-Screen screenAdvanced (
+static Screen Advanced (
+	ScreenID::Advanced,
 	// Parent screen
-	&screenSettings,
-	// Buttons
-	buttonsAdvanced, 7,
+	ScreenID::Settings,
 	// Initialization function
 	nullptr,
 	// Pre-draw function
 	[](void) {
-		Screen::clearWithIonHeader();
+		clearScreenWithIonHeader();
 
 		GD.ColorRGB(NC_FRGND_COLOR);
 		GD.cmd_text(136, 90, FONT_TITLE, OPT_CENTER, lAdvanced());
-	}
+	},
+	// Buttons
+	Button({0, 0}, Button::drawBackArrow, [](bool press) {
+		if (!press)
+			ScreenManager::setCurrent(ScreenID::Settings);
+	}),
+	Button({0, 120}, Button::drawMenuItem, {
+		"USB UPLOAD",
+		"USB HOCHLADEN",
+		"T" E_ACUTE "L" E_ACUTE "CHARGEMENT USB",
+		"CARGAR USB"
+	}, [](bool press) {
+		if (!press)
+			ScreenManager::setCurrent(ScreenID::USBUpload);
+	}),
+	Button({0, 180}, Button::drawMenuItem, {
+		"RESET FACTORY SETTINGS",
+		"RESETTEN",
+		"R" E_ACUTE "INITIALISER",
+		"REINICIAR"
+	}, [](bool press) {
+		if (!press) {
+			warningMessage = &warningReset;
+			warningProceedScreen = ScreenID::Restart;
+			ScreenManager::setCurrent(ScreenID::Warning);
+		}
+	}),
+	Button({0, 240}, Button::drawMenuItem, {
+		"SERVICE DETAILS",
+		"SERVICE-DETAILS",
+		"INFORMATIONS SAV",
+		"ASISTENCIA T" E_ACUTE "CNICA"
+	}, [](bool press) {
+		if (!press)
+			ScreenManager::setCurrent(ScreenID::ServiceDetails);
+	}),
+	Button({0, 300}, Button::drawMenuItem, {
+		"SYSTEM OPTIONS",
+		"SYSTEMOPTIONEN",
+		"OPTIONS DU SYST" E_GRAVE "ME",
+		"OPCIONES DEL SISTEMA"
+	}, [](bool press) {
+		if (!press)
+			ScreenManager::setCurrent(ScreenID::SystemOptions);
+	}),
+	Button({0, 360}, Button::drawMenuItem, {
+		"PASSCODE",
+		"PASSCODE",
+		"CODE D'ACC" E_GRAVE "S",
+		"C" O_ACUTE "DIGO DE ACCESO"
+	}, [](bool press) {
+		if (!press)
+			ScreenManager::setCurrent(ScreenID::Lock);
+	}),
+	Button({0, 420}, Button::drawMenuItem, "AUTOFILL", [](bool press) {
+		if (!press) {
+			warningMessage = &warningAutofill;
+			ScreenManager::setCurrent(ScreenID::Warning);
+		}
+	})
 );
 

@@ -1,33 +1,25 @@
+/**
+ * @file Warning.cpp
+ * @brief Customizable screen for warning messages (factory reset/autofill).
+ */
+#include "type/Assets.h"
+#include "type/Screen.h"
+
 #include <gameduino2/GD2.h>
 
-#include "Assets.h"
-#include "Screens.h"
-
-static Button buttonsWarning[] = {
-	Button(1, {0, 360}, Button::drawFullWidth, "YES", [](bool pressed) {
-		if (!pressed)
-			screenCurrent = &screenAdvanced;
-	}),
-	Button(2, {0, 420}, Button::drawFullWidth, "CANCEL", [](bool pressed) {
-		if (!pressed)
-			screenCurrent = &screenAdvanced;
-	})
-};
-
 const LanguageString *warningMessage = nullptr;
+ScreenID warningProceedScreen = ScreenID::Advanced;
 
-Screen screenWarning (
+static Screen Warning (
+	ScreenID::Warning,
 	// Parent screen
-	&screenAdvanced,
-	// Buttons
-	buttonsWarning, 2,
+	ScreenID::Advanced,
 	// Initialization function
 	nullptr,
 	// Pre-draw function
 	[](void) {
 		GD.ClearColorRGB(0xC00000);
 		GD.Clear();
-
 
 		GD.Begin(BITMAPS);
 		GD.ColorRGB(0xDD0000);
@@ -48,7 +40,16 @@ Screen screenWarning (
 
 		GD.ColorRGB(0xFF0000);
 		GD.cmd_text(136, 135, FONT_SMALL, OPT_CENTER, "WARNING");
-	}
+	},
+	// Buttons
+	Button({0, 360}, Button::drawFullWidth, "YES", [](bool pressed) {
+		if (!pressed)
+			ScreenManager::setCurrent(warningProceedScreen);
+	}),
+	Button({0, 420}, Button::drawFullWidth, "CANCEL", [](bool pressed) {
+		if (!pressed)
+			ScreenManager::setCurrent(ScreenID::Advanced);
+	})
 );
 
 

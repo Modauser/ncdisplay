@@ -1,41 +1,21 @@
-#include <gameduino2/GD2.h>
-
-#include "Assets.h"
+/**
+ * @file Lock.cpp
+ * @brief Passcode enable screen.
+ */
+#include "type/Assets.h"
+#include "type/Screen.h"
 #include "MainBoard.h"
-#include "Screens.h"
+
+#include <gameduino2/GD2.h>
 
 bool lockEnabled = false;
 
-static Button buttonsLock[] = {
-	Button(1, {0, 0}, Button::drawBackArrow, [](bool press) {
-		if (!press)
-			screenCurrent = &screenAdvanced;
-	}),
-	Button(2, {180, 80}, Button::drawToggle, [](bool press) {
-		if (!press) {
-			lockEnabled ^= true;
-			buttonsLock[1].setForcePressed(lockEnabled);
-		}
-	}),
-	Button(3, {0, 420}, Button::drawFullWidth, lStringSave,
-#ifdef USE_SERIAL
-	[](bool press) {
-		if (!press) {
-			serialPrintf("@L%1u", lockEnabled ? 1 : 0);
-			screenCurrent = &screenAdvanced;
-		}
-	}
-#else
-	nullptr
-#endif // USE_SERIAL
-	)
-};
+static void updateToggle(void);
 
-Screen screenLock (
+static Screen Lock (
+	ScreenID::Lock,
 	// Parent screen
-	&screenAdvanced,
-	// Buttons
-	buttonsLock, 3,
+	ScreenID::Advanced,
 	// Initialization function
 #ifdef USE_SERIAL
 	[](void) {
@@ -47,7 +27,7 @@ Screen screenLock (
 #endif // USE_SERIAL
 	// Pre-draw function
 	[](void) {
-		Screen::clearWithIonHeader();
+		clearScreenWithIonHeader();
 
 		GD.ColorRGB(NC_FRGND_COLOR);
 		GD.cmd_text(20, 90, FONT_TITLE, OPT_CENTERY, LanguageString({
@@ -59,22 +39,34 @@ Screen screenLock (
 
 		GD.cmd_text(136, 240, FONT_LARGE, OPT_CENTER, lockEnabled ?
 			"LOCKED" : "UNLOCKED");
-	}
-);
-
-void doPasscodeTest(Screen *s)
-{
+	},
+	// Buttons
+	Button({0, 0}, Button::drawBackArrow, [](bool press) {
+		if (!press)
+			ScreenManager::setCurrent(ScreenID::Advanced);
+	}),
+	Button({180, 80}, Button::drawToggle, [](bool press) {
+		if (!press) {
+			lockEnabled ^= true;
+			updateToggle();
+		}
+	}),
+	Button({0, 420}, Button::drawFullWidth, lStringSave,
 #ifdef USE_SERIAL
-	serialPrintf("@K");
-	if (serialGet() == 0) {
-		screenCurrent = s;
-	} else {
-		extern Screen *lockscreenReturn;
-		lockscreenReturn = s;
-		screenCurrent = &screenLockscreen;
+	[](bool press) {
+		if (!press) {
+			serialPrintf("@L%1u", lockEnabled ? 1 : 0);
+			ScreenManager::setCurrent(ScreenID::Advanced);
+		}
 	}
 #else
-	screenCurrent = s;
-#endif
+	nullptr
+#endif // USE_SERIAL
+	)
+);
+
+void updateToggle(void)
+{
+	Lock.getButton(1).setForcePressed(lockEnabled);
 }
 

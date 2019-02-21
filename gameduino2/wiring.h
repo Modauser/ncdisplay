@@ -1,6 +1,7 @@
 #include <atmel_start_pins.h>
 
-extern uint8_t spi_xfer_byte(uint8_t);
+#include <nccode/type/Assets.h>
+#include <nccode/SystemCalls.h>
 
 #define YIELD()
 #define lowByte(n)  ((n) & 0xFF)
@@ -10,6 +11,7 @@ class GDTransport {
 private:
   byte model;
 public:
+  NOOPTIMIZE
   void begin0() {
     hostcmd(0x42);    // SLEEP
     hostcmd(0x61);    // CLKSEL default

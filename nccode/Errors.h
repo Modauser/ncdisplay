@@ -1,3 +1,7 @@
+/**
+ * @file Errors.h
+ * @brief Provides error handling for main board errors.
+ */
 #ifndef ERROR_H_
 #define ERROR_H_
 
