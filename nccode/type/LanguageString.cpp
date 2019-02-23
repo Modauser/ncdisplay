@@ -33,6 +33,8 @@ bool LanguageString::empty(void) const
 
 void LanguageString::setCurrentLanguage(Language l)
 {
+	if (l >= Language::Count)
+		l = Language::English;
 	currentLanguage = l;
 }
 

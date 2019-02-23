@@ -120,6 +120,9 @@ public:
 	static bool isHotTankFull(void);
 	static bool isSparklingTankFull(void);
 
+	static bool isLocked(void);
+	static void setLocked(bool locked);
+
 	[[noreturn]]
 	static void autofill(void);
 

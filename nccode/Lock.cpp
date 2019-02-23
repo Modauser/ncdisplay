@@ -8,7 +8,7 @@
 
 #include <gameduino2/GD2.h>
 
-bool lockEnabled = false;
+static bool lockEnabled = false;
 
 static void updateToggle(void);
 
@@ -19,8 +19,7 @@ static Screen Lock (
 	// Initialization function
 #ifdef USE_SERIAL
 	[](void) {
-		serialPrintf("@K");
-		lockEnabled = (serialGet() != 0);
+		lockEnabled = MainBoard::isLocked();
 	},
 #else
 	nullptr,
@@ -54,9 +53,7 @@ static Screen Lock (
 	Button({0, 420}, Button::drawFullWidth, lStringSave,
 	[](bool press) {
 		if (!press) {
-#ifdef USE_SERIAL
-			serialPrintf("@L%1u", lockEnabled ? 1 : 0);
-#endif // USE_SERIAL
+			MainBoard::setLocked(lockEnabled);
 			ScreenManager::setCurrent(ScreenID::Advanced);
 		}
 	})

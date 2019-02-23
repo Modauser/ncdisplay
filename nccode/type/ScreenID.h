@@ -32,6 +32,8 @@ enum class ScreenID {
 	Restart,
 	Fill,
 	WelcomeLanguage,
+	SetupComplete,
+	Setup,
 
 	Count
 };

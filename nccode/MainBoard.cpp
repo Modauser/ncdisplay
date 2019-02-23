@@ -2,6 +2,7 @@
  * @file MainBoard.cpp
  * @brief Main interface for communicating with the main board.
  */
+#include "type/Assets.h"
 #include "MainBoard.h"
 
 #include <fatfs/ff.h>
@@ -44,6 +45,7 @@ char MainBoard::serviceContact[200] = "";
 
 unsigned int MainBoard::tankTemperatures[3] = { 0, 0, 0 };
 
+NOOPTIMIZE
 int serialGet(void)
 {
 #ifdef USE_SERIAL
@@ -180,20 +182,28 @@ void MainBoard::setTankTemperatures(const unsigned int *temps)
 
 bool MainBoard::isColdTankFull(void) {
 	serialPrintf("#9");
-	serialPrintf("%?");
-	return serialGet() == 1 ? true : false;
+	return serialGet() == 1;
 }
 
 bool MainBoard::isHotTankFull(void) {
 	serialPrintf("#:");
-	serialPrintf("%?");
-	return serialGet() == 1 ? true : false;
+	return serialGet() == 1;
 }
 
 bool MainBoard::isSparklingTankFull(void) {
 	serialPrintf("#;");
-	serialPrintf("%?");
-	return serialGet() == 1 ? true : false;
+	return serialGet() == 1;
+}
+
+bool MainBoard::isLocked(void)
+{
+	serialPrintf("@K");
+	return serialGet() == 1;
+}
+
+void MainBoard::setLocked(bool locked)
+{
+	serialPrintf("@L%c", locked ? '1' : '0');
 }
 
 void MainBoard::autofill(void)

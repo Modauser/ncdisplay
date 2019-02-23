@@ -143,7 +143,9 @@ nccode/Settings.o \
 nccode/FillScreen.o \
 nccode/MainBoard.o \
 nccode/WelcomeLanguage.o \
-nccode/Restart.o
+nccode/Restart.o \
+nccode/SetupComplete.o \
+nccode/Setup.o
 
 OBJS_AS_ARGS +=  \
 "hal/src/hal_io.o" \
@@ -232,7 +234,9 @@ OBJS_AS_ARGS_USER += \
 "nccode/FillScreen.o" \
 "nccode/MainBoard.o" \
 "nccode/WelcomeLanguage.o" \
-"nccode/Restart.o"
+"nccode/Restart.o" \
+"nccode/SetupComplete.o" \
+"nccode/Setup.o"
 
 # List the dependency files
 DEPS := $(OBJS:%.o=%.d)
@@ -325,7 +329,9 @@ DEPS_AS_ARGS_USER += \
 "nccode/FillScreen.d" \
 "nccode/MainBoard.d" \
 "nccode/WelcomeLanguage.d" \
-"nccode/Restart.d"
+"nccode/Restart.d" \
+"nccode/SetupComplete.d" \
+"nccode/Setup.d"
 
 CROSS = arm-none-eabi-
 CC = gcc

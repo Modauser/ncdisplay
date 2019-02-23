@@ -49,10 +49,7 @@ void setup()
 	serialPrintf("#6");
 	LanguageString::setCurrentLanguage(static_cast<Language>(serialGet()));
 
-	//checkTankLevels();
-	//ScreenManager::setCurrent(ScreenID::Fill);
-
-	ScreenManager::setCurrent(ScreenID::Dispense);
+	ScreenManager::setCurrent(ScreenID::Setup);
 }
 
 void loop()

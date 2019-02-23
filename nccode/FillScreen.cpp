@@ -19,7 +19,8 @@ static const std::array<std::tuple<LanguageString, uint32_t,
 }};
 
 static auto fillScreen = fillScreens.cbegin();
-static int fillCounter = 0;
+static unsigned int fillCounter = 0;
+static unsigned int checkCounter = 0;
 
 static Screen Fill (
 	ScreenID::Fill,
@@ -28,12 +29,14 @@ static Screen Fill (
 	// Initialization function
 	[](void) {
 		fillCounter = 0;
+		checkCounter = 0;
 
 		for (; fillScreen != fillScreens.end() &&
-			std::get<2>(*fillScreen)(); fillScreen++);
+			std::get<2>(*fillScreen)(); fillScreen++)
+			delay_ms(500);
 
 		if (fillScreen == fillScreens.end())
-			ScreenManager::setCurrent(ScreenID::Dispense);
+			ScreenManager::setCurrent(ScreenID::SetupComplete);
 	},
 	// Pre-draw function
 	[](void) {
@@ -53,12 +56,15 @@ static Screen Fill (
 		GD.cmd_text(136, 330, FONT_LARGE, OPT_CENTER,
 			std::get<0>(*fillScreen)(), 30);
 
-		if (std::get<2>(*fillScreen)()) {
-			if (++fillScreen == fillScreens.end())
-				ScreenManager::setCurrent(ScreenID::Dispense);
+		if (++checkCounter == 4) {
+			checkCounter = 0;
+			if (std::get<2>(*fillScreen)()) {
+				if (++fillScreen == fillScreens.end())
+					ScreenManager::setCurrent(ScreenID::SetupComplete);
+			}
 		}
 
-		delay_ms(120);
+		delay_ms(200);
 	}
 );
 

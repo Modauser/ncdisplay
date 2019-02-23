@@ -4,6 +4,7 @@
  */
 #include "type/Assets.h"
 #include "type/Screen.h"
+#include "MainBoard.h"
 #include "Settings.h"
 
 #include <gameduino2/GD2.h>
@@ -39,8 +40,13 @@ static Screen Lockscreen (
 	[](void) {
 		if (lockscreenIndex > 4) {
 			delay_ms(500);
-			if (Settings::isCorrectPassword(lockscreenInput))
+			if (Settings::isCorrectPassword(lockscreenInput)) {
 				ScreenManager::setCurrent(lockscreenReturn);
+			} else {
+				for (int i = 0; i < 4; i++)
+					lockscreenInput[i] = 0;
+				lockscreenIndex = 0;
+			}
 		}
 
 		clearScreenWithIonHeader();
@@ -55,18 +61,27 @@ static Screen Lockscreen (
 		}
 
 		GD.ColorRGB(WHITE);
+		GD.cmd_fgcolor(NC_FRGND_COLOR);
 		GD.cmd_keys(0, 140, 272, 78, FONT_SMALL, OPT_FLAT, "123");
 		GD.cmd_keys(0, 220, 272, 78, FONT_SMALL, OPT_FLAT, "456");
 		GD.cmd_keys(0, 300, 272, 78, FONT_SMALL, OPT_FLAT, "789");
 		GD.cmd_keys(0, 380, 272, 78, FONT_SMALL, OPT_FLAT, " 0<");
 
+		if (lockscreenIndex == 4) {
+			lockscreenIndex++;
+			return;
+		}
+
 		// Get display inputs
 		GD.get_inputs();
-		if (int tag = GD.inputs.tag; isdigit(tag) || tag == '<')
+		if (int tag = GD.inputs.tag; isdigit(tag) || tag == '<') {
+			while (GD.inputs.tag == tag) {
+				delay_ms(10);
+				GD.get_inputs();
+			}
 			lockscreenEnterKey(tag);
+		}
 
-		if (lockscreenIndex == 4)
-			lockscreenIndex++;
 	},
 	// Buttons
 	Button({0, 0}, Button::drawBackArrow, [](bool press) {
@@ -77,16 +92,11 @@ static Screen Lockscreen (
 
 void doPasscodeTest(ScreenID id)
 {
-#ifdef USE_SERIAL
-	serialPrintf("@K");
-	if (serialGet() == 0) {
-		ScreenManager::setCurrent(id);
-	} else {
-		lockscreenReturn = s;
+	if (MainBoard::isLocked()) {
+		lockscreenReturn = id;
 		ScreenManager::setCurrent(ScreenID::Lockscreen);
+	} else {
+		ScreenManager::setCurrent(id);
 	}
-#else
-	ScreenManager::setCurrent(id);
-#endif
 }
 
