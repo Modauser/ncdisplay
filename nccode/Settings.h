@@ -12,6 +12,7 @@
 class Settings {
 private:
 	static std::array<char[50], 23> Labels;
+	static char Password[4];
 
 public:
 	/**
@@ -23,6 +24,9 @@ public:
 	inline static const char *getLabel(unsigned int index) {
 		return Labels[index];
 	}
+
+	static void loadPassword(void);
+	static bool isCorrectPassword(const char *guess);
 };
 
 #endif // SETTINGS_H_

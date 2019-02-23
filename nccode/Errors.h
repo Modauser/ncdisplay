@@ -44,8 +44,8 @@ public:
 	static void show(void);
 	static void showStartup(void);
 
-	inline static bool checkDispenseFlag(void) {
-		return dispenseFlag;
+	inline static bool shouldDispense(void) {
+		return !dispenseFlag;
 	}
 	inline static void clearDispenseFlag(void) {
 		dispenseFlag = false;

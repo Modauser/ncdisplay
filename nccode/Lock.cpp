@@ -52,17 +52,14 @@ static Screen Lock (
 		}
 	}),
 	Button({0, 420}, Button::drawFullWidth, lStringSave,
-#ifdef USE_SERIAL
 	[](bool press) {
 		if (!press) {
+#ifdef USE_SERIAL
 			serialPrintf("@L%1u", lockEnabled ? 1 : 0);
+#endif // USE_SERIAL
 			ScreenManager::setCurrent(ScreenID::Advanced);
 		}
-	}
-#else
-	nullptr
-#endif // USE_SERIAL
-	)
+	})
 );
 
 void updateToggle(void)

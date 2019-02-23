@@ -42,11 +42,11 @@ static Screen Warning (
 		GD.cmd_text(136, 135, FONT_SMALL, OPT_CENTER, "WARNING");
 	},
 	// Buttons
-	Button({0, 360}, Button::drawFullWidth, "YES", [](bool pressed) {
+	Button({0, 360}, Button::drawRedFullWidth, "YES", [](bool pressed) {
 		if (!pressed)
 			ScreenManager::setCurrent(warningProceedScreen);
 	}),
-	Button({0, 420}, Button::drawFullWidth, "CANCEL", [](bool pressed) {
+	Button({0, 420}, Button::drawRedFullWidth, "CANCEL", [](bool pressed) {
 		if (!pressed)
 			ScreenManager::setCurrent(ScreenID::Advanced);
 	})

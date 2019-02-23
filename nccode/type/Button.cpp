@@ -53,6 +53,11 @@ void Button::setPressed(bool p)
 	pressed = p;
 }
 
+void Button::setRender(void (*_render)(const vec2&, bool))
+{
+	render = (void *)_render;
+}
+
 void Button::doAction(void)
 {
 	if (action != nullptr)
@@ -297,5 +302,20 @@ void Button::drawWelcomeSelect(const vec2& xy, bool pressed)
 {
 	(void)pressed;
 	(void)xy;
+}
+
+void Button::drawRedFullWidth(const vec2& xy, bool pressed, const LanguageString& text)
+{
+	// Rectangle
+	GD.ColorRGB(pressed ? 0xB00000 : 0xFF0000);
+	GD.Begin(RECTS);
+	GD.Vertex2ii(0, xy.y + 1);
+	GD.Vertex2ii(272, xy.y + 59);
+	GD.ColorRGB(WHITE);
+	GD.Vertex2ii(0, xy.y);
+	GD.Vertex2ii(272, xy.y);
+
+	// Text
+	GD.cmd_text(136, xy.y + 30, FONT_SMALL, OPT_CENTER, text());
 }
 

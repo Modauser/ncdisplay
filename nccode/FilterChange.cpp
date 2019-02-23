@@ -11,6 +11,20 @@ extern unsigned int filterType;
 extern unsigned int filterTimerMonths;
 extern unsigned int filterTimerGallons;
 
+static const LanguageString lRemove ({
+	"REMOVE",
+	"ENTFERNEN",
+	"RETIRER",
+	"RETIRAR"
+});
+
+static const LanguageString lInstall ({
+	"INSTALL",
+	"INSTALLIEREN",
+	"INSTALLER",
+	"INSTALAR"
+});
+
 static void goTimerShort(int type)
 {
 	filterType = type;
@@ -39,8 +53,11 @@ static Screen FilterChange (
 
 		GD.ColorRGB(WHITE);
 		GD.Begin(BITMAPS);
-		GD.Vertex2ii(20, 400, FLTSTRIP_HANDLE, 0);
-		GD.Vertex2ii(136, 400, FLTSTRIP_HANDLE, 1);
+		GD.Vertex2ii(44, 375, FLTSTRIP_HANDLE, 0);
+		GD.Vertex2ii(160, 375, FLTSTRIP_HANDLE, 1);
+		GD.ColorRGB(NC_FDGND_COLOR);
+		GD.cmd_text(78, 445, FONT_SMALL, OPT_CENTERX, lRemove());
+		GD.cmd_text(194, 445, FONT_SMALL, OPT_CENTERX, lInstall());
 	},
 	// Buttons
 	Button({0, 0}, Button::drawBackArrow, [](bool pressed) {

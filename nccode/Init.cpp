@@ -19,7 +19,6 @@ extern int initDisks(void);
 extern bool USBUpdateCheck(void);
 
 static void handshakeTest(void);
-static void checkTankLevels(void);
 
 void setup()
 {
@@ -44,12 +43,14 @@ void setup()
 	loadAssets();
 
 	Settings::loadLabels();
-
-	checkTankLevels();
+	Settings::loadPassword();
 
 	// Get required language
 	serialPrintf("#6");
 	LanguageString::setCurrentLanguage(static_cast<Language>(serialGet()));
+
+	//checkTankLevels();
+	//ScreenManager::setCurrent(ScreenID::Fill);
 
 	ScreenManager::setCurrent(ScreenID::Dispense);
 }
@@ -80,42 +81,6 @@ void handshakeTest(void)
 	//
 	//if (tries == HANDSHAKE_TIMEOUT)
 	//	showFatalError("COM error; check the display cable.");
-}
-
-void checkTankLevels(void)
-{
-#ifdef USE_SERIAL
-	// Cold first
-	if (!MainBoard::isColdTankFull()) {
-		fillMessage = &fillCold;
-		fillTint = 0x0000FF;
-		do {
-			screenFill.show();
-			delay_ms(1000);
-		} while (!MainBoard::isColdTankFull());
-	}
-
-	// Hot next
-	if (!MainBoard::isHotTankFull()) {
-		fillMessage = &fillHot;
-		fillTint = 0xFF0000;
-		do {
-			screenFill.show();
-			delay_ms(1000);
-		} while (!MainBoard::isHotTankFull());
-	}
-
-	// Lastly, sparkling
-	if (!MainBoard::isSparklingTankFull()) {
-		fillMessage = &fillSparkling;
-		fillTint = 0x00FF00;
-		do {
-			screenFill.show();
-			delay_ms(1000);
-		} while (!MainBoard::isSparklingTankFull());
-	}
-
-#endif // USE_SERIAL
 }
 
 void showFatalError(const char *msg)

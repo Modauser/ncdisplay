@@ -9,6 +9,9 @@
 
 std::array<char[50], 23> Settings::Labels = {
 };
+char Settings::Password[4] = { '1', '2', '3', '4' };
+
+static const char *PasswordFile = DRV_SD "Password.txt";
 
 static const LanguageString SettingsFile ({
 	DRV_SD "EngSet01.txt",
@@ -37,5 +40,27 @@ void Settings::loadLabels(void)
 		f_gets(Labels[i], 50, &fd);
 
 	f_close(&fd);
+}
+
+void Settings::loadPassword(void)
+{
+	FIL fd;
+
+	if (auto r = f_open(&fd, PasswordFile, FA_READ); r != FR_OK)
+		return;
+
+	UINT bytesRead;
+	f_read(&fd, Password, 4, &bytesRead);
+	f_close(&fd);
+}
+
+bool Settings::isCorrectPassword(const char *guess)
+{
+	for (unsigned int i = 0; i < 4; i++) {
+		if (guess[i] != Password[i])
+			return false;
+	}
+
+	return true;
 }
 

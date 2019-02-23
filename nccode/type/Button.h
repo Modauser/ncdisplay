@@ -100,6 +100,8 @@ public:
 	// Sets the button's visibility (button can't be pressed when invisible)
 	void setVisibility(bool v);
 
+	void setRender(void (*_render)(const vec2&, bool));
+
 	// Below are provided custom render functions, that create commonly
 	// used UI elements:
 
@@ -131,6 +133,8 @@ public:
 	static void drawToggle(const vec2& xy, bool);
 	// Used for welcome language select buttons
 	static void drawWelcomeSelect(const vec2& xy, bool);
+	// Used for cautionary buttons (warning screen, hot dispense)
+	static void drawRedFullWidth(const vec2& xy, bool, const LanguageString& text);
 };
 
 #endif // BUTTON_H_

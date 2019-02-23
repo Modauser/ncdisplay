@@ -40,7 +40,7 @@ constexpr unsigned int SLEEP_IMGSWITCH = 10 * 1000;
 // Common colors
 constexpr uint32_t BLACK          = 0x000000;
 constexpr uint32_t WHITE          = 0xFFFFFF;
-constexpr uint32_t NC_BKGND_COLOR = 0xD7ECF9;
+constexpr uint32_t NC_BKGND_COLOR = 0xD6ECF9;
 constexpr uint32_t NC_FRGND_COLOR = 0x0268BD;
 constexpr uint32_t NC_FDGND_COLOR = 0x002860;
 constexpr uint32_t NC_ONTOG_COLOR = 0x5EF6B8;
@@ -73,7 +73,7 @@ void loadImage(int handle, const char *path);
  * 	dropstrp.png,format=ARGB2 setstrip.png
  */
 
-constexpr uint32_t ASSETS_END = 679962;
+constexpr uint32_t ASSETS_END = 611844;
 
 // TODO startup; use sleep space
 constexpr unsigned int SLEEP_HANDLE = 0;

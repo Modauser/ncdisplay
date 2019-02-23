@@ -66,20 +66,7 @@ void loadAssets(void)
 {
 	GD.safeload("assets.gd3");
 
-	GD.BitmapHandle(SETSTRIP_HANDLE);
-	GD.BitmapLayout(ARGB4, 26 * 2, 26);
-	GD.BitmapSize(NEAREST, BORDER, BORDER, 26, 26);
-
-	GD.BitmapHandle(FLTSTRIP_HANDLE);
-	GD.BitmapLayout(L8, 69, 68);
-	GD.BitmapSize(NEAREST, BORDER, BORDER, 69, 68);
-
-	GD.BitmapHandle(DROPSTRP_HANDLE);
-	GD.BitmapLayout(ARGB2, 107, 133);
-	GD.BitmapSize(NEAREST, BORDER, BORDER, 107, 133);
-
 	uint32_t freeAddress = ASSETS_END;
-
 	freeAddress = fontLoad(FONT_SMALL, Nirmala14Header, "nirmala14.dat", freeAddress);
 	freeAddress = fontLoad(FONT_LARGE, Nirmala18Header, "nirmala18.dat", freeAddress);
 	freeAddress = fontLoad(FONT_LIGHT, Roboto14Header, "roboto14.dat", freeAddress);

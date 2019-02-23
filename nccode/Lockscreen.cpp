@@ -4,13 +4,14 @@
  */
 #include "type/Assets.h"
 #include "type/Screen.h"
+#include "Settings.h"
 
 #include <gameduino2/GD2.h>
 
 static ScreenID lockscreenReturn = ScreenID::Settings;
 
 static int lockscreenIndex = 0;
-static int lockscreenInput[4] = {
+static char lockscreenInput[4] = {
 	0, 0, 0, 0
 };
 
@@ -38,7 +39,8 @@ static Screen Lockscreen (
 	[](void) {
 		if (lockscreenIndex > 4) {
 			delay_ms(500);
-			ScreenManager::setCurrent(lockscreenReturn);
+			if (Settings::isCorrectPassword(lockscreenInput))
+				ScreenManager::setCurrent(lockscreenReturn);
 		}
 
 		clearScreenWithIonHeader();
