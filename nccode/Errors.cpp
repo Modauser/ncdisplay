@@ -78,6 +78,8 @@ void Error::loadMessage(unsigned int index)
 		message[0] = '\0';
 
 	f_close(&fil);
+
+	LanguageString::convertFileText(message);
 }
 
 bool Error::check(void)
@@ -137,9 +139,15 @@ void Error::show(void)
 void Error::showSystemError(void)
 {
 	GD.ClearColorRGB(NC_BKGND_COLOR);
-	GD.ColorRGB(NC_FDGND_COLOR);
 	GD.Clear();
 
+	GD.Begin(RECTS);
+	GD.ColorRGB(0xFF0000);
+	GD.Vertex2ii(0, 0);
+	GD.Vertex2ii(272, 80);
+
+	GD.ColorRGB(WHITE);
+	GD.cmd_text(136, 30, FONT_LARGE, OPT_CENTER, "SYSTEM ERROR");
 	GD.cmd_text(136, 10, FONT_MESG, OPT_CENTERX, message);
 
 	FIL fil;
@@ -160,11 +168,14 @@ void Error::showSystemError(void)
 		while (1);
 	}
 
+	GD.ColorRGB(NC_FDGND_COLOR);
 	for (unsigned int i = 0; i < 10; i++) {
 		f_gets(message, sizeof(message) / sizeof(char), &fil);
-		GD.cmd_text(0, 30 + i * 20, FONT_SMALL, 0, message);
+		LanguageString::convertFileText(message);
+		GD.cmd_text(20, 160 + i * 20, FONT_SMALL, 0, message);
 	}
 
+	GD.cmd_text(20, 380, FONT_SMALL, 0, MainBoard::getServiceContact(), 20);
 	GD.swap();
 
 	f_close(&fil);

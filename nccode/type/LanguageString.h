@@ -66,6 +66,9 @@ public:
 
 	// Sets the current language for all LanguageStrings
 	static void setCurrentLanguage(Language l);
+
+	// Converts file special characters to font characters
+	static char *convertFileText(char *);
 };
 
 // Some common strings predefined to save space

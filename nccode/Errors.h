@@ -32,9 +32,6 @@ private:
 
 	static void loadMessage(unsigned int index);
 
-	[[noreturn]]
-	static void showSystemError(void);
-
 public:
 	static bool check(void);
 	inline static bool hasError(void) {
@@ -43,6 +40,7 @@ public:
 
 	static void show(void);
 	static void showStartup(void);
+	static void showSystemError(void);
 
 	inline static bool shouldDispense(void) {
 		return !dispenseFlag;
