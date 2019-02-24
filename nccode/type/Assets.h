@@ -15,19 +15,6 @@
 #define NOOPTIMIZE __attribute__((optimize(0)))
 
 /**
- * Enables serial communication with the main board.
- * WARNING: Display will currently hang if this is enabled and the main board
- * is disconnected!
- */
-#define USE_SERIAL
-
-/**
- * Defines how long to attempt handshaking with the main board, in 10ms
- * increments.
- */
-constexpr unsigned int HANDSHAKE_TIMEOUT = 1000;
-
-/**
  * Defines how many milliseconds to wait before entering sleep mode.
  */
 constexpr unsigned int SLEEP_TIMEOUT = 30 * 1000;

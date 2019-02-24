@@ -63,7 +63,7 @@ static Screen Advanced (
 		if (!press) {
 			warningMessage = &warningReset;
 			warningProceedScreen = ScreenID::Restart;
-			warningProceedFunc = []() { serialPrintf("@Q1"); };
+			warningProceedFunc = MainBoard::factoryReset;
 			ScreenManager::setCurrent(ScreenID::Warning);
 		}
 	}),
@@ -97,7 +97,7 @@ static Screen Advanced (
 	Button({0, 420}, Button::drawMenuItem, "AUTOFILL", [](bool press) {
 		if (!press) {
 			warningMessage = &warningAutofill;
-			warningProceedFunc = []() { serialPrintf("@i3"); for(;;); };
+			warningProceedFunc = MainBoard::autofill;
 			ScreenManager::setCurrent(ScreenID::Warning);
 		}
 	})

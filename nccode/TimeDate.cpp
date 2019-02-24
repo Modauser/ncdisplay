@@ -55,7 +55,6 @@ static Screen TimeDate (
 		timeSetting = true;
 		ampm = true;
 
-#ifdef USE_SERIAL
 		serialPrintf("@T");
 		timeDate[0] = serialGet(); // Hour
 		timeDate[1] = serialGet(); // Minute
@@ -67,7 +66,6 @@ static Screen TimeDate (
 		timeDate[3] = serialGet(); // Month
 		timeDate[4] = serialGet(); // Day
 		timeDate[5] = serialGet(); // Year
-#endif // USE_SERIAL
 
 		setTimeView();
 		set24Hour(!ampm);
@@ -225,7 +223,6 @@ static Screen TimeDate (
 			if (timeSetting) {
 				setDateView();
 			} else {
-#ifdef USE_SERIAL
 				serialPrintf("@.%02u%02u%02u",
 					timeDate[3], timeDate[4], timeDate[5]);
 				if (ampm) {
@@ -235,7 +232,6 @@ static Screen TimeDate (
 					serialPrintf("@-%02u%02u", timeDate[0],
 						timeDate[1]);
 				}
-#endif // USE_SERIAL
 				ScreenManager::setCurrent(ScreenID::Settings);
 			}
 		}

@@ -5,6 +5,7 @@
 #include "type/Assets.h"
 #include "type/Formatters.h"
 #include "type/Screen.h"
+#include "MainBoard.h"
 #include "Settings.h"
 
 #include <gameduino2/GD2.h>
@@ -42,7 +43,8 @@ static Screen SleepMode (
 	ScreenID::Settings,
 	// Initialization function
 	[](void) {
-		sleepModeOn = false;
+		MainBoard::getSleepmodeHours(sleepHours);
+		sleepModeOn = MainBoard::getSleepmodeEnabled();
 		sleepSettingHours = false;
 
 		updateAfterToggle();
@@ -136,6 +138,8 @@ static Screen SleepMode (
 			sleepSettingWeekday = false;
 			updateSaveButtonText();
 		} else {
+			MainBoard::setSleepmodeHours(sleepHours);
+			MainBoard::setSleepmodeEnabled(sleepModeOn);
 			ScreenManager::setCurrent(ScreenID::Settings);
 		}
 	}),

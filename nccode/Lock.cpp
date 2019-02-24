@@ -17,13 +17,9 @@ static Screen Lock (
 	// Parent screen
 	ScreenID::Advanced,
 	// Initialization function
-#ifdef USE_SERIAL
 	[](void) {
 		lockEnabled = MainBoard::isLocked();
 	},
-#else
-	nullptr,
-#endif // USE_SERIAL
 	// Pre-draw function
 	[](void) {
 		clearScreenWithIonHeader();

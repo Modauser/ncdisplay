@@ -24,15 +24,11 @@ static void doPress(char letter, bool pressed)
 			mainDispensing = true;
 			mainAniImage = ANI1_HANDLE;
 			mainAniCounter = 0;
-#ifdef USE_SERIAL
 			serialPrintf("$%c", letter);
-#endif // USE_SERIAL
 		}
 	} else {
 		mainDispensing = false;
-#ifdef USE_SERIAL
 		serialPrintf("$R$R");
-#endif // USE_SERIAL
 	}
 }
 
@@ -104,7 +100,6 @@ static Screen Dispense (
 			GD.cmd_text(202, 450, FONT_TIME, 0, MainBoard::getDate());
 		}
 
-#ifdef USE_SERIAL
 		++timeDateCounter;
 		// Check for errors
 		if ((timeDateCounter % 500) == 0)
@@ -118,7 +113,6 @@ static Screen Dispense (
 			timeDateCounter = 0;
 			MainBoard::updateDateTime();
 		}
-#endif // USE_SERIAL
 	},
 	// Buttons
 	Button({0,   298}, Button::drawDispenserItem, {

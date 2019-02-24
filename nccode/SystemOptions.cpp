@@ -21,7 +21,6 @@ static Screen SystemOptions (
 	// Parent screen
 	ScreenID::Advanced,
 	// Initialization function
-#ifdef USE_SERIAL
 	[](void)  {
 		serialPrintf("@S");
 		sysOptionToggles[0] = serialGet();
@@ -36,9 +35,6 @@ static Screen SystemOptions (
 		serialPrintf("@X");
 		sysOptionMetric = serialGet();
 	},
-#else
-	nullptr,
-#endif // USE_SERIAL
 	// Pre-draw function
 	[](void) {
 		clearScreenWithIonHeader();
@@ -144,12 +140,10 @@ static Screen SystemOptions (
 	}),
 	Button({0, 420}, Button::drawFullWidth, lStringSave, [](bool press) {
 		if (!press) {
-#ifdef USE_SERIAL
 			serialPrintf("@Y%1u@Z%1u@A%1u@B%1u@g%1u@C%1u",
 				sysOptionToggles[0], sysOptionToggles[1],
 				sysOptionToggles[2], sysOptionToggles[3],
 				sysOptionToggles[4], sysOptionMetric);
-#endif // USE_SERIAL
 			ScreenManager::setCurrent(ScreenID::Advanced);
 		}
 	})

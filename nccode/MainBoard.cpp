@@ -48,13 +48,9 @@ unsigned int MainBoard::tankTemperatures[3] = { 0, 0, 0 };
 NOOPTIMIZE
 int serialGet(void)
 {
-#ifdef USE_SERIAL
 	if (serialGetchar() != '$')
 		return 0;
 	return serialGetchar();
-#else
-	return 0;
-#endif // USE_SERIAL
 }
 
 void MainBoard::updateMetric(void)
@@ -214,6 +210,30 @@ bool MainBoard::isLocked(void)
 void MainBoard::setLocked(bool locked)
 {
 	serialPrintf("@L%c", locked ? '1' : '0');
+}
+
+void MainBoard::getSleepmodeHours(unsigned int *buf)
+{
+	serialPrintf("@M");
+	for (int i = 0; i < 4; i++)
+		buf[i] = serialGet();
+}
+
+void MainBoard::setSleepmodeHours(const unsigned int *hours)
+{
+	serialPrintf("@N%2u%2u%2u%2u@G%1u",
+		hours[0], hours[1], hours[2], hours[3]);
+}
+
+bool MainBoard::getSleepmodeEnabled(void)
+{
+	serialPrintf("@H");
+	return serialGet() != 0;
+}
+
+void MainBoard::setSleepmodeEnabled(bool en)
+{
+	serialPrintf("@H%1u", en ? 1 : 0);
 }
 
 void MainBoard::autofill(void)

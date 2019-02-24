@@ -71,9 +71,7 @@ static Screen FilterChangeTimer (
 		"PROGRAMAR TEMPORIZADOR"
 	}, [](bool press) {
 		if (!press) {
-#ifdef USE_SERIAL
 			//serialPrintf("@+%1u@*%1u@$%1u",,, filterType);
-#endif // USE_SERIAL
 			ScreenManager::setCurrent(ScreenID::Filter);
 		}
 	}),

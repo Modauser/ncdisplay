@@ -113,6 +113,11 @@ public:
 	}
 	static const char *updateServiceContact(void);
 
+	static void getSleepmodeHours(unsigned int *buf);
+	static void setSleepmodeHours(const unsigned int *hours);
+	static bool getSleepmodeEnabled(void);
+	static void setSleepmodeEnabled(bool en);
+
 	static int getLanguage(void);
 	static void setLanguage(int);
 

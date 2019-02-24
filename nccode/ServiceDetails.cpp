@@ -26,7 +26,6 @@ struct ServiceLogEntry {
 
 static ServiceLogEntry serviceLog[3];
 
-#ifdef USE_SERIAL
 static void getFlowRate(unsigned char v, char *s)
 {
 	s[3] = (v % 10) + '0';
@@ -76,14 +75,12 @@ static void getServiceLog(ServiceLogEntry& e)
 		e.description[i] = '\0';
 	}
 }
-#endif // USE_SERIAL
 
 static Screen ServiceDetails (
 	ScreenID::ServiceDetails,
 	// Parent screen
 	ScreenID::Advanced,
 	// Initialization function
-#ifdef USE_SERIAL
 	[](void) {
 		serialPrintf("@X");
 		serviceMetric = (serialGet() != 0);
@@ -108,9 +105,6 @@ static Screen ServiceDetails (
 		for (int i = 0; i < 3; i++)
 			getServiceLog(serviceLog[i]);
 	},
-#else
-	nullptr,
-#endif // USE_SERIAL
 	// Pre-draw function
 	[](void) {
 		clearScreenWithIonHeader();
