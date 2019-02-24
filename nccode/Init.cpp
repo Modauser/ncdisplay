@@ -49,7 +49,7 @@ void setup()
 	serialPrintf("#6");
 	LanguageString::setCurrentLanguage(static_cast<Language>(serialGet()));
 
-	ScreenManager::setCurrent(ScreenID::Setup);
+	ScreenManager::setCurrent(ScreenID::WelcomeLanguage);
 }
 
 void loop()

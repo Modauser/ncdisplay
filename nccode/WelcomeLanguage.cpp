@@ -27,7 +27,7 @@ static void setLanguage(Language lang);
 static Screen WelcomeLanguage (
 	ScreenID::WelcomeLanguage,
 	// Parent screen
-	ScreenID::Sleep,
+	ScreenID::WelcomeLanguage,
 	// Initialization function
 	nullptr,
 	// Pre-draw function
@@ -37,9 +37,9 @@ static Screen WelcomeLanguage (
 		
 		GD.ColorRGB(NC_FRGND_COLOR);
 		for (int i = 0; i < 4; i++) {
-			GD.cmd_text(20, 120 * i + 50, FONT_LIGHT, 0,
+			GD.cmd_text(20, 120 * i + 40, FONT_LIGHT, 0,
 				welcomeGreetings[i]);
-			GD.cmd_text(20, 120 * i + 70, FONT_LARGE, 0,
+			GD.cmd_text(20, 120 * i + 60, FONT_LARGE, 0,
 				welcomeLanguages[i]);
 		}
 
@@ -72,6 +72,6 @@ static Screen WelcomeLanguage (
 void setLanguage(Language lang)
 {
 	LanguageString::setCurrentLanguage(lang);
-	ScreenManager::setCurrent(ScreenID::TimeDate);
+	ScreenManager::setCurrent(ScreenID::TimeDate, ScreenID::Setup);
 }
 

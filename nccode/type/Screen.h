@@ -100,7 +100,7 @@ public:
 			if (sleepCounter >= SLEEP_TIMEOUT) {
 				// Timed out; go to parent
 				sleepCounter = 0;
-				ScreenManager::setCurrent(ScreenID::Sleep);
+				ScreenManager::setCurrent(parent);
 			}
 		}
 	}

@@ -301,7 +301,20 @@ void Button::drawToggle(const vec2& xy, bool pressed)
 void Button::drawWelcomeSelect(const vec2& xy, bool pressed)
 {
 	(void)pressed;
-	(void)xy;
+
+	// Rectangle
+	GD.ColorRGB(NC_FDGND_COLOR);
+	GD.Begin(RECTS);
+	GD.Vertex2ii(212, xy.y + 1);
+	GD.Vertex2ii(272, xy.y + 118);
+
+	// Right arrow
+	GD.ColorRGB(WHITE);
+	GD.LineWidth(12 * 2);
+	GD.Begin(LINE_STRIP);
+	GD.Vertex2ii(238, xy.y + 55);
+	GD.Vertex2ii(245, xy.y + 62);
+	GD.Vertex2ii(238, xy.y + 69);
 }
 
 void Button::drawRedFullWidth(const vec2& xy, bool pressed, const LanguageString& text)

@@ -13,15 +13,17 @@ private:
 	static std::array<ScreenInterface*,
 		static_cast<std::size_t>(ScreenID::Count)> screens;
 	static ScreenInterface *current;
+	static ScreenInterface *forcedParent;
 
 public:
 	static void addScreen(ScreenID id, ScreenInterface *screen);
 	static void setCurrent(ScreenID id);
+	static void setCurrent(ScreenID id, ScreenID forcedParent);
 	static void showCurrent(void);
 };
 
 class ScreenInterface {
-private:
+protected:
 	ScreenID parent;
 
 public:

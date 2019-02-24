@@ -25,7 +25,7 @@ static unsigned int checkCounter = 0;
 static Screen Fill (
 	ScreenID::Fill,
 	// Parent screen
-	ScreenID::Dispense,
+	ScreenID::Fill,
 	// Initialization function
 	[](void) {
 		fillCounter = 0;
