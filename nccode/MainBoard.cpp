@@ -179,6 +179,16 @@ void MainBoard::setTankTemperatures(const unsigned int *temps)
 		serialPrintf("@%1u%1u", i + 3, tankTemperatures[i]);
 }
 
+int MainBoard::getLanguage(void)
+{
+	serialPrintf("#6");
+	return serialGet();
+}
+
+void MainBoard::setLanguage(int lang)
+{
+	serialPrintf("@2%1u", lang);
+}
 
 bool MainBoard::isColdTankFull(void) {
 	serialPrintf("#9");

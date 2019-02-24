@@ -19,7 +19,7 @@
  * WARNING: Display will currently hang if this is enabled and the main board
  * is disconnected!
  */
-//#define USE_SERIAL
+#define USE_SERIAL
 
 /**
  * Defines how long to attempt handshaking with the main board, in 10ms

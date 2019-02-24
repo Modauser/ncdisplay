@@ -4,11 +4,13 @@
  */
 #include "type/Assets.h"
 #include "type/Screen.h"
+#include "MainBoard.h"
 
 #include <gameduino2/GD2.h>
 
 extern const LanguageString *warningMessage;
 extern ScreenID warningProceedScreen;
+extern void (*warningProceedFunc)(void);
 
 static const LanguageString warningReset ({
 	"Resetting to factory defaults will\nclear all saved settings.\n\nContinue?"
@@ -61,6 +63,7 @@ static Screen Advanced (
 		if (!press) {
 			warningMessage = &warningReset;
 			warningProceedScreen = ScreenID::Restart;
+			warningProceedFunc = []() { serialPrintf("@Q1"); };
 			ScreenManager::setCurrent(ScreenID::Warning);
 		}
 	}),
@@ -94,6 +97,7 @@ static Screen Advanced (
 	Button({0, 420}, Button::drawMenuItem, "AUTOFILL", [](bool press) {
 		if (!press) {
 			warningMessage = &warningAutofill;
+			warningProceedFunc = []() { serialPrintf("@i3"); for(;;); };
 			ScreenManager::setCurrent(ScreenID::Warning);
 		}
 	})

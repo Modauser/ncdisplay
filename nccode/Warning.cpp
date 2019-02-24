@@ -9,6 +9,7 @@
 
 const LanguageString *warningMessage = nullptr;
 ScreenID warningProceedScreen = ScreenID::Advanced;
+void (*warningProceedFunc)(void) = nullptr;
 
 static Screen Warning (
 	ScreenID::Warning,
@@ -43,8 +44,11 @@ static Screen Warning (
 	},
 	// Buttons
 	Button({0, 360}, Button::drawRedFullWidth, "YES", [](bool pressed) {
-		if (!pressed)
+		if (!pressed) {
+			if (warningProceedFunc != nullptr)
+				warningProceedFunc();
 			ScreenManager::setCurrent(warningProceedScreen);
+		}
 	}),
 	Button({0, 420}, Button::drawRedFullWidth, "CANCEL", [](bool pressed) {
 		if (!pressed)

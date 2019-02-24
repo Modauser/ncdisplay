@@ -11,11 +11,8 @@
 
 void languageSet(const Language& l)
 {
-#ifdef USE_SERIAL
-	serialPrintf("@2%1u", static_cast<unsigned int>(l));
-#endif // USE_SERIAL
-
 	LanguageString::setCurrentLanguage(l);
+	MainBoard::setLanguage(static_cast<int>(l));
 	Settings::loadLabels();
 	ScreenManager::setCurrent(ScreenID::Settings);
 }

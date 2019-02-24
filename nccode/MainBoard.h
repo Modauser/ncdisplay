@@ -113,6 +113,9 @@ public:
 	}
 	static const char *updateServiceContact(void);
 
+	static int getLanguage(void);
+	static void setLanguage(int);
+
 	static const unsigned int *getTankTemperatures(void);
 	static void setTankTemperatures(const unsigned int *temps);
 

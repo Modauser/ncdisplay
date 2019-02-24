@@ -11,5 +11,7 @@
  */
 uint8_t spi_xfer_byte(uint8_t send);
 
+int serialTest(void);
+
 #endif // SYSTEMCALLS_H_
 

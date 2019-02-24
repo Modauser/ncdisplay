@@ -20,6 +20,18 @@ uint32_t getPrintf(void)
 }
 
 NOOPTIMIZE
+int serialTest(void)
+{
+	volatile int ret = 0;
+	asm("\
+		mov r0, %0; \
+		mov r1, 0x1234; \
+		svc 5; \
+	" :: "r" (&ret));
+	return ret;
+}
+
+NOOPTIMIZE
 int serialGetchar(void)
 {
 	volatile uint32_t ret = 0;

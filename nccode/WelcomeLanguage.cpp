@@ -5,6 +5,7 @@
 #include "type/Assets.h"
 #include "type/LanguageString.h"
 #include "type/Screen.h"
+#include "MainBoard.h"
 
 #include <gameduino2/GD2.h>
 
@@ -72,6 +73,7 @@ static Screen WelcomeLanguage (
 void setLanguage(Language lang)
 {
 	LanguageString::setCurrentLanguage(lang);
+	MainBoard::setLanguage(static_cast<int>(lang));
 	ScreenManager::setCurrent(ScreenID::TimeDate, ScreenID::Setup);
 }
 

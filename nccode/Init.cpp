@@ -6,6 +6,7 @@
 #include "type/Screen.h"
 #include "MainBoard.h"
 #include "Settings.h"
+#include "SystemCalls.h"
 
 #include <gameduino2/GD2.h>
 
@@ -18,7 +19,7 @@ void showFatalError(const char *msg);
 extern int initDisks(void);
 extern bool USBUpdateCheck(void);
 
-static void handshakeTest(void);
+static int handshakeTest(void);
 
 void setup()
 {
@@ -36,7 +37,6 @@ void setup()
 	GD.swap();
 
 	USBUpdateCheck();
-
 	handshakeTest();
 
 	// Load fonts and images from SD card
@@ -45,11 +45,10 @@ void setup()
 	Settings::loadLabels();
 	Settings::loadPassword();
 
-	// Get required language
-	serialPrintf("#6");
-	LanguageString::setCurrentLanguage(static_cast<Language>(serialGet()));
-
-	ScreenManager::setCurrent(ScreenID::WelcomeLanguage);
+	auto lang = MainBoard::getLanguage();
+	LanguageString::setCurrentLanguage(static_cast<Language>(lang));
+	ScreenManager::setCurrent(lang != 9 ? ScreenID::Setup :
+		ScreenID::WelcomeLanguage);
 }
 
 void loop()
@@ -59,25 +58,13 @@ void loop()
 	delay_ms(10);
 }
 
-void handshakeTest(void)
+int handshakeTest(void)
 {
-	// EDIT! made in hal/src/hal_usart_sync.c to prevent hang on USART read
-	// (Undid the change, need to try again. TODO)
+	auto answer = serialTest();
+	if (answer != '0')
+		showFatalError("COM error check display cable");
 
-	//unsigned int tries = 0;
-	//do {
-	//	int check = getchar();
-	//	if (check == '$') {
-	//		check = getchar();
-	//		if (check == '0')
-	//			break;
-	//	}
-
-	//	delay_ms(10);
-	//} while (++tries < HANDSHAKE_TIMEOUT);
-	//
-	//if (tries == HANDSHAKE_TIMEOUT)
-	//	showFatalError("COM error; check the display cable.");
+	return answer;
 }
 
 void showFatalError(const char *msg)

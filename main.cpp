@@ -61,6 +61,7 @@ uint8_t spi_xfer_byte(uint8_t send)
 
 uint32_t fatfs_svc_handler(uint32_t *fatfs_args);
 void firmware_update(uint32_t addr, uint32_t count);
+int serialTest(void);
 void SVCall_Handler(void)
 {
 	uint32_t *args;
@@ -90,11 +91,26 @@ void SVCall_Handler(void)
 		*((uint32_t *)args[0]) = (uint32_t)printf;
 		break;
 	case 5:
-		*((uint32_t *)args[0]) = getchar();
+		*((uint32_t *)args[0]) = (args[1] == 0x1234) ? serialTest() :
+			getchar();
 		break;
 	default:
 		break;
 	}
+}
+
+int serialTest(void)
+{
+	int i;
+	for (i = 0; !_usart_sync_is_byte_received(&USART_0.device) && i < 12; i++)
+		delay_ms(500);
+
+	if (i == 12)
+		return -1;
+	if (int dollar = _usart_sync_read_byte(&USART_0.device); dollar != '$')
+		return -1;
+
+	return getchar();
 }
 
 void firmware_update(uint32_t addr, uint32_t count)
@@ -121,12 +137,6 @@ void firmware_update(uint32_t addr, uint32_t count)
 
 	NVIC_SystemReset();
 	while (1);
-}
-
-int32_t flash_svc_handler(uint32_t *args)
-{
-	flash_unlock(&FLASH_0, args[0], 1);
-	return flash_write(&FLASH_0, args[0], (uint8_t *)args[1], args[2]);
 }
 
 uint32_t fatfs_svc_handler(uint32_t *fatfs_args)
