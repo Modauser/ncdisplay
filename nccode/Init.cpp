@@ -4,6 +4,7 @@
  */
 #include "type/Assets.h"
 #include "type/Screen.h"
+#include "Errors.h"
 #include "MainBoard.h"
 #include "Settings.h"
 #include "SystemCalls.h"

@@ -41,8 +41,11 @@ void LanguageString::setCurrentLanguage(Language l)
 char *LanguageString::convertFileText(char *buffer)
 {
 	for (uint32_t i = 0; buffer[i] != '\0'; i++) {
-		if (buffer[i] < 0x80)
+		if (buffer[i] < 0x80) {
+			if (buffer[i] == '\t')
+				buffer[i] = ' ';
 			continue;
+		}
 
 		switch (buffer[i]) {
 		case 0xB0: buffer[i] = *DEGREE; break;

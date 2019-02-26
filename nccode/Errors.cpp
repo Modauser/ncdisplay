@@ -17,6 +17,12 @@ static const LanguageString errorFile ({
 	DRV_SD "French00.txt",
 	DRV_SD "Spanish0.txt"
 });
+static const LanguageString systemErrorFile ({
+	DRV_SD "EngErr00.txt",
+	DRV_SD "GerErr00.txt",
+	DRV_SD "FreErr00.txt",
+	DRV_SD "SpaErr00.txt"
+});
 
 /**
  * Known error codes.
@@ -71,14 +77,13 @@ void Error::loadMessage(unsigned int index)
 	if (result != FR_OK)
 		return; 
 
-	for (unsigned int i = 0; !f_eof(&fil) && i < index; i++)
+	for (unsigned int i = 0; !f_eof(&fil) && i <= index; i++)
 		f_gets(message, sizeof(message) / sizeof(char), &fil);
 	
 	if (f_eof(&fil))
 		message[0] = '\0';
 
 	f_close(&fil);
-
 	LanguageString::convertFileText(message);
 }
 
@@ -144,38 +149,36 @@ void Error::showSystemError(void)
 	GD.Begin(RECTS);
 	GD.ColorRGB(0xFF0000);
 	GD.Vertex2ii(0, 0);
-	GD.Vertex2ii(272, 80);
+	GD.Vertex2ii(272, 90);
 
 	GD.ColorRGB(WHITE);
 	GD.cmd_text(136, 30, FONT_LARGE, OPT_CENTER, "SYSTEM ERROR");
-	GD.cmd_text(136, 10, FONT_MESG, OPT_CENTERX, message);
+	GD.cmd_text(136, 60, FONT_MESG, OPT_CENTERX, message);
 
 	FIL fil;
-	auto result = f_open(&fil, errorFile(), FA_READ);
+	auto result = f_open(&fil, systemErrorFile(), FA_READ);
 	if (result != FR_OK) {
-		GD.cmd_text(0, 30, FONT_MESG, 0, "Failed to open error message file");
-		GD.swap();
-		while (1);
+		GD.cmd_text(0, 100, FONT_MESG, 0, "Failed to open error message file");
+	} else {
+		auto targetLine = GetErrorCodeIndex(lastError.code) * 10;
+		for (unsigned int i = 0; !f_eof(&fil) && i < targetLine; i++)
+			f_gets(message, sizeof(message) / sizeof(char), &fil);
+		
+		if (f_eof(&fil)) {
+			GD.cmd_text(0, 100, FONT_MESG, 0, "Failed to load error message file");
+			GD.swap();
+			while (1);
+		} else {
+			GD.ColorRGB(NC_FDGND_COLOR);
+			for (unsigned int i = 0; i < 10; i++) {
+				f_gets(message, sizeof(message) / sizeof(char), &fil);
+				LanguageString::convertFileText(message);
+				GD.cmd_text(10, 100 + i * 20, FONT_SMALL, 0, message);
+			}
+		}
 	}
 
-	auto targetLine = GetErrorCodeIndex(lastError.code) * 10;
-	for (unsigned int i = 0; !f_eof(&fil) && i < targetLine; i++)
-		f_gets(message, sizeof(message) / sizeof(char), &fil);
-	
-	if (f_eof(&fil)) {
-		GD.cmd_text(0, 30, FONT_MESG, 0, "Failed to load error message file");
-		GD.swap();
-		while (1);
-	}
-
-	GD.ColorRGB(NC_FDGND_COLOR);
-	for (unsigned int i = 0; i < 10; i++) {
-		f_gets(message, sizeof(message) / sizeof(char), &fil);
-		LanguageString::convertFileText(message);
-		GD.cmd_text(20, 160 + i * 20, FONT_SMALL, 0, message);
-	}
-
-	GD.cmd_text(20, 380, FONT_SMALL, 0, MainBoard::getServiceContact(), 20);
+	GD.cmd_text(20, 380, FONT_SMALL, 0, MainBoard::updateServiceContact(), 20);
 	GD.swap();
 
 	f_close(&fil);
