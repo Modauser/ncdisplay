@@ -4,6 +4,7 @@
  */
 #include "type/Assets.h"
 #include "type/Screen.h"
+#include "Errors.h"
 #include "MainBoard.h"
 
 #include <array>
@@ -37,6 +38,7 @@ static Screen Fill (
 
 		if (fillScreen == fillScreens.end())
 			ScreenManager::setCurrent(ScreenID::SetupComplete);
+
 	},
 	// Pre-draw function
 	[](void) {
@@ -62,6 +64,9 @@ static Screen Fill (
 				if (++fillScreen == fillScreens.end())
 					ScreenManager::setCurrent(ScreenID::SetupComplete);
 			}
+
+			if (Error::check())
+				Error::showStartup();
 		}
 
 		delay_ms(200);
