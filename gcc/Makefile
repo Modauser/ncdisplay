@@ -365,7 +365,9 @@ vpath %.s ../
 vpath %.S ../
 
 # All Target
-all: $(SUB_DIRS) $(OUTPUT_FILE_PATH)
+all: system user
+
+system: $(SUB_DIRS) $(OUTPUT_FILE_PATH)
 
 user: $(SUB_DIRS_USER) $(OUTPUT_FILE_PATH_USER)
 
@@ -433,6 +435,9 @@ endif
 endif
 
 $(SUB_DIRS):
+	$(MK_DIR) "$@"
+
+$(SUB_DIRS_USER):
 	$(MK_DIR) "$@"
 
 clean:
