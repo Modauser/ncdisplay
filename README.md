@@ -1,13 +1,10 @@
 # ncdisplay
 
-Building the code for ncdisplay requires:
-* the latest arm-none-eabi toolchain (might be available for Windows from [here](https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads))
-* make
-  
-A Makefile to compile the program is available in the ```gcc``` directory. Simply run ```make``` to build both the system and user code, or run ```make system``` or ```make user``` to build only a single part. The ```-j``` option is supported for parallel compilation. The resulting system ELF file is ```gcc/AtmelStart.elf```, and the resulting user ELF file is ```gcc/User.elf```.
-  
-I use [OpenOCD](http://openocd.org/) to upload the ELFs to the device. [This](http://openocd.zylin.com/#/c/4272/) change/patch adds support for the SAME54 Xplained board. Any other program that's able to flash one of the ELF or HEX files will work as well.  
-Flash User.elf on top of AtmelStart.elf (don't let an erase happen between flashes).  
+See [here](https://github.com/tcsullivan/ncdisplay/wiki/Preparation-on-Debian-testing) for how to prepare a computer for building ncdisplay. The guide is written for Debian testing, though it can be adapted to other Linux-based systems.
+
+To build ncdisplay, simply run `make` from the `gcc` directory. Parts of ncdisplay can be built separately throgh `make system` or `make user`. The `-j` option is supported for parallel compilation. The resulting ELF files are `gcc/AtmelStart.elf` and `gcc/User.elf`.
+
+See [here](https://github.com/tcsullivan/ncdisplay/wiki/Flashing-ncdisplay-with-OpenOCD) for instructions on flashing the display prototype. If ncdisplay has been flashed already, updates can optionally be given by putting `gcc/User.bin` on a USB drive as 'update.bin'.
 
 This project is based off of configuration files/libraries from [Atmel START](https://start.atmel.com).
 The following additional libraries are used:
