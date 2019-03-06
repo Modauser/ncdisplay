@@ -4,7 +4,7 @@ See [here](https://github.com/tcsullivan/ncdisplay/wiki/Preparation-on-Debian-te
 
 To build ncdisplay, simply run `make` from the `gcc` directory. Parts of ncdisplay can be built separately throgh `make system` or `make user`. The `-j` option is supported for parallel compilation. The resulting ELF files are `gcc/AtmelStart.elf` and `gcc/User.elf`.
 
-See [here](https://github.com/tcsullivan/ncdisplay/wiki/Flashing-ncdisplay-with-OpenOCD) for instructions on flashing the display prototype. If ncdisplay has been flashed already, updates can optionally be given by putting `gcc/User.bin` on a USB drive as 'update.bin'.
+See [here](https://github.com/tcsullivan/ncdisplay/wiki/Flashing-ncdisplay-with-OpenOCD) for instructions on flashing the display prototype. If ncdisplay has been flashed already, updates can optionally be given by putting `gcc/User.bin` on a USB drive as `update.bin`.
 
 This project is based off of configuration files/libraries from [Atmel START](https://start.atmel.com).
 The following additional libraries are used:
