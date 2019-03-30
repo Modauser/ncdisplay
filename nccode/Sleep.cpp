@@ -16,7 +16,7 @@ static unsigned int sleepImageCounter;
 static Screen Sleep (
 	ScreenID::Sleep,
 	// Parent screen
-	ScreenID::Dispense,
+	ScreenID::Sleep,
 	// Initialization function
 	[](void) {
 		sleepImageCounter = 0;
