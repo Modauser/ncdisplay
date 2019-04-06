@@ -81,7 +81,7 @@ static Screen Dispense (
 		if (mainDispensing) {
 			GD.Vertex2ii(76, 0, mainAniImage); // Flow animation image
 
-			if (++mainAniCounter >= 6) {
+			if (++mainAniCounter >= 2) {
 				mainAniCounter = 0;
 				if (++mainAniImage > ANI3_HANDLE)
 					mainAniImage = ANI1_HANDLE;
