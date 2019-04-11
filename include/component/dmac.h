@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_DMAC_COMPONENT_
-#define _SAME54_DMAC_COMPONENT_
+#ifndef _SAMD51_DMAC_COMPONENT_
+#define _SAMD51_DMAC_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR DMAC */
 /* ========================================================================== */
-/** \addtogroup SAME54_DMAC Direct Memory Access Controller */
+/** \addtogroup SAMD51_DMAC Direct Memory Access Controller */
 /*@{*/
 
 #define DMAC_U2503
@@ -1413,4 +1413,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_DMAC_COMPONENT_ */
+#endif /* _SAMD51_DMAC_COMPONENT_ */

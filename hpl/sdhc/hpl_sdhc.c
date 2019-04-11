@@ -263,7 +263,7 @@ int32_t _mci_sync_select_device(struct _mci_sync_device *const mci_dev, uint8_t 
 	}
 
 	if (hri_sdhc_get_HC2R_PVALEN_bit(hw) == 0) {
-		_mci_set_speed(hw, clock, CONF_SDHC1_CLK_GEN_SEL);
+		_mci_set_speed(hw, clock, CONF_SDHC0_CLK_GEN_SEL);
 	}
 
 	switch (bus_width) {

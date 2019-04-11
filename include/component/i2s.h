@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_I2S_COMPONENT_
-#define _SAME54_I2S_COMPONENT_
+#ifndef _SAMD51_I2S_COMPONENT_
+#define _SAMD51_I2S_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR I2S */
 /* ========================================================================== */
-/** \addtogroup SAME54_I2S Inter-IC Sound Interface */
+/** \addtogroup SAMD51_I2S Inter-IC Sound Interface */
 /*@{*/
 
 #define I2S_U2224
@@ -744,4 +744,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_I2S_COMPONENT_ */
+#endif /* _SAMD51_I2S_COMPONENT_ */

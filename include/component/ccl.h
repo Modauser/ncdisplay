@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_CCL_COMPONENT_
-#define _SAME54_CCL_COMPONENT_
+#ifndef _SAMD51_CCL_COMPONENT_
+#define _SAMD51_CCL_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR CCL */
 /* ========================================================================== */
-/** \addtogroup SAME54_CCL Configurable Custom Logic */
+/** \addtogroup SAMD51_CCL Configurable Custom Logic */
 /*@{*/
 
 #define CCL_U2225
@@ -225,4 +225,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_CCL_COMPONENT_ */
+#endif /* _SAMD51_CCL_COMPONENT_ */

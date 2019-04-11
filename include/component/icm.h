@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_ICM_COMPONENT_
-#define _SAME54_ICM_COMPONENT_
+#ifndef _SAMD51_ICM_COMPONENT_
+#define _SAMD51_ICM_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR ICM */
 /* ========================================================================== */
-/** \addtogroup SAME54_ICM Integrity Check Monitor */
+/** \addtogroup SAMD51_ICM Integrity Check Monitor */
 /*@{*/
 
 #define ICM_U2010
@@ -579,4 +579,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_ICM_COMPONENT_ */
+#endif /* _SAMD51_ICM_COMPONENT_ */

@@ -52,16 +52,16 @@ extern "C" {
 #endif
 
 // Calculate baud register value from requested baudrate value
-#ifndef SERCOM5_BAUD_RATE
-#define SERCOM5_BAUD_RATE ((float)CONF_GCLK_SERCOM5_CORE_FREQUENCY / (float)(2 * 2000000)) - 1
+#ifndef SERCOM3_BAUD_RATE
+#define SERCOM3_BAUD_RATE ((float)CONF_GCLK_SERCOM3_CORE_FREQUENCY / (float)(2 * 2000000)) - 1
 #endif
 
-#ifndef SERCOM5_RXPO
-#define SERCOM5_RXPO 3
+#ifndef SERCOM3_RXPO
+#define SERCOM3_RXPO 3
 #endif
 
-#ifndef SERCOM5_TXPO
-#define SERCOM5_TXPO 0
+#ifndef SERCOM3_TXPO
+#define SERCOM3_TXPO 0
 #endif
 
 /**

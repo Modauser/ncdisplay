@@ -41,18 +41,18 @@
 int8_t SPI_0_init()
 {
 
-	if (!hri_sercomspi_is_syncing(SERCOM5, SERCOM_SPI_SYNCBUSY_SWRST)) {
+	if (!hri_sercomspi_is_syncing(SERCOM3, SERCOM_SPI_SYNCBUSY_SWRST)) {
 		uint32_t mode = SERCOM_SPI_CTRLA_MODE(3);
-		if (hri_sercomspi_get_CTRLA_reg(SERCOM5, SERCOM_SPI_CTRLA_ENABLE)) {
-			hri_sercomspi_clear_CTRLA_ENABLE_bit(SERCOM5);
-			hri_sercomspi_wait_for_sync(SERCOM5, SERCOM_SPI_SYNCBUSY_ENABLE);
+		if (hri_sercomspi_get_CTRLA_reg(SERCOM3, SERCOM_SPI_CTRLA_ENABLE)) {
+			hri_sercomspi_clear_CTRLA_ENABLE_bit(SERCOM3);
+			hri_sercomspi_wait_for_sync(SERCOM3, SERCOM_SPI_SYNCBUSY_ENABLE);
 		}
-		hri_sercomspi_write_CTRLA_reg(SERCOM5, SERCOM_SPI_CTRLA_SWRST | mode);
+		hri_sercomspi_write_CTRLA_reg(SERCOM3, SERCOM_SPI_CTRLA_SWRST | mode);
 	}
-	hri_sercomspi_wait_for_sync(SERCOM5, SERCOM_SPI_SYNCBUSY_SWRST);
+	hri_sercomspi_wait_for_sync(SERCOM3, SERCOM_SPI_SYNCBUSY_SWRST);
 
 	hri_sercomspi_write_CTRLA_reg(
-	    SERCOM5,
+	    SERCOM3,
 	    0 << SERCOM_SPI_CTRLA_DORD_Pos           /* Data Order: disabled */
 	        | 0 << SERCOM_SPI_CTRLA_CPOL_Pos     /* Clock Polarity: disabled */
 	        | 0 << SERCOM_SPI_CTRLA_CPHA_Pos     /* Clock Phase: disabled */
@@ -61,10 +61,10 @@ int8_t SPI_0_init()
 	        | 0 << SERCOM_SPI_CTRLA_RUNSTDBY_Pos /* Run In Standby: disabled */
 	        | 3 << SERCOM_SPI_CTRLA_MODE_Pos);   /* Operating Mode: 3 */
 
-	hri_sercomspi_write_CTRLA_DOPO_bf(SERCOM5, SERCOM5_TXPO);
-	hri_sercomspi_write_CTRLA_DIPO_bf(SERCOM5, SERCOM5_RXPO);
+	hri_sercomspi_write_CTRLA_DOPO_bf(SERCOM3, SERCOM3_TXPO);
+	hri_sercomspi_write_CTRLA_DIPO_bf(SERCOM3, SERCOM3_RXPO);
 
-	hri_sercomspi_write_CTRLB_reg(SERCOM5,
+	hri_sercomspi_write_CTRLB_reg(SERCOM3,
 	                              1 << SERCOM_SPI_CTRLB_RXEN_Pos          /* Receiver Enable: enabled */
 	                                  | 0 << SERCOM_SPI_CTRLB_MSSEN_Pos   /* Master Slave Select Enabl: disabled */
 	                                  | 0 << SERCOM_SPI_CTRLB_AMODE_Pos   /* Address Mode: 0 */
@@ -72,17 +72,17 @@ int8_t SPI_0_init()
 	                                  | 0 << SERCOM_SPI_CTRLB_PLOADEN_Pos /* Slave Data Preload Enable: disabled */
 	                                  | 0);                               /* Character Size: 0 */
 
-	hri_sercomspi_write_BAUD_reg(SERCOM5, SERCOM5_BAUD_RATE);
+	hri_sercomspi_write_BAUD_reg(SERCOM3, SERCOM3_BAUD_RATE);
 
-	// hri_sercomspi_write_DBGCTRL_reg(SERCOM5,0 << SERCOM_SPI_DBGCTRL_DBGSTOP_Pos); /* Debug Stop Mode: disabled */
+	// hri_sercomspi_write_DBGCTRL_reg(SERCOM3,0 << SERCOM_SPI_DBGCTRL_DBGSTOP_Pos); /* Debug Stop Mode: disabled */
 
-	// hri_sercomspi_write_INTEN_reg(SERCOM5,0 << SERCOM_SPI_INTENSET_ERROR_Pos /* Error Interrupt Enable: disabled */
+	// hri_sercomspi_write_INTEN_reg(SERCOM3,0 << SERCOM_SPI_INTENSET_ERROR_Pos /* Error Interrupt Enable: disabled */
 	//		 | 0 << SERCOM_SPI_INTENSET_SSL_Pos /* Slave Select Low Interrupt Enable: disabled */
 	//		 | 0 << SERCOM_SPI_INTENSET_RXC_Pos /* Receive Complete Interrupt Enable: disabled */
 	//		 | 0 << SERCOM_SPI_INTENSET_TXC_Pos /* Transmit Complete Interrupt Enable: disabled */
 	//		 | 0 << SERCOM_SPI_INTENSET_DRE_Pos); /* Data Register Empty Interrupt Enable: disabled */
 
-	hri_sercomspi_write_CTRLA_ENABLE_bit(SERCOM5, 1 << SERCOM_SPI_CTRLA_ENABLE_Pos); /* Enable: enabled */
+	hri_sercomspi_write_CTRLA_ENABLE_bit(SERCOM3, 1 << SERCOM_SPI_CTRLA_ENABLE_Pos); /* Enable: enabled */
 
 	return 0;
 }
@@ -92,7 +92,7 @@ int8_t SPI_0_init()
  */
 void SPI_0_enable()
 {
-	hri_sercomspi_set_CTRLA_ENABLE_bit(SERCOM5);
+	hri_sercomspi_set_CTRLA_ENABLE_bit(SERCOM3);
 }
 
 /**
@@ -100,7 +100,7 @@ void SPI_0_enable()
  */
 void SPI_0_disable()
 {
-	hri_sercomspi_clear_CTRLA_ENABLE_bit(SERCOM5);
+	hri_sercomspi_clear_CTRLA_ENABLE_bit(SERCOM3);
 }
 
 /**
@@ -110,14 +110,14 @@ uint32_t SPI_0_exchange_data(uint32_t data)
 {
 	/* If settings are not applied (pending), we can not go on */
 	if (hri_sercomspi_is_syncing(
-	        SERCOM5, (SERCOM_SPI_SYNCBUSY_SWRST | SERCOM_SPI_SYNCBUSY_ENABLE | SERCOM_SPI_SYNCBUSY_CTRLB))) {
+	        SERCOM3, (SERCOM_SPI_SYNCBUSY_SWRST | SERCOM_SPI_SYNCBUSY_ENABLE | SERCOM_SPI_SYNCBUSY_CTRLB))) {
 		return ERR_BUSY;
 	}
 
-	hri_sercomspi_write_DATA_reg(SERCOM5, data);
-	while (!(hri_sercomspi_read_INTFLAG_reg(SERCOM5) & SERCOM_SPI_INTFLAG_RXC))
+	hri_sercomspi_write_DATA_reg(SERCOM3, data);
+	while (!(hri_sercomspi_read_INTFLAG_reg(SERCOM3) & SERCOM_SPI_INTFLAG_RXC))
 		;
-	return hri_sercomspi_read_DATA_reg(SERCOM5);
+	return hri_sercomspi_read_DATA_reg(SERCOM3);
 }
 
 void SPI_0_exchange_block(void *block, uint8_t size)
@@ -126,10 +126,10 @@ void SPI_0_exchange_block(void *block, uint8_t size)
 	uint8_t *b = (uint8_t *)block;
 
 	while (size--) {
-		hri_sercomspi_write_DATA_reg(SERCOM5, *b);
-		while (!(hri_sercomspi_read_INTFLAG_reg(SERCOM5) & SERCOM_SPI_INTFLAG_RXC))
+		hri_sercomspi_write_DATA_reg(SERCOM3, *b);
+		while (!(hri_sercomspi_read_INTFLAG_reg(SERCOM3) & SERCOM_SPI_INTFLAG_RXC))
 			;
-		*b = hri_sercomspi_read_DATA_reg(SERCOM5);
+		*b = hri_sercomspi_read_DATA_reg(SERCOM3);
 		b++;
 	}
 }
@@ -139,8 +139,8 @@ void SPI_0_write_block(void *block, uint8_t size)
 
 	uint8_t *b = (uint8_t *)block;
 	while (size--) {
-		hri_sercomspi_write_DATA_reg(SERCOM5, *b);
-		while (!(hri_sercomspi_read_INTFLAG_reg(SERCOM5) & SERCOM_SPI_INTFLAG_RXC))
+		hri_sercomspi_write_DATA_reg(SERCOM3, *b);
+		while (!(hri_sercomspi_read_INTFLAG_reg(SERCOM3) & SERCOM_SPI_INTFLAG_RXC))
 			;
 		b++;
 	}
@@ -151,10 +151,10 @@ void SPI_0_read_block(void *block, uint8_t size)
 
 	uint8_t *b = (uint8_t *)block;
 	while (size--) {
-		hri_sercomspi_write_DATA_reg(SERCOM5, 0);
-		while (!(hri_sercomspi_read_INTFLAG_reg(SERCOM5) & SERCOM_SPI_INTFLAG_RXC))
+		hri_sercomspi_write_DATA_reg(SERCOM3, 0);
+		while (!(hri_sercomspi_read_INTFLAG_reg(SERCOM3) & SERCOM_SPI_INTFLAG_RXC))
 			;
-		*b = hri_sercomspi_read_DATA_reg(SERCOM5);
+		*b = hri_sercomspi_read_DATA_reg(SERCOM3);
 		b++;
 	}
 }

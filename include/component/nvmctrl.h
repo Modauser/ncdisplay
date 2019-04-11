@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_NVMCTRL_COMPONENT_
-#define _SAME54_NVMCTRL_COMPONENT_
+#ifndef _SAMD51_NVMCTRL_COMPONENT_
+#define _SAMD51_NVMCTRL_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR NVMCTRL */
 /* ========================================================================== */
-/** \addtogroup SAME54_NVMCTRL Non-Volatile Memory Controller */
+/** \addtogroup SAMD51_NVMCTRL Non-Volatile Memory Controller */
 /*@{*/
 
 #define NVMCTRL_U2409
@@ -802,4 +802,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_NVMCTRL_COMPONENT_ */
+#endif /* _SAMD51_NVMCTRL_COMPONENT_ */

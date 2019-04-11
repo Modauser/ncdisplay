@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_PAC_COMPONENT_
-#define _SAME54_PAC_COMPONENT_
+#ifndef _SAMD51_PAC_COMPONENT_
+#define _SAMD51_PAC_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR PAC */
 /* ========================================================================== */
-/** \addtogroup SAME54_PAC Peripheral Access Controller */
+/** \addtogroup SAMD51_PAC Peripheral Access Controller */
 /*@{*/
 
 #define PAC_U2120
@@ -316,9 +316,7 @@ typedef union { // __I to avoid read-modify-write on write-to-clear register
 #if !(defined(__ASSEMBLY__) || defined(__IAR_SYSTEMS_ASM__))
 typedef union { // __I to avoid read-modify-write on write-to-clear register
   struct {
-    __I uint32_t CAN0_:1;          /*!< bit:      0  CAN0                               */
-    __I uint32_t CAN1_:1;          /*!< bit:      1  CAN1                               */
-    __I uint32_t GMAC_:1;          /*!< bit:      2  GMAC                               */
+    __I uint32_t :3;               /*!< bit:  0.. 2  Reserved                           */
     __I uint32_t TCC2_:1;          /*!< bit:      3  TCC2                               */
     __I uint32_t TCC3_:1;          /*!< bit:      4  TCC3                               */
     __I uint32_t TC4_:1;           /*!< bit:      5  TC4                                */
@@ -340,12 +338,6 @@ typedef union { // __I to avoid read-modify-write on write-to-clear register
 #define PAC_INTFLAGC_OFFSET         0x1C         /**< \brief (PAC_INTFLAGC offset) Peripheral interrupt flag status - Bridge C */
 #define PAC_INTFLAGC_RESETVALUE     _U_(0x00000000) /**< \brief (PAC_INTFLAGC reset_value) Peripheral interrupt flag status - Bridge C */
 
-#define PAC_INTFLAGC_CAN0_Pos       0            /**< \brief (PAC_INTFLAGC) CAN0 */
-#define PAC_INTFLAGC_CAN0           (_U_(0x1) << PAC_INTFLAGC_CAN0_Pos)
-#define PAC_INTFLAGC_CAN1_Pos       1            /**< \brief (PAC_INTFLAGC) CAN1 */
-#define PAC_INTFLAGC_CAN1           (_U_(0x1) << PAC_INTFLAGC_CAN1_Pos)
-#define PAC_INTFLAGC_GMAC_Pos       2            /**< \brief (PAC_INTFLAGC) GMAC */
-#define PAC_INTFLAGC_GMAC           (_U_(0x1) << PAC_INTFLAGC_GMAC_Pos)
 #define PAC_INTFLAGC_TCC2_Pos       3            /**< \brief (PAC_INTFLAGC) TCC2 */
 #define PAC_INTFLAGC_TCC2           (_U_(0x1) << PAC_INTFLAGC_TCC2_Pos)
 #define PAC_INTFLAGC_TCC3_Pos       4            /**< \brief (PAC_INTFLAGC) TCC3 */
@@ -370,7 +362,7 @@ typedef union { // __I to avoid read-modify-write on write-to-clear register
 #define PAC_INTFLAGC_QSPI           (_U_(0x1) << PAC_INTFLAGC_QSPI_Pos)
 #define PAC_INTFLAGC_CCL_Pos        14           /**< \brief (PAC_INTFLAGC) CCL */
 #define PAC_INTFLAGC_CCL            (_U_(0x1) << PAC_INTFLAGC_CCL_Pos)
-#define PAC_INTFLAGC_MASK           _U_(0x00007FFF) /**< \brief (PAC_INTFLAGC) MASK Register */
+#define PAC_INTFLAGC_MASK           _U_(0x00007FF8) /**< \brief (PAC_INTFLAGC) MASK Register */
 
 /* -------- PAC_INTFLAGD : (PAC Offset: 0x20) (R/W 32) Peripheral interrupt flag status - Bridge D -------- */
 #if !(defined(__ASSEMBLY__) || defined(__IAR_SYSTEMS_ASM__))
@@ -552,9 +544,7 @@ typedef union {
 #if !(defined(__ASSEMBLY__) || defined(__IAR_SYSTEMS_ASM__))
 typedef union {
   struct {
-    uint32_t CAN0_:1;          /*!< bit:      0  CAN0 APB Protect Enable            */
-    uint32_t CAN1_:1;          /*!< bit:      1  CAN1 APB Protect Enable            */
-    uint32_t GMAC_:1;          /*!< bit:      2  GMAC APB Protect Enable            */
+    uint32_t :3;               /*!< bit:  0.. 2  Reserved                           */
     uint32_t TCC2_:1;          /*!< bit:      3  TCC2 APB Protect Enable            */
     uint32_t TCC3_:1;          /*!< bit:      4  TCC3 APB Protect Enable            */
     uint32_t TC4_:1;           /*!< bit:      5  TC4 APB Protect Enable             */
@@ -576,12 +566,6 @@ typedef union {
 #define PAC_STATUSC_OFFSET          0x3C         /**< \brief (PAC_STATUSC offset) Peripheral write protection status - Bridge C */
 #define PAC_STATUSC_RESETVALUE      _U_(0x00000000) /**< \brief (PAC_STATUSC reset_value) Peripheral write protection status - Bridge C */
 
-#define PAC_STATUSC_CAN0_Pos        0            /**< \brief (PAC_STATUSC) CAN0 APB Protect Enable */
-#define PAC_STATUSC_CAN0            (_U_(0x1) << PAC_STATUSC_CAN0_Pos)
-#define PAC_STATUSC_CAN1_Pos        1            /**< \brief (PAC_STATUSC) CAN1 APB Protect Enable */
-#define PAC_STATUSC_CAN1            (_U_(0x1) << PAC_STATUSC_CAN1_Pos)
-#define PAC_STATUSC_GMAC_Pos        2            /**< \brief (PAC_STATUSC) GMAC APB Protect Enable */
-#define PAC_STATUSC_GMAC            (_U_(0x1) << PAC_STATUSC_GMAC_Pos)
 #define PAC_STATUSC_TCC2_Pos        3            /**< \brief (PAC_STATUSC) TCC2 APB Protect Enable */
 #define PAC_STATUSC_TCC2            (_U_(0x1) << PAC_STATUSC_TCC2_Pos)
 #define PAC_STATUSC_TCC3_Pos        4            /**< \brief (PAC_STATUSC) TCC3 APB Protect Enable */
@@ -606,7 +590,7 @@ typedef union {
 #define PAC_STATUSC_QSPI            (_U_(0x1) << PAC_STATUSC_QSPI_Pos)
 #define PAC_STATUSC_CCL_Pos         14           /**< \brief (PAC_STATUSC) CCL APB Protect Enable */
 #define PAC_STATUSC_CCL             (_U_(0x1) << PAC_STATUSC_CCL_Pos)
-#define PAC_STATUSC_MASK            _U_(0x00007FFF) /**< \brief (PAC_STATUSC) MASK Register */
+#define PAC_STATUSC_MASK            _U_(0x00007FF8) /**< \brief (PAC_STATUSC) MASK Register */
 
 /* -------- PAC_STATUSD : (PAC Offset: 0x40) (R/  32) Peripheral write protection status - Bridge D -------- */
 #if !(defined(__ASSEMBLY__) || defined(__IAR_SYSTEMS_ASM__))
@@ -683,4 +667,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_PAC_COMPONENT_ */
+#endif /* _SAMD51_PAC_COMPONENT_ */

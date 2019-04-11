@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_AES_COMPONENT_
-#define _SAME54_AES_COMPONENT_
+#ifndef _SAMD51_AES_COMPONENT_
+#define _SAMD51_AES_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR AES */
 /* ========================================================================== */
-/** \addtogroup SAME54_AES Advanced Encryption Standard */
+/** \addtogroup SAMD51_AES Advanced Encryption Standard */
 /*@{*/
 
 #define AES_U2238
@@ -372,4 +372,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_AES_COMPONENT_ */
+#endif /* _SAMD51_AES_COMPONENT_ */

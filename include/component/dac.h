@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_DAC_COMPONENT_
-#define _SAME54_DAC_COMPONENT_
+#ifndef _SAMD51_DAC_COMPONENT_
+#define _SAMD51_DAC_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR DAC */
 /* ========================================================================== */
-/** \addtogroup SAME54_DAC Digital-to-Analog Converter */
+/** \addtogroup SAMD51_DAC Digital-to-Analog Converter */
 /*@{*/
 
 #define DAC_U2502
@@ -541,4 +541,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_DAC_COMPONENT_ */
+#endif /* _SAMD51_DAC_COMPONENT_ */

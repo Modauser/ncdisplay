@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_PCC_COMPONENT_
-#define _SAME54_PCC_COMPONENT_
+#ifndef _SAMD51_PCC_COMPONENT_
+#define _SAMD51_PCC_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR PCC */
 /* ========================================================================== */
-/** \addtogroup SAME54_PCC Parallel Capture Controller */
+/** \addtogroup SAMD51_PCC Parallel Capture Controller */
 /*@{*/
 
 #define PCC_U2017
@@ -248,4 +248,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_PCC_COMPONENT_ */
+#endif /* _SAMD51_PCC_COMPONENT_ */

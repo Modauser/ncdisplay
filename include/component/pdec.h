@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_PDEC_COMPONENT_
-#define _SAME54_PDEC_COMPONENT_
+#ifndef _SAMD51_PDEC_COMPONENT_
+#define _SAMD51_PDEC_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR PDEC */
 /* ========================================================================== */
-/** \addtogroup SAME54_PDEC Quadrature Decodeur */
+/** \addtogroup SAMD51_PDEC Quadrature Decodeur */
 /*@{*/
 
 #define PDEC_U2263
@@ -723,4 +723,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_PDEC_COMPONENT_ */
+#endif /* _SAMD51_PDEC_COMPONENT_ */

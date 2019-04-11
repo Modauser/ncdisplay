@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_CMCC_COMPONENT_
-#define _SAME54_CMCC_COMPONENT_
+#ifndef _SAMD51_CMCC_COMPONENT_
+#define _SAMD51_CMCC_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR CMCC */
 /* ========================================================================== */
-/** \addtogroup SAME54_CMCC Cortex M Cache Controller */
+/** \addtogroup SAMD51_CMCC Cortex M Cache Controller */
 /*@{*/
 
 #define CMCC_U2015
@@ -354,4 +354,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_CMCC_COMPONENT_ */
+#endif /* _SAMD51_CMCC_COMPONENT_ */

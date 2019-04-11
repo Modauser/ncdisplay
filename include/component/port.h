@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_PORT_COMPONENT_
-#define _SAME54_PORT_COMPONENT_
+#ifndef _SAMD51_PORT_COMPONENT_
+#define _SAMD51_PORT_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR PORT */
 /* ========================================================================== */
-/** \addtogroup SAME54_PORT Port Module */
+/** \addtogroup SAMD51_PORT Port Module */
 /*@{*/
 
 #define PORT_U2210
@@ -411,4 +411,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_PORT_COMPONENT_ */
+#endif /* _SAMD51_PORT_COMPONENT_ */

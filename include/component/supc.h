@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_SUPC_COMPONENT_
-#define _SAME54_SUPC_COMPONENT_
+#ifndef _SAMD51_SUPC_COMPONENT_
+#define _SAMD51_SUPC_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR SUPC */
 /* ========================================================================== */
-/** \addtogroup SAME54_SUPC Supply Controller */
+/** \addtogroup SAMD51_SUPC Supply Controller */
 /*@{*/
 
 #define SUPC_U2407
@@ -551,4 +551,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_SUPC_COMPONENT_ */
+#endif /* _SAMD51_SUPC_COMPONENT_ */

@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_EIC_COMPONENT_
-#define _SAME54_EIC_COMPONENT_
+#ifndef _SAMD51_EIC_COMPONENT_
+#define _SAMD51_EIC_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR EIC */
 /* ========================================================================== */
-/** \addtogroup SAME54_EIC External Interrupt Controller */
+/** \addtogroup SAMD51_EIC External Interrupt Controller */
 /*@{*/
 
 #define EIC_U2254
@@ -494,4 +494,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_EIC_COMPONENT_ */
+#endif /* _SAMD51_EIC_COMPONENT_ */

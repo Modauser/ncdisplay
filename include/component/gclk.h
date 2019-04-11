@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_GCLK_COMPONENT_
-#define _SAME54_GCLK_COMPONENT_
+#ifndef _SAMD51_GCLK_COMPONENT_
+#define _SAMD51_GCLK_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR GCLK */
 /* ========================================================================== */
-/** \addtogroup SAME54_GCLK Generic Clock Generator */
+/** \addtogroup SAMD51_GCLK Generic Clock Generator */
 /*@{*/
 
 #define GCLK_U2122
@@ -269,4 +269,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_GCLK_COMPONENT_ */
+#endif /* _SAMD51_GCLK_COMPONENT_ */

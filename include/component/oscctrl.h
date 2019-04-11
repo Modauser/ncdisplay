@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_OSCCTRL_COMPONENT_
-#define _SAME54_OSCCTRL_COMPONENT_
+#ifndef _SAMD51_OSCCTRL_COMPONENT_
+#define _SAMD51_OSCCTRL_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR OSCCTRL */
 /* ========================================================================== */
-/** \addtogroup SAME54_OSCCTRL Oscillators Control */
+/** \addtogroup SAMD51_OSCCTRL Oscillators Control */
 /*@{*/
 
 #define OSCCTRL_U2401
@@ -790,4 +790,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_OSCCTRL_COMPONENT_ */
+#endif /* _SAMD51_OSCCTRL_COMPONENT_ */

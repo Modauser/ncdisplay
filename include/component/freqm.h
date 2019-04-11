@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_FREQM_COMPONENT_
-#define _SAME54_FREQM_COMPONENT_
+#ifndef _SAMD51_FREQM_COMPONENT_
+#define _SAMD51_FREQM_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR FREQM */
 /* ========================================================================== */
-/** \addtogroup SAME54_FREQM Frequency Meter */
+/** \addtogroup SAMD51_FREQM Frequency Meter */
 /*@{*/
 
 #define FREQM_U2257
@@ -230,4 +230,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_FREQM_COMPONENT_ */
+#endif /* _SAMD51_FREQM_COMPONENT_ */

@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_RTC_COMPONENT_
-#define _SAME54_RTC_COMPONENT_
+#ifndef _SAMD51_RTC_COMPONENT_
+#define _SAMD51_RTC_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR RTC */
 /* ========================================================================== */
-/** \addtogroup SAME54_RTC Real-Time Counter */
+/** \addtogroup SAMD51_RTC Real-Time Counter */
 /*@{*/
 
 #define RTC_U2250
@@ -2095,4 +2095,4 @@ typedef union {
 
 /*@}*/
 
-#endif /* _SAME54_RTC_COMPONENT_ */
+#endif /* _SAMD51_RTC_COMPONENT_ */

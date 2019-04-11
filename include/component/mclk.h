@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_MCLK_COMPONENT_
-#define _SAME54_MCLK_COMPONENT_
+#ifndef _SAMD51_MCLK_COMPONENT_
+#define _SAMD51_MCLK_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR MCLK */
 /* ========================================================================== */
-/** \addtogroup SAME54_MCLK Main Clock */
+/** \addtogroup SAMD51_MCLK Main Clock */
 /*@{*/
 
 #define MCLK_U2408
@@ -165,11 +165,10 @@ typedef union {
     uint32_t BKUPRAM_:1;       /*!< bit:     11  BKUPRAM AHB Clock Mask             */
     uint32_t PAC_:1;           /*!< bit:     12  PAC AHB Clock Mask                 */
     uint32_t QSPI_:1;          /*!< bit:     13  QSPI AHB Clock Mask                */
-    uint32_t GMAC_:1;          /*!< bit:     14  GMAC AHB Clock Mask                */
+    uint32_t :1;               /*!< bit:     14  Reserved                           */
     uint32_t SDHC0_:1;         /*!< bit:     15  SDHC0 AHB Clock Mask               */
     uint32_t SDHC1_:1;         /*!< bit:     16  SDHC1 AHB Clock Mask               */
-    uint32_t CAN0_:1;          /*!< bit:     17  CAN0 AHB Clock Mask                */
-    uint32_t CAN1_:1;          /*!< bit:     18  CAN1 AHB Clock Mask                */
+    uint32_t :2;               /*!< bit: 17..18  Reserved                           */
     uint32_t ICM_:1;           /*!< bit:     19  ICM AHB Clock Mask                 */
     uint32_t PUKCC_:1;         /*!< bit:     20  PUKCC AHB Clock Mask               */
     uint32_t QSPI_2X_:1;       /*!< bit:     21  QSPI_2X AHB Clock Mask             */
@@ -212,16 +211,10 @@ typedef union {
 #define MCLK_AHBMASK_PAC            (_U_(0x1) << MCLK_AHBMASK_PAC_Pos)
 #define MCLK_AHBMASK_QSPI_Pos       13           /**< \brief (MCLK_AHBMASK) QSPI AHB Clock Mask */
 #define MCLK_AHBMASK_QSPI           (_U_(0x1) << MCLK_AHBMASK_QSPI_Pos)
-#define MCLK_AHBMASK_GMAC_Pos       14           /**< \brief (MCLK_AHBMASK) GMAC AHB Clock Mask */
-#define MCLK_AHBMASK_GMAC           (_U_(0x1) << MCLK_AHBMASK_GMAC_Pos)
 #define MCLK_AHBMASK_SDHC0_Pos      15           /**< \brief (MCLK_AHBMASK) SDHC0 AHB Clock Mask */
 #define MCLK_AHBMASK_SDHC0          (_U_(0x1) << MCLK_AHBMASK_SDHC0_Pos)
 #define MCLK_AHBMASK_SDHC1_Pos      16           /**< \brief (MCLK_AHBMASK) SDHC1 AHB Clock Mask */
 #define MCLK_AHBMASK_SDHC1          (_U_(0x1) << MCLK_AHBMASK_SDHC1_Pos)
-#define MCLK_AHBMASK_CAN0_Pos       17           /**< \brief (MCLK_AHBMASK) CAN0 AHB Clock Mask */
-#define MCLK_AHBMASK_CAN0           (_U_(0x1) << MCLK_AHBMASK_CAN0_Pos)
-#define MCLK_AHBMASK_CAN1_Pos       18           /**< \brief (MCLK_AHBMASK) CAN1 AHB Clock Mask */
-#define MCLK_AHBMASK_CAN1           (_U_(0x1) << MCLK_AHBMASK_CAN1_Pos)
 #define MCLK_AHBMASK_ICM_Pos        19           /**< \brief (MCLK_AHBMASK) ICM AHB Clock Mask */
 #define MCLK_AHBMASK_ICM            (_U_(0x1) << MCLK_AHBMASK_ICM_Pos)
 #define MCLK_AHBMASK_PUKCC_Pos      20           /**< \brief (MCLK_AHBMASK) PUKCC AHB Clock Mask */
@@ -232,7 +225,7 @@ typedef union {
 #define MCLK_AHBMASK_NVMCTRL_SMEEPROM (_U_(0x1) << MCLK_AHBMASK_NVMCTRL_SMEEPROM_Pos)
 #define MCLK_AHBMASK_NVMCTRL_CACHE_Pos 23           /**< \brief (MCLK_AHBMASK) NVMCTRL_CACHE AHB Clock Mask */
 #define MCLK_AHBMASK_NVMCTRL_CACHE  (_U_(0x1) << MCLK_AHBMASK_NVMCTRL_CACHE_Pos)
-#define MCLK_AHBMASK_MASK           _U_(0x00FFFFFF) /**< \brief (MCLK_AHBMASK) MASK Register */
+#define MCLK_AHBMASK_MASK           _U_(0x00F9BFFF) /**< \brief (MCLK_AHBMASK) MASK Register */
 
 /* -------- MCLK_APBAMASK : (MCLK Offset: 0x14) (R/W 32) APBA Mask -------- */
 #if !(defined(__ASSEMBLY__) || defined(__IAR_SYSTEMS_ASM__))
@@ -359,8 +352,7 @@ typedef union {
 #if !(defined(__ASSEMBLY__) || defined(__IAR_SYSTEMS_ASM__))
 typedef union {
   struct {
-    uint32_t :2;               /*!< bit:  0.. 1  Reserved                           */
-    uint32_t GMAC_:1;          /*!< bit:      2  GMAC APB Clock Enable              */
+    uint32_t :3;               /*!< bit:  0.. 2  Reserved                           */
     uint32_t TCC2_:1;          /*!< bit:      3  TCC2 APB Clock Enable              */
     uint32_t TCC3_:1;          /*!< bit:      4  TCC3 APB Clock Enable              */
     uint32_t TC4_:1;           /*!< bit:      5  TC4 APB Clock Enable               */
@@ -382,8 +374,6 @@ typedef union {
 #define MCLK_APBCMASK_OFFSET        0x1C         /**< \brief (MCLK_APBCMASK offset) APBC Mask */
 #define MCLK_APBCMASK_RESETVALUE    _U_(0x00002000) /**< \brief (MCLK_APBCMASK reset_value) APBC Mask */
 
-#define MCLK_APBCMASK_GMAC_Pos      2            /**< \brief (MCLK_APBCMASK) GMAC APB Clock Enable */
-#define MCLK_APBCMASK_GMAC          (_U_(0x1) << MCLK_APBCMASK_GMAC_Pos)
 #define MCLK_APBCMASK_TCC2_Pos      3            /**< \brief (MCLK_APBCMASK) TCC2 APB Clock Enable */
 #define MCLK_APBCMASK_TCC2          (_U_(0x1) << MCLK_APBCMASK_TCC2_Pos)
 #define MCLK_APBCMASK_TCC3_Pos      4            /**< \brief (MCLK_APBCMASK) TCC3 APB Clock Enable */
@@ -406,7 +396,7 @@ typedef union {
 #define MCLK_APBCMASK_QSPI          (_U_(0x1) << MCLK_APBCMASK_QSPI_Pos)
 #define MCLK_APBCMASK_CCL_Pos       14           /**< \brief (MCLK_APBCMASK) CCL APB Clock Enable */
 #define MCLK_APBCMASK_CCL           (_U_(0x1) << MCLK_APBCMASK_CCL_Pos)
-#define MCLK_APBCMASK_MASK          _U_(0x00006FFC) /**< \brief (MCLK_APBCMASK) MASK Register */
+#define MCLK_APBCMASK_MASK          _U_(0x00006FF8) /**< \brief (MCLK_APBCMASK) MASK Register */
 
 /* -------- MCLK_APBDMASK : (MCLK Offset: 0x20) (R/W 32) APBD Mask -------- */
 #if !(defined(__ASSEMBLY__) || defined(__IAR_SYSTEMS_ASM__))
@@ -479,4 +469,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_MCLK_COMPONENT_ */
+#endif /* _SAMD51_MCLK_COMPONENT_ */

@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_RAMECC_COMPONENT_
-#define _SAME54_RAMECC_COMPONENT_
+#ifndef _SAMD51_RAMECC_COMPONENT_
+#define _SAMD51_RAMECC_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR RAMECC */
 /* ========================================================================== */
-/** \addtogroup SAME54_RAMECC RAM ECC */
+/** \addtogroup SAMD51_RAMECC RAM ECC */
 /*@{*/
 
 #define RAMECC_U2268
@@ -175,4 +175,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_RAMECC_COMPONENT_ */
+#endif /* _SAMD51_RAMECC_COMPONENT_ */

@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_DSU_COMPONENT_
-#define _SAME54_DSU_COMPONENT_
+#ifndef _SAMD51_DSU_COMPONENT_
+#define _SAMD51_DSU_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR DSU */
 /* ========================================================================== */
-/** \addtogroup SAME54_DSU Device Service Unit */
+/** \addtogroup SAMD51_DSU Device Service Unit */
 /*@{*/
 
 #define DSU_U2410
@@ -673,4 +673,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_DSU_COMPONENT_ */
+#endif /* _SAMD51_DSU_COMPONENT_ */

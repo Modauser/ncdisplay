@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_PM_COMPONENT_
-#define _SAME54_PM_COMPONENT_
+#ifndef _SAMD51_PM_COMPONENT_
+#define _SAMD51_PM_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR PM */
 /* ========================================================================== */
-/** \addtogroup SAME54_PM Power Manager */
+/** \addtogroup SAMD51_PM Power Manager */
 /*@{*/
 
 #define PM_U2406
@@ -258,4 +258,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_PM_COMPONENT_ */
+#endif /* _SAMD51_PM_COMPONENT_ */

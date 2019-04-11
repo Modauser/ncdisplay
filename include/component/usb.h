@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_USB_COMPONENT_
-#define _SAME54_USB_COMPONENT_
+#ifndef _SAMD51_USB_COMPONENT_
+#define _SAMD51_USB_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR USB */
 /* ========================================================================== */
-/** \addtogroup SAME54_USB Universal Serial Bus */
+/** \addtogroup SAMD51_USB Universal Serial Bus */
 /*@{*/
 
 #define USB_U2222
@@ -1774,4 +1774,4 @@ typedef union {
 
 /*@}*/
 
-#endif /* _SAME54_USB_COMPONENT_ */
+#endif /* _SAMD51_USB_COMPONENT_ */

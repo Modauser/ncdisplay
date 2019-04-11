@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_WDT_COMPONENT_
-#define _SAME54_WDT_COMPONENT_
+#ifndef _SAMD51_WDT_COMPONENT_
+#define _SAMD51_WDT_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR WDT */
 /* ========================================================================== */
-/** \addtogroup SAME54_WDT Watchdog Timer */
+/** \addtogroup SAMD51_WDT Watchdog Timer */
 /*@{*/
 
 #define WDT_U2251
@@ -297,4 +297,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_WDT_COMPONENT_ */
+#endif /* _SAMD51_WDT_COMPONENT_ */

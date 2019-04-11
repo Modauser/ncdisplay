@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_SDHC_COMPONENT_
-#define _SAME54_SDHC_COMPONENT_
+#ifndef _SAMD51_SDHC_COMPONENT_
+#define _SAMD51_SDHC_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR SDHC */
 /* ========================================================================== */
-/** \addtogroup SAME54_SDHC SD/MMC Host Controller */
+/** \addtogroup SAMD51_SDHC SD/MMC Host Controller */
 /*@{*/
 
 #define SDHC_U2011
@@ -2596,4 +2596,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_SDHC_COMPONENT_ */
+#endif /* _SAMD51_SDHC_COMPONENT_ */

@@ -90,7 +90,7 @@ stdio_start.o \
 usb/usb_protocol.o \
 hal/src/hal_init.o \
 diskio_start.o \
-gcc/gcc/startup_same54.o \
+gcc/gcc/startup_samd51.o \
 main.o \
 hpl/osc32kctrl/hpl_osc32kctrl.o \
 diskio/sdmmc_diskio.o \
@@ -102,7 +102,7 @@ hal/src/hal_gpio.o \
 hal/utils/src/utils_event.o \
 hal/src/hal_sleep.o \
 hpl/dmac/hpl_dmac.o \
-gcc/system_same54.o \
+gcc/system_samd51.o \
 atmel_start.o \
 hpl/cmcc/hpl_cmcc.o \
 fatfs/diskio.o \
@@ -181,7 +181,7 @@ OBJS_AS_ARGS +=  \
 "usb/usb_protocol.o" \
 "hal/src/hal_init.o" \
 "diskio_start.o" \
-"gcc/gcc/startup_same54.o" \
+"gcc/gcc/startup_samd51.o" \
 "hpl/osc32kctrl/hpl_osc32kctrl.o" \
 "diskio/sdmmc_diskio.o" \
 "hpl/oscctrl/hpl_oscctrl.o" \
@@ -192,7 +192,7 @@ OBJS_AS_ARGS +=  \
 "hal/utils/src/utils_event.o" \
 "hal/src/hal_sleep.o" \
 "hpl/dmac/hpl_dmac.o" \
-"gcc/system_same54.o" \
+"gcc/system_samd51.o" \
 "atmel_start.o" \
 "hpl/cmcc/hpl_cmcc.o" \
 "fatfs/diskio.o" \
@@ -254,7 +254,7 @@ DEPS_AS_ARGS +=  \
 "usb/class/msc/host/mschf.d" \
 "sd_mmc_start.d" \
 "stdio_redirect/gcc/write.d" \
-"gcc/gcc/startup_same54.d" \
+"gcc/gcc/startup_samd51.d" \
 "hpl/usb/hpl_usb.d" \
 "diskio/msc_diskio.d" \
 "sd_mmc/sd_mmc.d" \
@@ -289,7 +289,7 @@ DEPS_AS_ARGS +=  \
 "hal/src/hal_gpio.d" \
 "hal/src/hal_atomic.d" \
 "hpl/oscctrl/hpl_oscctrl.d" \
-"gcc/system_same54.d" \
+"gcc/system_samd51.d" \
 "atmel_start.d" \
 "fatfs/ff.d" \
 "fatfs/ffsystem.d" \
@@ -348,7 +348,7 @@ CINCLUDES = \
 	-I"../diskio" -I"../stdio_redirect" -I"../sd_mmc" \
        	-I"../CMSIS/Include" -I"../include"
 
-MCUFLAGS = -D__SAME54P20A__ -mcpu=cortex-m4 -mthumb -mfloat-abi=softfp -mfpu=fpv4-sp-d16 -mlong-calls
+MCUFLAGS = -D__SAMD51G19A__ -mcpu=cortex-m4 -mthumb -mfloat-abi=softfp -mfpu=fpv4-sp-d16 -mlong-calls
 CXXFLAGS = -std=c++17 -fno-rtti -fno-exceptions -ffunction-sections -Werror -Os
 CFLAGS = -std=gnu99 -ffunction-sections
 DFLAGS = -DDEBUG -ggdb -g3 -Wall -Wextra -pedantic
@@ -378,7 +378,7 @@ $(OUTPUT_FILE_PATH_USER): $(OBJS_USER)
 	@$(CROSS)$(CC) -o $(OUTPUT_FILE_PATH_USER) $(OBJS_AS_ARGS_USER) -DSTACK_SIZE=4096 \
 -Wl,--start-group -lm -Wl,--end-group -mthumb \
 --specs=nano.specs -Wl,--gc-sections -mcpu=cortex-m4 \
--T"../gcc/gcc/same54p20a_user.ld" \
+-T"../gcc/gcc/samd51g19a_user.ld" \
 -L"../gcc/gcc"
 	@echo Finished building target: $@
 	@$(CROSS)$(OBJCOPY) -O binary "$(OUTPUT_FILE_NAME_USER).elf" "$(OUTPUT_FILE_NAME_USER).bin"
@@ -391,7 +391,7 @@ $(OUTPUT_FILE_PATH): $(OBJS)
 	$(CROSS)$(CC) -o $(OUTPUT_FILE_NAME).elf $(OBJS_AS_ARGS) -DSTACK_SIZE=4096 \
 -Wl,--start-group -lm -Wl,--end-group -mthumb \
 -Wl,-Map="$(OUTPUT_FILE_NAME).map" --specs=nano.specs -Wl,--gc-sections -mcpu=cortex-m4 \
--T"../gcc/gcc/same54p20a_flash.ld" \
+-T"../gcc/gcc/samd51g19a_flash.ld" \
 -L"../gcc/gcc"
 
 	@echo Finished building target: $@

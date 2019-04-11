@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_HMATRIXB_COMPONENT_
-#define _SAME54_HMATRIXB_COMPONENT_
+#ifndef _SAMD51_HMATRIXB_COMPONENT_
+#define _SAMD51_HMATRIXB_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR HMATRIXB */
 /* ========================================================================== */
-/** \addtogroup SAME54_HMATRIXB HSB Matrix */
+/** \addtogroup SAMD51_HMATRIXB HSB Matrix */
 /*@{*/
 
 #define HMATRIXB_I7638
@@ -81,4 +81,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_HMATRIXB_COMPONENT_ */
+#endif /* _SAMD51_HMATRIXB_COMPONENT_ */

@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_EVSYS_COMPONENT_
-#define _SAME54_EVSYS_COMPONENT_
+#ifndef _SAMD51_EVSYS_COMPONENT_
+#define _SAMD51_EVSYS_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR EVSYS */
 /* ========================================================================== */
-/** \addtogroup SAME54_EVSYS Event System Interface */
+/** \addtogroup SAMD51_EVSYS Event System Interface */
 /*@{*/
 
 #define EVSYS_U2504
@@ -584,4 +584,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_EVSYS_COMPONENT_ */
+#endif /* _SAMD51_EVSYS_COMPONENT_ */

@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_ADC_COMPONENT_
-#define _SAME54_ADC_COMPONENT_
+#ifndef _SAMD51_ADC_COMPONENT_
+#define _SAMD51_ADC_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR ADC */
 /* ========================================================================== */
-/** \addtogroup SAME54_ADC Analog Digital Converter */
+/** \addtogroup SAMD51_ADC Analog Digital Converter */
 /*@{*/
 
 #define ADC_U2500
@@ -868,4 +868,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_ADC_COMPONENT_ */
+#endif /* _SAMD51_ADC_COMPONENT_ */

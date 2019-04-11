@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_AC_COMPONENT_
-#define _SAME54_AC_COMPONENT_
+#ifndef _SAMD51_AC_COMPONENT_
+#define _SAMD51_AC_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR AC */
 /* ========================================================================== */
-/** \addtogroup SAME54_AC Analog Comparators */
+/** \addtogroup SAMD51_AC Analog Comparators */
 /*@{*/
 
 #define AC_U2501
@@ -595,4 +595,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_AC_COMPONENT_ */
+#endif /* _SAMD51_AC_COMPONENT_ */

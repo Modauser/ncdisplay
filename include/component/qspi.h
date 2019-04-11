@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_QSPI_COMPONENT_
-#define _SAME54_QSPI_COMPONENT_
+#ifndef _SAMD51_QSPI_COMPONENT_
+#define _SAMD51_QSPI_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR QSPI */
 /* ========================================================================== */
-/** \addtogroup SAME54_QSPI Quad SPI interface */
+/** \addtogroup SAMD51_QSPI Quad SPI interface */
 /*@{*/
 
 #define QSPI_U2008
@@ -525,4 +525,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_QSPI_COMPONENT_ */
+#endif /* _SAMD51_QSPI_COMPONENT_ */

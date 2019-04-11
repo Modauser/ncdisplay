@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_RSTC_COMPONENT_
-#define _SAME54_RSTC_COMPONENT_
+#ifndef _SAMD51_RSTC_COMPONENT_
+#define _SAMD51_RSTC_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR RSTC */
 /* ========================================================================== */
-/** \addtogroup SAME54_RSTC Reset Controller */
+/** \addtogroup SAMD51_RSTC Reset Controller */
 /*@{*/
 
 #define RSTC_U2239
@@ -112,4 +112,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_RSTC_COMPONENT_ */
+#endif /* _SAMD51_RSTC_COMPONENT_ */

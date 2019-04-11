@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_TCC_COMPONENT_
-#define _SAME54_TCC_COMPONENT_
+#ifndef _SAMD51_TCC_COMPONENT_
+#define _SAMD51_TCC_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR TCC */
 /* ========================================================================== */
-/** \addtogroup SAME54_TCC Timer Counter Control */
+/** \addtogroup SAMD51_TCC Timer Counter Control */
 /*@{*/
 
 #define TCC_U2213
@@ -1759,4 +1759,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_TCC_COMPONENT_ */
+#endif /* _SAMD51_TCC_COMPONENT_ */

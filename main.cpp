@@ -10,8 +10,8 @@
 //extern void loop(void);
 
 constexpr uint32_t NCIdentifier = 0x31415926;
-static uint32_t *ncident = (uint32_t *)0x00080000;
-static void (*ncmain)(void) = (void (*)(void))(0x00080004 | 1);
+static uint32_t *ncident = (uint32_t *)0x00040000;
+static void (*ncmain)(void) = (void (*)(void))(0x00040004 | 1);
 
 static FATFS sdmmc_fatfs;
 static FATFS msc_fatfs;
@@ -47,9 +47,9 @@ int main(void)
 		ncmain();
 
 	while (1) {
-		gpio_set_pin_level(LED0, false);
-		delay_ms(750);
-		gpio_set_pin_level(LED0, true);
+		//gpio_set_pin_level(LED0, false);
+		//delay_ms(750);
+		//gpio_set_pin_level(LED0, true);
 		delay_ms(250);
 	}
 }

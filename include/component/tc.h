@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_TC_COMPONENT_
-#define _SAME54_TC_COMPONENT_
+#ifndef _SAMD51_TC_COMPONENT_
+#define _SAMD51_TC_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR TC */
 /* ========================================================================== */
-/** \addtogroup SAME54_TC Basic Timer Counter */
+/** \addtogroup SAMD51_TC Basic Timer Counter */
 /*@{*/
 
 #define TC_U2249
@@ -848,4 +848,4 @@ typedef union {
 
 /*@}*/
 
-#endif /* _SAME54_TC_COMPONENT_ */
+#endif /* _SAMD51_TC_COMPONENT_ */

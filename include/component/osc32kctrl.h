@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef _SAME54_OSC32KCTRL_COMPONENT_
-#define _SAME54_OSC32KCTRL_COMPONENT_
+#ifndef _SAMD51_OSC32KCTRL_COMPONENT_
+#define _SAMD51_OSC32KCTRL_COMPONENT_
 
 /* ========================================================================== */
 /**  SOFTWARE API DEFINITION FOR OSC32KCTRL */
 /* ========================================================================== */
-/** \addtogroup SAME54_OSC32KCTRL 32kHz Oscillators Control */
+/** \addtogroup SAMD51_OSC32KCTRL 32kHz Oscillators Control */
 /*@{*/
 
 #define OSC32KCTRL_U2400
@@ -300,4 +300,4 @@ typedef struct {
 
 /*@}*/
 
-#endif /* _SAME54_OSC32KCTRL_COMPONENT_ */
+#endif /* _SAMD51_OSC32KCTRL_COMPONENT_ */

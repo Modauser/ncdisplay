@@ -52,9 +52,9 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 
-#ifndef _UNIT_TEST_
+//#ifndef _UNIT_TEST_
 #include "parts.h"
-#endif
+//#endif
 #include "err_codes.h"
 
 #ifdef __cplusplus
