@@ -353,7 +353,7 @@ CXXFLAGS = -std=c++17 -fno-rtti -fno-exceptions -ffunction-sections -Werror -Os
 CFLAGS = -std=gnu99 -ffunction-sections
 DFLAGS = -DDEBUG -ggdb -g3 -Wall -Wextra -pedantic
 
-OUTPUT_FILE_NAME := AtmelStart
+OUTPUT_FILE_NAME := System
 OUTPUT_FILE_PATH +=$(OUTPUT_FILE_NAME).elf
 OUTPUT_FILE_PATH_AS_ARGS +=$(OUTPUT_FILE_NAME).elf
 OUTPUT_FILE_NAME_USER := User
