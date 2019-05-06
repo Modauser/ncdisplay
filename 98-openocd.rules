@@ -1,0 +1,10 @@
+# Rules to allow OpenOCD to work without root privilege
+
+ACTION!="add|change", GOTO="openocd_rules_end"
+SUBSYSTEM!="usb|tty|hidraw", GOTO="openocd_rules_end"
+
+# CMSIS-DAP compatible adapters
+ATTRS{product}=="*CMSIS-DAP*", MODE="664", GROUP="plugdev"
+
+LABEL="openocd_rules_end"
+
