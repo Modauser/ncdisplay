@@ -61,7 +61,14 @@ static Screen Fill (
 		if (++checkCounter == 4) {
 			checkCounter = 0;
 			if (std::get<2>(*fillScreen)()) {
-				if (++fillScreen == fillScreens.end())
+				fillScreen++;
+				if (std::get<1>(*fillScreen) == 0xFF0000 &&
+					!MainBoard::canDispenseHot())
+					fillScreen++;
+				if (std::get<1>(*fillScreen) == 0x00FF00 &&
+					!MainBoard::canDispenseSparkling())
+					fillScreen++;
+				if (fillScreen == fillScreens.end())
 					ScreenManager::setCurrent(ScreenID::SetupComplete);
 			}
 

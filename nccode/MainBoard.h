@@ -113,6 +113,15 @@ public:
 	}
 	static const char *updateServiceContact(void);
 
+	static inline bool canDispenseHot(void) {
+		updateModelNumber();
+		return modelNumber & (1 << 0);
+	}
+	static inline bool canDispenseSparkling(void) {
+		updateModelNumber();
+		return modelNumber & (1 << 1);
+	}
+
 	static void getSleepmodeHours(unsigned int *buf);
 	static void setSleepmodeHours(const unsigned int *hours);
 	static bool getSleepmodeEnabled(void);

@@ -381,27 +381,21 @@ $(OUTPUT_FILE_PATH_USER): $(OBJS_USER)
 -T"../gcc/gcc/samd51g19a_user.ld" \
 -L"../gcc/gcc"
 	@echo Finished building target: $@
-	@$(CROSS)$(OBJCOPY) -O binary "$(OUTPUT_FILE_NAME_USER).elf" "$(OUTPUT_FILE_NAME_USER).bin"
 	@$(CROSS)$(OBJCOPY) -O ihex -R .eeprom -R .fuse -R .lock -R .signature \
         "$(OUTPUT_FILE_NAME_USER).elf" "$(OUTPUT_FILE_NAME_USER).hex"
 	@$(CROSS)size $(OUTPUT_FILE_PATH_USER)
 
 $(OUTPUT_FILE_PATH): $(OBJS)
 	@echo $@
-	$(CROSS)$(CC) -o $(OUTPUT_FILE_NAME).elf $(OBJS_AS_ARGS) -DSTACK_SIZE=4096 \
+	@$(CROSS)$(CC) -o $(OUTPUT_FILE_NAME).elf $(OBJS_AS_ARGS) -DSTACK_SIZE=4096 \
 -Wl,--start-group -lm -Wl,--end-group -mthumb \
--Wl,-Map="$(OUTPUT_FILE_NAME).map" --specs=nano.specs -Wl,--gc-sections -mcpu=cortex-m4 \
+--specs=nano.specs -Wl,--gc-sections -mcpu=cortex-m4 \
 -T"../gcc/gcc/samd51g19a_flash.ld" \
 -L"../gcc/gcc"
 
 	@echo Finished building target: $@
-	@$(CROSS)$(OBJCOPY) -O binary "$(OUTPUT_FILE_NAME).elf" "$(OUTPUT_FILE_NAME).bin"
 	@$(CROSS)$(OBJCOPY) -O ihex -R .eeprom -R .fuse -R .lock -R .signature \
         "$(OUTPUT_FILE_NAME).elf" "$(OUTPUT_FILE_NAME).hex"
-	@$(CROSS)$(OBJCOPY) -j .eeprom --set-section-flags=.eeprom=alloc,load --change-section-lma \
-        .eeprom=0 --no-change-warnings -O binary "$(OUTPUT_FILE_NAME).elf" \
-        "$(OUTPUT_FILE_NAME).eep" || exit 0
-	@$(CROSS)objdump -h -S "$(OUTPUT_FILE_NAME).elf" > "$(OUTPUT_FILE_NAME).lss"
 	@$(CROSS)size "$(OUTPUT_FILE_NAME).elf"
 
 # Compiler targets
@@ -440,12 +434,19 @@ $(SUB_DIRS):
 $(SUB_DIRS_USER):
 	$(MK_DIR) "$@"
 
-clean:
-	@echo "Cleaning..."
-	@rm -f $(OBJS_AS_ARGS) $(OBJS_AS_ARGS_USER)
-	@rm -f $(OUTPUT_FILE_PATH) $(OUTPUT_FILE_PATH_USER)
-	@rm -f $(DEPS_AS_ARGS) $(DEPS_AS_ARGS_USER)
-	@rm -f $(OUTPUT_FILE_NAME).a $(OUTPUT_FILE_NAME).hex $(OUTPUT_FILE_NAME).bin \
-        $(OUTPUT_FILE_NAME).lss $(OUTPUT_FILE_NAME).eep $(OUTPUT_FILE_NAME).map \
-        $(OUTPUT_FILE_NAME).srec
+user-clean:
+	@echo "Cleaning user..."
+	@rm -f $(OBJS_AS_ARGS_USER)
+	@rm -f $(DEPS_AS_ARGS_USER)
+	@rm -f $(OUTPUT_FILE_PATH_USER)
 	@rm -f $(OUTPUT_FILE_NAME_USER).bin $(OUTPUT_FILE_NAME_USER).hex
+
+system-clean:
+	@echo "Cleaning system..."
+	@rm -f $(OBJS_AS_ARGS) 
+	@rm -f $(OUTPUT_FILE_PATH) 
+	@rm -f $(DEPS_AS_ARGS) 
+	@rm -f $(OUTPUT_FILE_NAME).hex $(OUTPUT_FILE_NAME).bin
+
+clean: user-clean system-clean
+

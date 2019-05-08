@@ -14,8 +14,11 @@ static bool hotDispensing = false;
 static unsigned int hotTimeout = 0;
 static unsigned int mainAniImage = 0;
 static unsigned int mainAniCounter = 0;
+static unsigned int mainAniCounterMax = 2;
+static unsigned int timeDateCounter = 0;
 
 static void showHotDispense(bool show);
+static void setVisibilities(void);
 
 static void doPress(char letter, bool pressed)
 {
@@ -24,6 +27,7 @@ static void doPress(char letter, bool pressed)
 			mainDispensing = true;
 			mainAniImage = ANI1_HANDLE;
 			mainAniCounter = 0;
+			mainAniCounterMax = hotDispensing ? 6 : 2;
 			serialPrintf("$%c", letter);
 		}
 	} else {
@@ -53,8 +57,6 @@ static const LanguageString mainDispense2 ({
 	"FOR VAND"
 });
 
-static unsigned int timeDateCounter;
-
 static Screen Dispense (
 	// Our ID
 	ScreenID::Dispense,
@@ -64,6 +66,7 @@ static Screen Dispense (
 	[](void) {
 		timeDateCounter = 2000;
 		showHotDispense(false);
+		setVisibilities();
 	},
 	// Pre-draw function
 	[](void) {
@@ -191,5 +194,11 @@ void showHotDispense(bool show)
 	Dispense.getButton(4).setVisibility(show);
 	Dispense.getButton(5).setRender(show ? Button::drawBackArrow :
 		Button::drawDots);
+}
+
+void setVisibilities(void)
+{
+	Dispense.getButton(1).setVisibility(MainBoard::canDispenseHot());
+	Dispense.getButton(2).setVisibility(MainBoard::canDispenseSparkling());
 }
 
