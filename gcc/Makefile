@@ -381,6 +381,8 @@ $(OUTPUT_FILE_PATH_USER): $(OBJS_USER)
 -T"../gcc/gcc/samd51g19a_user.ld" \
 -L"../gcc/gcc"
 	@echo Finished building target: $@
+	@$(CROSS)$(OBJCOPY) -O binary "$(OUTPUT_FILE_NAME_USER).elf" \
+		"$(OUTPUT_FILE_NAME_USER).bin"
 	@$(CROSS)$(OBJCOPY) -O ihex -R .eeprom -R .fuse -R .lock -R .signature \
         "$(OUTPUT_FILE_NAME_USER).elf" "$(OUTPUT_FILE_NAME_USER).hex"
 	@$(CROSS)size $(OUTPUT_FILE_PATH_USER)
@@ -439,14 +441,15 @@ user-clean:
 	@rm -f $(OBJS_AS_ARGS_USER)
 	@rm -f $(DEPS_AS_ARGS_USER)
 	@rm -f $(OUTPUT_FILE_PATH_USER)
-	@rm -f $(OUTPUT_FILE_NAME_USER).bin $(OUTPUT_FILE_NAME_USER).hex
+	@rm -f $(OUTPUT_FILE_NAME_USER).bin $(OUTPUT_FILE_NAME_USER).hex \
+		$(OUTPUT_FILE_NAME_USER).elf
 
 system-clean:
 	@echo "Cleaning system..."
 	@rm -f $(OBJS_AS_ARGS) 
 	@rm -f $(OUTPUT_FILE_PATH) 
 	@rm -f $(DEPS_AS_ARGS) 
-	@rm -f $(OUTPUT_FILE_NAME).hex $(OUTPUT_FILE_NAME).bin
+	@rm -f $(OUTPUT_FILE_NAME).hex $(OUTPUT_FILE_NAME).elf
 
 clean: user-clean system-clean
 

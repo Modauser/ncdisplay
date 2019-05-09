@@ -120,7 +120,7 @@ void firmware_update(uint32_t addr, uint32_t count)
 
 	const uint32_t pageSize = flash_get_page_size(&FLASH_0);
 	uint32_t writeCount = pageSize;
-	uint32_t destAddr = 0x00080000;
+	uint32_t destAddr = 0x00040000;
 	uint8_t *srcAddr = (uint8_t *)addr;
 	while (count > 0) {
 		if (count < pageSize)
