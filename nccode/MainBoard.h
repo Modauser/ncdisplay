@@ -140,6 +140,8 @@ public:
 	static bool isLocked(void);
 	static void setLocked(bool locked);
 
+	static void clearDispenseError(void);
+
 	[[noreturn]]
 	static void autofill(void);
 

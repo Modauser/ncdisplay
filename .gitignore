@@ -4,4 +4,5 @@ gcc/**/*.d
 gcc/**/*.o
 *.elf
 *.hex
+*.bin
 

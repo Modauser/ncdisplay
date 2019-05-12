@@ -45,9 +45,7 @@ public:
 	inline static bool shouldDispense(void) {
 		return !dispenseFlag;
 	}
-	inline static void clearDispenseFlag(void) {
-		dispenseFlag = false;
-	}
+	static void clearDispenseFlag(void);
 };
 
 #endif // ERROR_H_

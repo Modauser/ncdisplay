@@ -76,8 +76,10 @@ static Screen FilterChangeTimer (
 		}
 	}),
 	Button({34, 210}, Button::drawUpButton, [](bool press) {
-		if (!press && filterTimerMonths < 12)
+		if (!press && filterTimerMonths < (filterTimerGallons == 750 ?
+			6 : 12)) {
 			filterTimerMonths += 3;
+		}
 	}),
 	Button({34, 282}, Button::drawDownButton, [](bool press) {
 		if (!press && filterTimerMonths > 3)

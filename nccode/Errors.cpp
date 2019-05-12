@@ -185,3 +185,9 @@ void Error::showSystemError(void)
 	while (1);
 }
 
+void Error::clearDispenseFlag(void)
+{
+	MainBoard::clearDispenseError();
+	dispenseFlag = false;
+}
+

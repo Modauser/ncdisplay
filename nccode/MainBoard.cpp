@@ -236,6 +236,11 @@ void MainBoard::setSleepmodeEnabled(bool en)
 	serialPrintf("@H%1u", en ? 1 : 0);
 }
 
+void MainBoard::clearDispenseError(void)
+{
+	serialPrintf("@J1");
+}
+
 void MainBoard::autofill(void)
 {
 	serialPrintf("@i3");
