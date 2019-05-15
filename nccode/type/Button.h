@@ -105,6 +105,7 @@ public:
 	}
 
 	void setRender(void (*_render)(const vec2&, bool));
+	void setRender(void (*_render)(const vec2&, bool, const LanguageString&));
 
 	// Below are provided custom render functions, that create commonly
 	// used UI elements:

@@ -16,6 +16,9 @@ int serialGet(void);
 constexpr int gal2liter(int gallons) {
 	return gallons * 4;
 }
+constexpr int FtoC(int f) {
+	return (f - 32) / 2;
+}
 
 enum class FilterType : char {
 	CarbonPlus = 0,
@@ -29,34 +32,30 @@ class MainBoard {
 private:
 	static bool inMetric;
 
-	static DateFormat date;
-	static char time[8];
+	static char date[Format::size::date];
+	static char time[9];
+	static bool ampm;
 
 	static int modelNumber;
 	static char serialNumber[16];
-	static char softwareVersion[4];
+	static char softwareVersion[6];
 
 	static int filterType;
 	static int filterRemaining;
 	static int filterMonthsRemaining;
-	static DateFormat filterLastChanged;
-	static GPMFormat flowRate;
+	static char filterLastChanged[Format::size::date];
+	static char flowRate[Format::size::flowRate];
 
 	static char serviceContact[200];
 
 	static unsigned int tankTemperatures[3];
-
-	//static GPMFormat flowCold;
-	//static GPMFormat flowAmbient;
-	//static GPMFormat flowHot;
-
-	//static int serialGet(void);
 
 	static const std::array<const char *, 5> filterTypes;
 	static const std::array<const char *, 5> filterReorders;
 
 public:
 	static inline bool isMetric(void) {
+		updateMetric();
 		return inMetric;
 	}
 	static void updateMetric(void);
@@ -65,7 +64,10 @@ public:
 		return time;
 	}
 	static inline const char *getDate(void) {
-		return date.get();
+		return date;
+	}
+	static inline bool is24Hour(void) {
+		return !ampm;
 	}
 	static void updateDateTime(void);
 
@@ -107,12 +109,12 @@ public:
 	static int updateFilterMonthsRemaining(void);
 
 	static inline const char *getFilterLastChanged(void) {
-		return filterLastChanged.get();
+		return filterLastChanged;
 	}
 	static const char *updateFilterLastChanged(void);
 
 	static inline const char *getFlowRate(void) {
-		return flowRate.get();
+		return flowRate;
 	}
 	static const char *updateFlowRate(void);
 

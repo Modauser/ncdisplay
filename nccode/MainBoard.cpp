@@ -26,20 +26,21 @@ const std::array<const char *, 5> MainBoard::filterReorders = {
 	"Unknown"
 };
 
-DateFormat MainBoard::date ('-');
-char MainBoard::time[8] = { 0, 0, ':', 0, 0, 0, 'M', '\0' };
+char MainBoard::date[Format::size::date];
+char MainBoard::time[9] = "";
+bool MainBoard::ampm = false;
 
 bool MainBoard::inMetric = false;
 
 int MainBoard::modelNumber = 0;
 char MainBoard::serialNumber[16] = "";
-char MainBoard::softwareVersion[4] = { '0', '.', '0', '\0' };
+char MainBoard::softwareVersion[6];
 
 int MainBoard::filterType = 0;
 int MainBoard::filterRemaining = 0;
 int MainBoard::filterMonthsRemaining = 0;
-DateFormat MainBoard::filterLastChanged;
-GPMFormat MainBoard::flowRate;
+char MainBoard::filterLastChanged[Format::size::date];
+char MainBoard::flowRate[Format::size::flowRate];
 
 char MainBoard::serviceContact[200] = "";
 
@@ -61,27 +62,30 @@ void MainBoard::updateMetric(void)
 
 void MainBoard::updateDateTime(void)
 {
-	int val;
+	char timeSuffix[3] = {
+		'\0', 'A', 'M'
+	};
 
 	serialPrintf("@T");
-	val = serialGet(); // Hour
-	time[0] = val / 10 + '0';
-	time[1] = val % 10 + '0';
-	val = serialGet(); // Minute
-	time[3] = val / 10 + '0';
-	time[4] = val % 10 + '0';
-	serialGet(); // Second, unused
-	val = serialGet(); // AM/PM
-	if (val == 2)
-		time[5] = '\0';
-	else
-		time[5] = (val ? 'P' : 'A');
+	int h = serialGet();
+	int m = serialGet();
+	/*int s =*/serialGet(); // Seconds unused
+	int rawampm = serialGet();
+	ampm = rawampm < 2;
+	if (ampm) {
+		timeSuffix[0] = ' ';
+		timeSuffix[1] = (rawampm == 1) ? 'P' : 'A';
+	} else {
+		timeSuffix[0] = '\0';
+	}
+
+	sprintf(time, "%d:%02d%s", h, m, timeSuffix);
 
 	serialPrintf("@D");
-	val = serialGet() << 16; // Month
+	uint32_t val = serialGet() << 16; // Month
 	val |= serialGet() << 8; // Day
 	val |= serialGet(); // Year
-	date.format(val);
+	Format::date(date, val, '-');
 }
 
 int MainBoard::updateModelNumber(void) {
@@ -99,8 +103,9 @@ const char *MainBoard::updateSerialNumber(void) {
 
 const char *MainBoard::updateSoftwareVersion(void) {
 	serialPrintf("@#");
-	softwareVersion[0] = serialGet();
-	softwareVersion[2] = serialGet();
+	int major = serialGet();
+	int minor = serialGet();
+	sprintf(softwareVersion, "%d.%d", major, minor);
 	return softwareVersion;
 }
 
@@ -130,15 +135,14 @@ const char *MainBoard::updateFilterLastChanged(void)
 	int val = serialGet() << 16; // Month
 	val |= serialGet() << 8; // Day
 	val |= serialGet(); // Year
-	filterLastChanged.format(val);
-	return filterLastChanged.get();
+	Format::date(filterLastChanged, val);
+	return filterLastChanged;
 }
 
 const char *MainBoard::updateFlowRate(void) {
 	serialPrintf("@F");
-	flowRate.format(serialGet());
-	flowRate.setUnits(inMetric);
-	return flowRate.get();
+	Format::flowRate(flowRate, serialGet());
+	return flowRate;
 }
 
 const char *MainBoard::updateServiceContact(void) {

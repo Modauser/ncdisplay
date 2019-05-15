@@ -58,6 +58,11 @@ void Button::setRender(void (*_render)(const vec2&, bool))
 	render = (void *)_render;
 }
 
+void Button::setRender(void (*_render)(const vec2&, bool, const LanguageString&))
+{
+	render = (void *)_render;
+}
+
 void Button::doAction(void)
 {
 	if (action != nullptr)

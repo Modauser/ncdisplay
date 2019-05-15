@@ -19,6 +19,7 @@ static unsigned int timeDateCounter = 0;
 
 static void showHotDispense(bool show);
 static void setVisibilities(void);
+void bigDispenseButton(const vec2& xy, bool pressed, const LanguageString& text);
 
 static void doPress(char letter, bool pressed)
 {
@@ -233,16 +234,46 @@ void showHotDispense(bool show)
 {
 	hotDispensing = show;
 	hotTimeout = 0;
-	for (unsigned int i = 0; i < 4; i++)
-		Dispense.getButton(i).setVisibility(!show);
 	Dispense.getButton(4).setVisibility(show);
 	Dispense.getButton(5).setRender(show ? Button::drawBackArrow :
 		Button::drawDots);
+	if (show) {
+		for (unsigned int i = 0; i < 4; i++)
+			Dispense.getButton(i).setVisibility(false);
+	} else {
+		Dispense.getButton(0).setVisibility(true);
+		Dispense.getButton(3).setVisibility(true);
+		setVisibilities();
+	}
 }
 
 void setVisibilities(void)
 {
+	auto model = MainBoard::getModelNumber();
+	if (model < 3)
+		Dispense.getButton(0).setRender(bigDispenseButton);
 	Dispense.getButton(1).setVisibility(MainBoard::canDispenseHot());
 	Dispense.getButton(2).setVisibility(MainBoard::canDispenseSparkling());
+
+	if (!MainBoard::canDispenseHot()) {
+		if (MainBoard::canDispenseSparkling()) {
+			Dispense.getButton(2).setPosition({0, 370});
+		} else {
+			Dispense.getButton(3).setPosition({0, 370});
+			Dispense.getButton(3).setRender(bigDispenseButton);
+		}
+	}
+}
+
+void bigDispenseButton(const vec2& xy, bool pressed, const LanguageString& text)
+{
+	// Rectangle
+	GD.Begin(RECTS);
+	GD.ColorRGB(pressed ? 0x0c3d6b : NC_FRGND_COLOR);
+	GD.Vertex2ii(xy.x, xy.y);
+	GD.Vertex2ii(xy.x + 272, xy.y + 68);
+
+	GD.ColorRGB(WHITE);
+	GD.cmd_text(xy.x + 136, xy.y + 33, FONT_SMALL, OPT_CENTER, text(), 20);
 }
 

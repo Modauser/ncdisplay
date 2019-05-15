@@ -9,15 +9,15 @@
 
 #include <gameduino2/GD2.h>
 
-static char serviceFlowCold[] = { 0, 0, '.', 0, ' ', 0, 0, 0, '\0' };
-static char serviceFlowAmbi[] = { 0, 0, '.', 0, ' ', 0, 0, 0, '\0' };
-static char serviceFlowHot[] = { 0, 0, '.', 0, ' ', 0, 0, 0, '\0' };
+static char serviceFlowCold[Format::size::flowRate];
+static char serviceFlowAmbi[Format::size::flowRate];
+static char serviceFlowHot[Format::size::flowRate];
 
-static char serviceTempIce[] = { 0, 0, 0, ' ', 0, '\0' };
-static char serviceTempHot[] = { 0, 0, 0, ' ', 0, '\0' };
+static char serviceTempIce[Format::size::temperature];
+static char serviceTempHot[Format::size::temperature];
 static bool serviceMetric;
 
-static DateFormat serviceLastChanged;
+static char serviceLastChanged[Format::size::date];
 
 struct ServiceLogEntry {
 	char date[32];
@@ -25,33 +25,6 @@ struct ServiceLogEntry {
 };
 
 static ServiceLogEntry serviceLog[3];
-
-static void getFlowRate(unsigned char v, char *s)
-{
-	s[3] = (v % 10) + '0';
-	v /= 10;
-	s[1] = (v % 10) + '0';
-	v /= 10;
-	s[0] = (v == 0) ? ' ' : (v % 10) + '0';
-
-	if (serviceMetric) {
-		s[5] = 'L';
-	} else {
-		s[5] = 'G';
-		s[6] = 'P';
-		s[7] = 'M';
-	}
-}
-
-static void getTemp(unsigned char v, char *s)
-{
-	s[2] = (v % 10) + '0';
-	v /= 10;
-	s[1] = (v % 10) + '0';
-	v /= 10;
-	s[0] = (v % 10) + '0';
-	s[4] = serviceMetric ? 'C' : 'F';
-}
 
 static void getServiceLog(ServiceLogEntry& e)
 {
@@ -96,21 +69,27 @@ static Screen ServiceDetails (
 		serviceMetric = (serialGet() != 0);
 
 		serialPrintf("@a");
-		getFlowRate(serialGet(), serviceFlowCold);
+		Format::flowRate(serviceFlowCold, serialGet());
 		serialPrintf("@b");
-		getFlowRate(serialGet(), serviceFlowAmbi);
+		Format::flowRate(serviceFlowAmbi, serialGet());
 		serialPrintf("@c");
-		getFlowRate(serialGet(), serviceFlowHot);
+		Format::flowRate(serviceFlowHot, serialGet());
 		serialPrintf("@d");
-		getTemp(serialGet(), serviceTempIce);
+		int temp = serialGet();
+		if (MainBoard::isMetric())
+			temp = FtoC(temp);
+		Format::temperature(serviceTempIce, temp);
 		serialPrintf("@e");
-		getTemp(serialGet(), serviceTempHot);
+		temp = serialGet();
+		if (MainBoard::isMetric())
+			temp = FtoC(temp);
+		Format::temperature(serviceTempHot, temp);
 
 		serialPrintf("@(");
 		int val = serialGet() << 16;
 		val |= serialGet() << 8;
 		val |= serialGet();
-		serviceLastChanged.format(val);
+		Format::date(serviceLastChanged, val);
 
 		for (int i = 0; i < 3; i++)
 			getServiceLog(serviceLog[i]);
@@ -151,7 +130,7 @@ static Screen ServiceDetails (
 
 		GD.cmd_text(20, 215, FONT_SMALL, 0, serviceTempIce);
 		GD.cmd_text(20, 265, FONT_SMALL, 0, serviceTempHot);
-		GD.cmd_text(20, 315, FONT_SMALL, 0, serviceLastChanged.get());
+		GD.cmd_text(20, 315, FONT_SMALL, 0, serviceLastChanged);
 
 		for (int i = 0; i < 3; i++) {
 			if (*serviceLog[i].date == '\0')

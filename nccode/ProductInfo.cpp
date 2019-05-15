@@ -9,8 +9,10 @@
 
 #include <fatfs/ff.h>
 #include <gameduino2/GD2.h>
+#include <cstdio>
 
-static char piModelString[] = "ION TS 00";
+constexpr const char *piModelStringFormat = "ION TS%1u00";
+static char piModelString[10];
 
 static Screen ProductInfo (
 	ScreenID::ProductInfo,
@@ -27,7 +29,8 @@ static Screen ProductInfo (
 		MainBoard::updateFlowRate();
 		MainBoard::updateServiceContact();
 
-		piModelString[6] = '1' + MainBoard::getModelNumber();
+		sprintf(piModelString, piModelStringFormat, 1 + MainBoard::
+			getModelNumber());
 	},
 	// Pre-draw function
 	[](void) {

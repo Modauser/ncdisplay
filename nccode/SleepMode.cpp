@@ -8,16 +8,18 @@
 #include "MainBoard.h"
 #include "Settings.h"
 
+#include <cctype>
 #include <gameduino2/GD2.h>
 
 static bool sleepModeOn = false;
 static bool sleepSettingHours = false;
 static bool sleepSettingWeekday = false;
 
-static AMPMFormat sleepHourString;
-
+static char sleepHourStrings[4][Format::size::hour + 2] = {
+	"", "- ", "", "- "
+};
 static unsigned int sleepHours[4] = {
-	0, 0, 0, 0
+	25, 25, 25, 25
 };
 
 static const LanguageString smWeekdays ({
@@ -49,6 +51,16 @@ static Screen SleepMode (
 
 		updateAfterToggle();
 		sleepSetVisibilities();
+
+		if (!sleepModeOn) {
+			sprintf(sleepHourStrings[0], "ALL");
+			sprintf(sleepHourStrings[2], "ALL");
+		} else {
+			if (sleepHours[0] == 25)
+				sprintf(sleepHourStrings[0], "OFF");
+			if (sleepHours[2] == 25)
+				sprintf(sleepHourStrings[2], "OFF");
+		}
 	},
 	// Pre-draw function
 	[](void) {
@@ -68,8 +80,15 @@ static Screen SleepMode (
 				"HEURES DE FONCTIONNEMENT",
 				"HORAS DE FUNCIONAMIENTO"
 			})());
-			GD.cmd_text(20, 215, FONT_LIGHT, 0, smWeekdays());
-			GD.cmd_text(20, 235, FONT_LIGHT, 0, smWeekend());
+			GD.cmd_text(20, 240, FONT_LIGHT, 0, smWeekdays());
+			GD.cmd_text(20, 260, FONT_LIGHT, 0, smWeekend());
+
+			GD.cmd_text(160, 240, FONT_SMALL, 0, sleepHourStrings[0]);
+			if (isdigit(sleepHourStrings[0][0]))
+				GD.cmd_text(200, 240, FONT_SMALL, 0, sleepHourStrings[1]);
+			GD.cmd_text(160, 260, FONT_SMALL, 0, sleepHourStrings[2]);
+			if (isdigit(sleepHourStrings[2][0]))
+				GD.cmd_text(200, 260, FONT_SMALL, 0, sleepHourStrings[3]);
 		} else {
 			GD.cmd_text(136, 150, FONT_TITLE, OPT_CENTER, LanguageString({
 				"Set Operating Hours",
@@ -90,9 +109,9 @@ static Screen SleepMode (
 
 			int i = sleepSettingWeekday ? 0 : 2;
 			GD.cmd_text(69, 263, FONT_SMALL, OPT_CENTER,
-				sleepHourString.format(sleepHours[i]));
+				sleepHourStrings[i]);
 			GD.cmd_text(203, 263, FONT_SMALL, OPT_CENTER,
-				sleepHourString.format(sleepHours[i + 1]));
+				sleepHourStrings[i + 1]);
 		}
 	},
 	// Buttons

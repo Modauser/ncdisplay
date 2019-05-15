@@ -1,5 +1,5 @@
-target remote localhost:3333
 file User.elf
+target remote localhost:3333
 load
 mon reset
 

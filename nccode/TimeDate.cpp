@@ -53,7 +53,6 @@ static Screen TimeDate (
 	// Initialization function
 	[](void) {
 		timeSetting = true;
-		ampm = true;
 
 		serialPrintf("@T");
 		timeDate[0] = serialGet(); // Hour
@@ -106,7 +105,7 @@ static Screen TimeDate (
 		if (timeSetting) {
 			if (ampm) {
 				GD.cmd_text(221, 244, FONT_SMALL, OPT_CENTER,
-					timeDate[idx + 2] ? "PM" : "AM");
+					(timeDate[idx + 2] > 0) ? "PM" : "AM");
 			}
 		} else {
 			GD.cmd_number(221, 244, FONT_SMALL, OPT_CENTER,
@@ -265,9 +264,13 @@ void set24Hour(bool is24)
 {
 	ampm = !is24;
 	if (ampm) {
-		timeDate[2] = timeDate[0] > 12;
-		if (timeDate[0] > 12)
+		if (timeDate[0] > 12) {
 			timeDate[0] -= 12;
+			timeDate[2] = 1;
+		}
+
+		if (timeDate[2] > 1)
+			timeDate[2] = 0;
 	} else {
 		if (timeDate[2] != 0 && timeDate[0] < 12)
 			timeDate[0] += 12;
@@ -286,16 +289,19 @@ void set24Hour(bool is24)
 void setTimeView(void)
 {
 	timeSetting = true;
-	TimeDate.getButton(5).setVisibility(ampm);
-	TimeDate.getButton(6).setVisibility(ampm);
 	TimeDate.getButton(7).setVisibility(true);
 	TimeDate.getButton(8).setVisibility(true);
 	TimeDate.getButton(9).setText(lStringNext);
+	set24Hour(!ampm);
 }
 
 void setDateView(void)
 {
 	timeSetting = false;
+	TimeDate.getButton(1).setPosition({14, 190});
+	TimeDate.getButton(2).setPosition({14, 262});
+	TimeDate.getButton(3).setPosition({100, 190});
+	TimeDate.getButton(4).setPosition({100, 262});
 	TimeDate.getButton(5).setVisibility(true);
 	TimeDate.getButton(6).setVisibility(true);
 	TimeDate.getButton(7).setVisibility(false);

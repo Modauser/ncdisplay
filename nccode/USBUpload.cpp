@@ -20,7 +20,7 @@ static Screen USBUpload (
 		clearScreenWithIonHeader();
 
 		GD.Begin(BITMAPS);
-		GD.Vertex2ii(112, 176, FREE_HANDLE);
+		GD.Vertex2ii(112, 196, FREE_HANDLE);
 
 		GD.ColorRGB(NC_FRGND_COLOR);
 		GD.cmd_text(136, 150, FONT_TITLE, OPT_CENTERX, LanguageString({

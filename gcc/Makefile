@@ -116,6 +116,7 @@ nccode/type/Button.o \
 nccode/type/ScreenInterface.o \
 nccode/type/LanguageString.o \
 nccode/type/Assets.o \
+nccode/type/Formatters.o \
 nccode/Dispense.o \
 nccode/SettingsMenu.o \
 nccode/Language.o \
@@ -207,6 +208,7 @@ OBJS_AS_ARGS_USER += \
 "nccode/type/ScreenInterface.o" \
 "nccode/type/LanguageString.o" \
 "nccode/type/Assets.o" \
+"nccode/type/Formatters.o" \
 "nccode/Dispense.o" \
 "nccode/SettingsMenu.o" \
 "nccode/Language.o" \
@@ -302,6 +304,7 @@ DEPS_AS_ARGS_USER += \
 "nccode/type/ScreenInterface.d" \
 "nccode/type/LanguageString.d" \
 "nccode/type/Assets.d" \
+"nccode/type/Formatters.d" \
 "nccode/Dispense.d" \
 "nccode/SettingsMenu.d" \
 "nccode/Language.d" \
@@ -377,7 +380,7 @@ $(OUTPUT_FILE_PATH_USER): $(OBJS_USER)
 	@echo $@
 	@$(CROSS)$(CC) -o $(OUTPUT_FILE_PATH_USER) $(OBJS_AS_ARGS_USER) -DSTACK_SIZE=4096 \
 -Wl,--start-group -lm -Wl,--end-group -mthumb \
---specs=nano.specs -Wl,--gc-sections -mcpu=cortex-m4 \
+--specs=nano.specs --specs=nosys.specs -Wl,--gc-sections -mcpu=cortex-m4 \
 -T"../gcc/gcc/samd51g19a_user.ld" \
 -L"../gcc/gcc"
 	@echo Finished building target: $@

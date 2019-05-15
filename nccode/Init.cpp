@@ -73,7 +73,7 @@ void showFatalError(const char *msg)
 	GD.ClearColorRGB(NC_BKGND_COLOR);
 	GD.Clear();
 	GD.ColorRGB(NC_FRGND_COLOR);
-	GD.cmd_text(0, 0, FONT_MESG, 0, msg);
+	GD.cmd_text(0, 0, 18, 0, msg);
 	GD.swap();
 	while (1)
 		delay_ms(1000);
