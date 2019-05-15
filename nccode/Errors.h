@@ -46,6 +46,8 @@ public:
 		return !dispenseFlag;
 	}
 	static void clearDispenseFlag(void);
+
+	static void messageBox(uint32_t color, const char *message);
 };
 
 #endif // ERROR_H_

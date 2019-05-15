@@ -24,7 +24,7 @@ static Screen Warning (
 
 		GD.Begin(BITMAPS);
 		GD.ColorRGB(0xDD0000);
-		GD.Vertex2ii(0, 30, HOMEWTR_HANDLE);
+		GD.Vertex2ii(0, 40, HOMEWTR_HANDLE);
 
 		GD.ColorRGB(0xFF0000);
 		GD.Begin(RECTS);

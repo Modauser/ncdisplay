@@ -34,6 +34,7 @@ static Screen SystemOptions (
 		sysOptionToggles[4] = serialGet();
 		serialPrintf("@X");
 		sysOptionMetric = serialGet();
+		setMetric(sysOptionMetric);
 	},
 	// Pre-draw function
 	[](void) {

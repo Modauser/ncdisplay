@@ -109,29 +109,30 @@ void Error::showStartup(void)
 	show();
 }
 
+void Error::messageBox(uint32_t color, const char *message)
+{
+	// Draw message box
+	GD.ColorRGB(color);
+	GD.Begin(RECTS);
+	GD.Vertex2ii(20, 210);
+	GD.Vertex2ii(250, 266);
+	GD.ColorRGB(WHITE);
+	GD.Vertex2ii(22, 212);
+	GD.Vertex2ii(248, 264);
+
+	// Put error message
+	GD.ColorRGB(color);
+	GD.cmd_text(136, 238, FONT_MESG, OPT_CENTER, message);
+}
+
 void Error::show(void)
 {
-	auto messageBox = [](uint32_t border) {
-		// Draw message box
-		GD.ColorRGB(border);
-		GD.Begin(RECTS);
-		GD.Vertex2ii(20, 210);
-		GD.Vertex2ii(250, 266);
-		GD.ColorRGB(WHITE);
-		GD.Vertex2ii(22, 212);
-		GD.Vertex2ii(248, 264);
-
-		// Put error message
-		GD.ColorRGB(BLACK);
-		GD.cmd_text(135, 238, FONT_MESG, OPT_CENTER, message);
-	};
-
 	switch (lastError.type) {
 	case ErrorType::Green:
-		messageBox(0x00FF00);
+		messageBox(0x00FF00, message);
 		break;
 	case ErrorType::Red:
-		messageBox(0xFF0000);
+		messageBox(0xFF0000, message);
 		break;
 	case ErrorType::System:
 		showSystemError();

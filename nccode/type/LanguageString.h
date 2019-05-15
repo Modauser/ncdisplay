@@ -64,11 +64,17 @@ public:
 	// Returns true if this object was initialized with non-empty values
 	bool empty(void) const; 
 
+
+
 	// Sets the current language for all LanguageStrings
 	static void setCurrentLanguage(Language l);
 
 	// Converts file special characters to font characters
 	static char *convertFileText(char *);
+
+	inline static const Language& getCurrentLanguage(void) {
+		return currentLanguage;
+	}
 };
 
 // Some common strings predefined to save space

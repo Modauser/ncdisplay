@@ -100,6 +100,10 @@ public:
 	// Sets the button's visibility (button can't be pressed when invisible)
 	void setVisibility(bool v);
 
+	inline void setPosition(vec2 _xy) {
+		xy = _xy;
+	}
+
 	void setRender(void (*_render)(const vec2&, bool));
 
 	// Below are provided custom render functions, that create commonly

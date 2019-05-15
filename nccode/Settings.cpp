@@ -7,7 +7,7 @@
 
 #include <fatfs/ff.h>
 
-std::array<char[50], 23> Settings::Labels = {
+std::array<char[Settings::LabelSize], 23> Settings::Labels = {
 };
 char Settings::Password[4] = { '1', '2', '3', '4' };
 
@@ -37,7 +37,7 @@ void Settings::loadLabels(void)
 		return;
 
 	for (unsigned int i = 0; i < Labels.size(); i++)
-		f_gets(Labels[i], 50, &fd);
+		f_gets(Labels[i], LabelSize, &fd);
 
 	f_close(&fd);
 }

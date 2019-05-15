@@ -24,6 +24,10 @@ static Screen Lock (
 	[](void) {
 		clearScreenWithIonHeader();
 
+		GD.Begin(RECTS);
+		GD.Vertex2ii(0, 120);
+		GD.Vertex2ii(272, 120);
+
 		GD.ColorRGB(NC_FRGND_COLOR);
 		GD.cmd_text(20, 90, FONT_TITLE, OPT_CENTERY, LanguageString({
 			"Passcode",

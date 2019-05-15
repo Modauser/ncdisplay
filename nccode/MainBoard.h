@@ -17,6 +17,14 @@ constexpr int gal2liter(int gallons) {
 	return gallons * 4;
 }
 
+enum class FilterType : char {
+	CarbonPlus = 0,
+	CarbonPro,
+	FiberTek,
+	CarbonPhos,
+	CarbonSilv
+};
+
 class MainBoard {
 private:
 	static bool inMetric;
@@ -76,8 +84,8 @@ public:
 	}
 	static const char *updateSoftwareVersion(void);
 
-	static inline int getFilterType(void) {
-		return filterType;
+	static inline FilterType getFilterType(void) {
+		return static_cast<FilterType>(filterType);
 	}
 	static int updateFilterType(void);
 

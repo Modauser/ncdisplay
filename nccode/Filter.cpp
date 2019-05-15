@@ -52,13 +52,27 @@ static Screen Filter (
 			"CONTAMINANTES ELIMINADOS"
 		})());
 
-		// TODO
-		GD.cmd_text(20, 260, FONT_SMALL, 0, LanguageString({
-			"Chlorine, Taste, Odor, Lead, Cysts",
-			"Chlor, Geschmack, Geruch, Blei, Zysten",
-			"Chlore, Go" u_HAT "t, Odeur, Plomb, Kystes",
-			"Clorina, Sabor, Olor, Plomo, Quistes"
-		})());
+		unsigned int cy = 260;
+		GD.cmd_text(20, cy, FONT_SMALL, 0, Settings::getLabel(
+			Settings::Contaminants1));
+
+		auto filterType = MainBoard::getFilterType();
+		if (filterType == FilterType::CarbonPro) {
+			cy += 20;
+			GD.cmd_text(20, cy, FONT_SMALL, 0, Settings::getLabel(
+				Settings::Contaminants2));
+		} else if (filterType == FilterType::CarbonPhos) {
+			cy += 20;
+			GD.cmd_text(20, cy, FONT_SMALL, 0, Settings::getLabel(
+				Settings::Contaminants3));
+		}
+
+//		GD.cmd_text(20, 260, FONT_SMALL, 0, LanguageString({
+//			"Chlorine, Taste, Odor, Lead, Cysts",
+//			"Chlor, Geschmack, Geruch, Blei, Zysten",
+//			"Chlore, Go" u_HAT "t, Odeur, Plomb, Kystes",
+//			"Clorina, Sabor, Olor, Plomo, Quistes"
+//		})());
 	},
 	// Buttons
 	Button({0, 0}, Button::drawBackArrow, [](bool pressed) {

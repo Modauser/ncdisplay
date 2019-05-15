@@ -27,7 +27,7 @@ static void doPress(char letter, bool pressed)
 			mainDispensing = true;
 			mainAniImage = ANI1_HANDLE;
 			mainAniCounter = 0;
-			mainAniCounterMax = hotDispensing ? 6 : 2;
+			mainAniCounterMax = hotDispensing ? 4 : 2;
 			serialPrintf("$%c", letter);
 		}
 	} else {
@@ -56,6 +56,30 @@ static const LanguageString mainDispense2 ({
 	" ",
 	"FOR VAND"
 });
+static const LanguageString warningHot ({
+	"WARNING: HOT!",
+	"VORSICHT: HEI" ESZETT "!",
+	"ATTENTION: CHAUD!",
+	"ADVERTENCIA: CALIENTE!",
+	"WAARSCHUWING: HEET!",
+	"VARNING: HETT!",
+	"ADVARSEL: VARMT VANN!",
+	"ADVARSEL: VARMT!",
+});
+static const LanguageString dispenseHot ({
+	"DISPENSE HOT",
+	"AUSGABE HEI" ESZETT,
+	"VERSER CHAUD",
+	"DISPENSAR AGUA CALIENTE",
+	"HEET WATER",
+	"LEVERERA HETVATTEN",
+	"VARMT VANN",
+	"TRYK FOR VARMT VAND"
+});
+static const unsigned int warningHotWidths[] = {
+	11 * 13, 11 * 15, 11 * 17, 11 * 22,
+	11 * 19, 11 * 14, 11 * 21, 11 * 16
+};
 
 static Screen Dispense (
 	// Our ID
@@ -76,7 +100,7 @@ static Screen Dispense (
 			GD.Begin(RECTS);
 			GD.Vertex2ii(0, 296);
 			GD.Vertex2ii(272, 440);
-		} else if (!mainDispensing && ++hotTimeout >= 300) {
+		} else if (!mainDispensing && ++hotTimeout >= 200) {
 			showHotDispense(false);
 		}
 
@@ -84,7 +108,7 @@ static Screen Dispense (
 		if (mainDispensing) {
 			GD.Vertex2ii(76, 0, mainAniImage); // Flow animation image
 
-			if (++mainAniCounter >= 2) {
+			if (++mainAniCounter >= mainAniCounterMax) {
 				mainAniCounter = 0;
 				if (++mainAniImage > ANI3_HANDLE)
 					mainAniImage = ANI1_HANDLE;
@@ -99,17 +123,36 @@ static Screen Dispense (
 
 			// Time and date
 			GD.ColorRGB(BLACK);
-			GD.cmd_text(15, 450, FONT_TIME, 0, MainBoard::getTime());
-			GD.cmd_text(202, 450, FONT_TIME, 0, MainBoard::getDate());
+			GD.cmd_text(90, 460, FONT_TIME, OPT_CENTER,
+				MainBoard::getTime());
+			GD.cmd_text(186, 460, FONT_TIME, OPT_CENTER,
+				MainBoard::getDate());
+
+			if (hotDispensing) {
+				auto halfwidth = warningHotWidths[static_cast<int>(
+					LanguageString::getCurrentLanguage())] / 2;
+				// Draw message box
+				GD.ColorRGB(0xFF0000);
+				GD.Begin(RECTS);
+				GD.Vertex2ii(134 - halfwidth, 225);
+				GD.Vertex2ii(138 + halfwidth, 255);
+				GD.ColorRGB(WHITE);
+				GD.Vertex2ii(136 - halfwidth, 227);
+				GD.Vertex2ii(136 + halfwidth, 253);
+			
+				// Put error message
+				GD.ColorRGB(0xFF0000);
+				GD.cmd_text(136, 238, FONT_MESG, OPT_CENTER,
+					warningHot());
+			} else if (Error::hasError()) {
+				Error::show();
+			}
 		}
 
 		++timeDateCounter;
 		// Check for errors
 		if ((timeDateCounter % 500) == 0)
 			Error::check();
-
-		if (Error::hasError())
-			Error::show();
 
 		// Update date/time
 		if (timeDateCounter >= 2000) {
@@ -140,7 +183,8 @@ static Screen Dispense (
 		"VARMT",
 		"VARMT"
 	}, [](bool pressed) {
-		showHotDispense(true);
+		if (!pressed)
+			showHotDispense(true);
 	}),
 	Button({138, 298}, Button::drawDispenserItem, {
 		"SPARKLING",
@@ -166,7 +210,7 @@ static Screen Dispense (
 	}, [](bool pressed) {
 		doPress('A', pressed);
 	}),
-	Button({0, 298}, Button::drawRedFullWidth, "DISPENSE HOT",
+	Button({0, 298}, Button::drawRedFullWidth, dispenseHot,
 	[](bool pressed) {
 		hotTimeout = 0;
 		doPress('H', pressed);

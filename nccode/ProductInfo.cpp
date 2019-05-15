@@ -10,6 +10,8 @@
 #include <fatfs/ff.h>
 #include <gameduino2/GD2.h>
 
+static char piModelString[] = "ION TS 00";
+
 static Screen ProductInfo (
 	ScreenID::ProductInfo,
 	// Parent screen
@@ -24,6 +26,8 @@ static Screen ProductInfo (
 		MainBoard::updateFilterRemaining();
 		MainBoard::updateFlowRate();
 		MainBoard::updateServiceContact();
+
+		piModelString[6] = '1' + MainBoard::getModelNumber();
 	},
 	// Pre-draw function
 	[](void) {
@@ -41,7 +45,7 @@ static Screen ProductInfo (
 		GD.cmd_text(21,  130, FONT_SMALL, 0, Settings::getLabel(1));
 		GD.cmd_text(20,  150, FONT_SMALL, 0, Settings::getLabel(2));
 
-	      GD.cmd_number(140, 110, FONT_SMALL, 0, MainBoard::getModelNumber());
+		GD.cmd_text(140, 110, FONT_SMALL, 0, piModelString);
 		GD.cmd_text(140, 130, FONT_SMALL, 0, MainBoard::getSerialNumber());
 		GD.cmd_text(140, 150, FONT_SMALL, 0, MainBoard::getSoftwareVersion());
 

@@ -8,21 +8,21 @@
 
 #include <gameduino2/GD2.h>
 
-// Load extra images right after the gd3asset file
-static uint32_t imageNextAddress = ASSETS_END;
-void loadImage(int handle, const char *path)
-{
-  uint32_t base, width, height;
+uint32_t FREE_MEM = ASSETS_END;
 
-  imageNextAddress = (imageNextAddress + 1024) & ~1023;
+void loadImage(int handle, const char *path, uint32_t addr)
+{
+  //uint32_t base, width, height;
+
+  addr = (addr + 1024) & ~1023;
 
   GD.BitmapHandle(handle);
-  GD.cmd_loadimage(imageNextAddress, 0);
+  GD.cmd_loadimage(addr, 0);
   GD.load(path);
-  GD.cmd_getprops(base, width, height);
+  //GD.cmd_getprops(base, width, height);
   GD.finish();
   
-  imageNextAddress = base + width * height * 2;
+  //imageNextAddress = base + width * height * 2;
 }
 
 void displayInit(void)
@@ -72,6 +72,7 @@ void loadAssets(void)
 	freeAddress = fontLoad(FONT_LIGHT, Roboto14Header, "roboto14.dat", freeAddress);
 	freeAddress = fontLoad(FONT_TITLE, Roboto20Header, "roboto20.dat", freeAddress);
 
+	FREE_MEM = freeAddress;
 	GD.loadptr = freeAddress;
 }
 

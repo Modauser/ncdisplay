@@ -76,13 +76,15 @@ public:
 	}
 };
 		
-class DateFormat : public NumFormat<9> {
+class DateFormat : public NumFormat<11> {
 public:
 	constexpr DateFormat(char splitter = '/')
 		: NumFormat() {
 		buffer[2] = splitter;
 		buffer[5] = splitter;
-		buffer[8] = '\0';
+		buffer[6] = '2';
+		buffer[7] = '0';
+		buffer[10] = '\0';
 	}
 
 	// Takes in 24-bit number: 0xMMDDYY
@@ -97,8 +99,8 @@ public:
 		buffer[4] = '0' + n % 10;
 
 		n = number & 0xFF;
-		buffer[6] = '0' + n / 10;
-		buffer[7] = '0' + n % 10;
+		buffer[8] = '0' + n / 10;
+		buffer[9] = '0' + n % 10;
 
 		return get();
 	}

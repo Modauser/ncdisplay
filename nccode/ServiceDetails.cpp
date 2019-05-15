@@ -13,8 +13,8 @@ static char serviceFlowCold[] = { 0, 0, '.', 0, ' ', 0, 0, 0, '\0' };
 static char serviceFlowAmbi[] = { 0, 0, '.', 0, ' ', 0, 0, 0, '\0' };
 static char serviceFlowHot[] = { 0, 0, '.', 0, ' ', 0, 0, 0, '\0' };
 
-static unsigned char serviceTempIce = 0;
-static unsigned char serviceTempHot = 0;
+static char serviceTempIce[] = { 0, 0, 0, ' ', 0, '\0' };
+static char serviceTempHot[] = { 0, 0, 0, ' ', 0, '\0' };
 static bool serviceMetric;
 
 static DateFormat serviceLastChanged;
@@ -41,6 +41,16 @@ static void getFlowRate(unsigned char v, char *s)
 		s[6] = 'P';
 		s[7] = 'M';
 	}
+}
+
+static void getTemp(unsigned char v, char *s)
+{
+	s[2] = (v % 10) + '0';
+	v /= 10;
+	s[1] = (v % 10) + '0';
+	v /= 10;
+	s[0] = (v % 10) + '0';
+	s[4] = serviceMetric ? 'C' : 'F';
 }
 
 static void getServiceLog(ServiceLogEntry& e)
@@ -92,9 +102,9 @@ static Screen ServiceDetails (
 		serialPrintf("@c");
 		getFlowRate(serialGet(), serviceFlowHot);
 		serialPrintf("@d");
-		serviceTempIce = serialGet();
+		getTemp(serialGet(), serviceTempIce);
 		serialPrintf("@e");
-		serviceTempHot = serialGet();
+		getTemp(serialGet(), serviceTempHot);
 
 		serialPrintf("@(");
 		int val = serialGet() << 16;
@@ -108,6 +118,10 @@ static Screen ServiceDetails (
 	// Pre-draw function
 	[](void) {
 		clearScreenWithIonHeader();
+
+		GD.Begin(RECTS);
+		GD.Vertex2ii(0, 185);
+		GD.Vertex2ii(272, 185);
 
 		GD.ColorRGB(NC_FDGND_COLOR);
 		GD.cmd_text(136, 70, FONT_LARGE, OPT_CENTER, LanguageString({
@@ -135,8 +149,8 @@ static Screen ServiceDetails (
 		GD.cmd_text(20, 295, FONT_LIGHT, 0, Settings::getLabel(22));
 		GD.cmd_text(20, 345, FONT_LIGHT, 0, Settings::getLabel(21));
 
-		GD.cmd_number(20, 215, FONT_SMALL, 0, serviceTempIce);
-		GD.cmd_number(20, 265, FONT_SMALL, 0, serviceTempHot);
+		GD.cmd_text(20, 215, FONT_SMALL, 0, serviceTempIce);
+		GD.cmd_text(20, 265, FONT_SMALL, 0, serviceTempHot);
 		GD.cmd_text(20, 315, FONT_SMALL, 0, serviceLastChanged.get());
 
 		for (int i = 0; i < 3; i++) {

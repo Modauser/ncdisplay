@@ -172,7 +172,7 @@ const unsigned int *MainBoard::getTankTemperatures(void)
 void MainBoard::setTankTemperatures(const unsigned int *temps)
 {
 	for (int i = 0; i < 3; i++)
-		serialPrintf("@%1u%1u", i + 3, tankTemperatures[i]);
+		serialPrintf("@%1u%1u", i + 3, temps[i]);
 }
 
 int MainBoard::getLanguage(void)

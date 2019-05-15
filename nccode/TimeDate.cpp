@@ -38,7 +38,7 @@ static const LanguageString tdDay ({
 	"DD", "TT", "JJ", "DD"
 });
 static const LanguageString tdYear ({
-	"YY", "JJ", "AA", "AA"
+	"YYYY", "JJJJ", "AAAA", "AAAA"
 });
 
 static int daysInMonth(int month, int year);
@@ -86,10 +86,12 @@ static Screen TimeDate (
 			GD.cmd_text(221, 164, FONT_SMALL, OPT_CENTER, tdYear());
 		}
 
+		unsigned int spot1 = (timeSetting && !ampm) ? 62 : 14;
+		unsigned int spot2 = (timeSetting && !ampm) ? 140 : 100;
 		GD.ColorRGB(WHITE);
 		GD.Begin(RECTS);
-		GD.Vertex2ii(14, 224); GD.Vertex2ii(84, 258);
-		GD.Vertex2ii(100, 224); GD.Vertex2ii(170, 258);
+		GD.Vertex2ii(spot1, 224); GD.Vertex2ii(spot1 + 70, 258);
+		GD.Vertex2ii(spot2, 224); GD.Vertex2ii(spot2 + 70, 258);
 		if (!timeSetting || ampm) {
 			GD.Vertex2ii(186, 224);
 			GD.Vertex2ii(256, 258);
@@ -97,9 +99,9 @@ static Screen TimeDate (
 
 		int idx = timeSetting ? 0 : 3;
 		GD.ColorRGB(BLACK);
-		GD.cmd_number(49, 244, FONT_SMALL, OPT_CENTER,
+		GD.cmd_number(spot1 + 35, 244, FONT_SMALL, OPT_CENTER,
 			timeDate[idx]);
-		GD.cmd_number(135, 244, FONT_SMALL, OPT_CENTER,
+		GD.cmd_number(spot2 + 35, 244, FONT_SMALL, OPT_CENTER,
 			timeDate[idx + 1]);
 		if (timeSetting) {
 			if (ampm) {
@@ -108,7 +110,7 @@ static Screen TimeDate (
 			}
 		} else {
 			GD.cmd_number(221, 244, FONT_SMALL, OPT_CENTER,
-				timeDate[idx + 2]);
+				2000 + timeDate[idx + 2]);
 		}
 	},
 	// Buttons
@@ -209,11 +211,11 @@ static Screen TimeDate (
 				timeDate[3], timeDate[5]));
 		}
 	}),
-	Button({14, 120}, Button::drawExclusiveOption, "AM/PM", [](bool press) {
+	Button({15, 120}, Button::drawExclusiveOption, "AM/PM", [](bool press) {
 		if (!press)
 			set24Hour(false);
 	}),
-	Button({134, 120}, Button::drawExclusiveOption, "24 HR", [](bool press) {
+	Button({136, 120}, Button::drawExclusiveOption, "24 HR", [](bool press) {
 		if (!press)
 			set24Hour(true);
 	}),
@@ -271,10 +273,14 @@ void set24Hour(bool is24)
 			timeDate[0] += 12;
 	}
 
-	TimeDate.getButton(7).setForcePressed(ampm);
-	TimeDate.getButton(8).setForcePressed(!ampm);
+	TimeDate.getButton(1).setPosition({ampm ? 14 : 62, 190});
+	TimeDate.getButton(2).setPosition({ampm ? 14 : 62, 262});
+	TimeDate.getButton(3).setPosition({ampm ? 100 : 140, 190});
+	TimeDate.getButton(4).setPosition({ampm ? 100 : 140, 262});
 	TimeDate.getButton(5).setVisibility(ampm);
 	TimeDate.getButton(6).setVisibility(ampm);
+	TimeDate.getButton(7).setForcePressed(ampm);
+	TimeDate.getButton(8).setForcePressed(!ampm);
 }
 
 void setTimeView(void)

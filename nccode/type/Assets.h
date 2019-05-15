@@ -44,13 +44,16 @@ void displayInit(void);
  */
 void loadAssets(void);
 
+extern uint32_t FREE_MEM;
+
 /**
- * Loads an image, binding it to the given handle.
- * The image is loaded to the next known available address.
+ * Loads an image to the specified address, binding it to the given handle.
+ * The address defaults to free memory immediately after loaded images/fonts.
  * @param handle The bitmap handle to bind to
  * @param path The path of the image to load
+ * @param addr The graphic memory address to load the image to
  */
-void loadImage(int handle, const char *path);
+void loadImage(int handle, const char *path, uint32_t addr = FREE_MEM);
 
 /**
  * Defines from gd3asset
@@ -79,13 +82,17 @@ enum BitmapHandles {
 	FONT_SMALL, // Font used for smaller general text
 	FONT_LARGE, // Font to be used for larger general text
 	FONT_LIGHT, // A small font, lighter/thinner than Nirmala
-	FONT_TITLE // A large, lighter/thinner font for headers (e.g. "Advanced, SleepMode")
+	FONT_TITLE, // A large, lighter/thinner font for headers (e.g. "Advanced, SleepMode")
+
+	FREE_HANDLE
+	
+	// No more handles may be assigned (maximum of 16)
 };
 
 /* The font to be used for time/date on the dispense screen */
-constexpr unsigned int FONT_TIME = FONT_LIGHT;
+constexpr unsigned int FONT_TIME = FONT_SMALL;
 /* Font to be used in the message box, for things like errors */
-constexpr unsigned int FONT_MESG = 18;
+constexpr unsigned int FONT_MESG = FONT_SMALL; //18;
 
 void clearScreenWithIonHeader(bool line = true);
 
