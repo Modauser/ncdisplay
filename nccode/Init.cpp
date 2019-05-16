@@ -62,10 +62,17 @@ void loop()
 int handshakeTest(void)
 {
 	auto answer = serialTest();
-	if (answer != '0')
-		showFatalError("COM error check display cable");
+	if (answer != '0') {
+		// Maybe board is already on? Try querying model number
+		serialPrintf("#6");
+		answer = serialTest();
+		if (answer < static_cast<int>(Language::Count))
+			return 0;
 
-	return answer;
+		showFatalError("COM error check display cable");
+	}
+
+	return 0;
 }
 
 void showFatalError(const char *msg)

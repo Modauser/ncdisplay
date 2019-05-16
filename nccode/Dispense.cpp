@@ -89,6 +89,8 @@ static Screen Dispense (
 	ScreenID::Sleep,
 	// Initialization function
 	[](void) {
+		MainBoard::updateModelNumber();
+
 		timeDateCounter = 2000;
 		showHotDispense(false);
 		setVisibilities();
