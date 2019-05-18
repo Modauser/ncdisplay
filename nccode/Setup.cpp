@@ -17,6 +17,7 @@ static Screen SetupComplete (
 	// Initialization function
 	[](void) {
 		holdCounter = 0;
+		loadImage(FREE_HANDLE, "startup.jpg");
 	},
 	// Pre-draw function
 	[](void) {
@@ -24,7 +25,7 @@ static Screen SetupComplete (
 		GD.Clear();
 
 		GD.Begin(BITMAPS);
-		GD.Vertex2ii(0, 120, STARTUP_HANDLE);
+		GD.Vertex2ii(0, 120, FREE_HANDLE);
 
 		// 5 second timeout to next
 		if (++holdCounter >= 500)

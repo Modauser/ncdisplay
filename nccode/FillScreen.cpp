@@ -14,9 +14,9 @@
 
 static const std::array<std::tuple<LanguageString, uint32_t,
 	std::function<bool(void)>>, 3> fillScreens = {{
-	{"FILLING COLD\n\nWATER SYSTEM", 0x0000FF, MainBoard::isColdTankFull},
-	{"FILLING HOT\n\nWATER SYSTEM", 0xFF0000, MainBoard::isHotTankFull},
-	{"FILLING SPARKLING\n\nWATER SYSTEM", 0x00FF00, MainBoard::isSparklingTankFull}
+	{"FILLING COLD\n\nWATER SYSTEM", 0x4040ff, MainBoard::isColdTankFull},
+	{"FILLING HOT\n\nWATER SYSTEM", 0xff4040, MainBoard::isHotTankFull},
+	{"FILLING SPARKLING\n\nWATER SYSTEM", 0x40ff40, MainBoard::isSparklingTankFull}
 }};
 
 static auto fillScreen = fillScreens.cbegin();

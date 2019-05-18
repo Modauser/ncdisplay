@@ -19,11 +19,11 @@ static Screen Warning (
 	nullptr,
 	// Pre-draw function
 	[](void) {
-		GD.ClearColorRGB(0xC00000);
+		GD.ClearColorRGB(0xFF4040);
 		GD.Clear();
 
 		GD.Begin(BITMAPS);
-		GD.ColorRGB(0xDD0000);
+		GD.ColorRGB(0xFF4040);
 		GD.Vertex2ii(0, 40, HOMEWTR_HANDLE);
 
 		GD.ColorRGB(0xFF0000);

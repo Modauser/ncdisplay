@@ -99,14 +99,6 @@ static Screen Dispense (
 	[](void) {
 		clearScreenWithIonHeader(false);
 
-		if (!hotDispensing) {
-			GD.Begin(RECTS);
-			GD.Vertex2ii(0, 296);
-			GD.Vertex2ii(272, 440);
-		} else if (!mainDispensing && ++hotTimeout >= 200) {
-			showHotDispense(false);
-		}
-
 		GD.Begin(BITMAPS);
 		if (mainDispensing) {
 			GD.Vertex2ii(76, 0, mainAniImage); // Flow animation image
@@ -150,6 +142,15 @@ static Screen Dispense (
 			} else if (Error::hasError()) {
 				Error::show();
 			}
+		}
+
+		if (!hotDispensing) {
+			GD.ColorRGB(WHITE);
+			GD.Begin(RECTS);
+			GD.Vertex2ii(0, 296);
+			GD.Vertex2ii(272, 440);
+		} else if (!mainDispensing && ++hotTimeout >= 200) {
+			showHotDispense(false);
 		}
 
 		++timeDateCounter;

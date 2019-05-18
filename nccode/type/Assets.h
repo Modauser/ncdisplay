@@ -57,18 +57,17 @@ void loadImage(int handle, const char *path, uint32_t addr = FREE_MEM);
 
 /**
  * Defines from gd3asset
- * gd3asset command: gd3asset.exe -f assets.gd3 -o assets.h
- * 	sleep1.jpg ani1.jpg ani2.jpg ani3.jpg HomeWtr.jpg IonLogo.jpg
+ * gd3asset arguments:
+ * 	sleep1.jpg ani1.jpg ani2.jpg ani3.jpg HomeWtr.png IonLogo.jpg
  * 	restart.png,format=ARGB2 fltstrip.png,format=L8
  * 	dropstrp.png,format=ARGB2 setstrip.png
  */
 
-constexpr uint32_t ASSETS_END = 707044;
+constexpr uint32_t ASSETS_END = 629252UL;
 
 // TODO startup; use sleep space
 enum BitmapHandles {
 	SLEEP_HANDLE = 0,
-	STARTUP_HANDLE,
 	ANI1_HANDLE,
 	ANI2_HANDLE,
 	ANI3_HANDLE,
@@ -85,8 +84,6 @@ enum BitmapHandles {
 	FONT_TITLE, // A large, lighter/thinner font for headers (e.g. "Advanced, SleepMode")
 
 	FREE_HANDLE
-	
-	// No more handles may be assigned (maximum of 16)
 };
 
 /* The font to be used for time/date on the dispense screen */

@@ -11,6 +11,7 @@
 static bool lockEnabled = false;
 
 static void updateToggle(void);
+static void loadLockImage(void);
 
 static Screen Lock (
 	ScreenID::Lock,
@@ -19,6 +20,7 @@ static Screen Lock (
 	// Initialization function
 	[](void) {
 		lockEnabled = MainBoard::isLocked();
+		loadLockImage();
 		updateToggle();
 	},
 	// Pre-draw function
@@ -37,8 +39,9 @@ static Screen Lock (
 			"C" o_ACUTE "digo de acceso"
 		})());
 
-		GD.cmd_text(136, 240, FONT_LARGE, OPT_CENTER, lockEnabled ?
-			"LOCKED" : "UNLOCKED");
+		GD.ColorRGB(WHITE);
+		GD.Begin(BITMAPS);
+		GD.Vertex2ii(66, 140, FREE_HANDLE);
 	},
 	// Buttons
 	Button({0, 0}, Button::drawBackArrow, [](bool press) {
@@ -48,6 +51,7 @@ static Screen Lock (
 	Button({180, 80}, Button::drawToggle, [](bool press) {
 		if (!press) {
 			lockEnabled ^= true;
+			loadLockImage();
 			updateToggle();
 		}
 	}),
@@ -63,5 +67,10 @@ static Screen Lock (
 void updateToggle(void)
 {
 	Lock.getButton(1).setForcePressed(lockEnabled);
+}
+
+void loadLockImage(void)
+{
+	loadImage(FREE_HANDLE, lockEnabled ? "lock.jpg" : "unlock.jpg");
 }
 
