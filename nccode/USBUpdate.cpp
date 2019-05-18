@@ -15,7 +15,7 @@
 
 // Place the update immediately after RAM space reserved for stack/variables.
 extern unsigned char _estack;
-static void *UPDATE_LOAD_ADDR = (void *)((uint32_t)((char *)&_estack + 15) & ~(15));
+void *UPDATE_LOAD_ADDR = (void *)((uint32_t)((char *)&_estack + 15) & ~(15));
 static const uint32_t UPDATE_MAX_SIZE = 0x20030000 - (uint32_t)UPDATE_LOAD_ADDR;
 
 constexpr const char *USBUpdatePath = DRV_USB "update.bin";
@@ -39,7 +39,7 @@ bool USBUpdateCheck(void)
 
 	GD.ClearColorRGB(NC_BKGND_COLOR);
 	GD.Clear();
-	GD.cmd_text(0, 0, FONT_MESG, 0, "Update found. Loading...");
+	GD.cmd_text(0, 0, 18, 0, "Update found. Loading...");
 	GD.swap();
 
 	// Load file into unused memory
@@ -49,9 +49,9 @@ bool USBUpdateCheck(void)
 		return false;
 
 	GD.Clear();
-	GD.cmd_text(0, 0, FONT_MESG, 0, "Update found. Loading...");
-	GD.cmd_text(0, 20, FONT_MESG, 0, "Ready. Updating...");
-	GD.cmd_text(0, 40, FONT_MESG, 0, "Will reset when finished.");
+	GD.cmd_text(0, 0, 18, 0, "Update found. Loading...");
+	GD.cmd_text(0, 20, 18, 0, "Ready. Updating...");
+	GD.cmd_text(0, 40, 18, 0, "Will reset when finished.");
 	GD.swap();
 
 	f_close(&fd);

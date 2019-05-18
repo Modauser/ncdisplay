@@ -19,6 +19,7 @@ void showFatalError(const char *msg);
 
 extern int initDisks(void);
 extern bool USBUpdateCheck(void);
+extern void USBUpdateFiles(void);
 
 static int handshakeTest(void);
 
@@ -30,6 +31,9 @@ void setup()
 	GD.Clear();
 	GD.swap();
 
+	USBUpdateCheck();
+	USBUpdateFiles();
+
 	// Show the loading spinner
 	GD.ClearColorRGB(NC_BKGND_COLOR);
 	GD.Clear();
@@ -37,7 +41,6 @@ void setup()
 	GD.cmd_spinner(GD.h / 2, (GD.w / 2), 0, 0);
 	GD.swap();
 
-	USBUpdateCheck();
 	handshakeTest();
 
 	// Load fonts and images from SD card

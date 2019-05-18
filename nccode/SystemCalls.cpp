@@ -142,6 +142,32 @@ TCHAR* f_gets(TCHAR *buff, int len, FIL *fp)
 	return (TCHAR *)result;
 }
 
+NOOPTIMIZE
+FRESULT f_opendir(DIR *dir, const TCHAR *path)
+{
+	volatile FRESULT result = FR_OK;
+	uint32_t args[3] = { 6, (uint32_t)dir, (uint32_t)path };
+	asm("\
+		mov r0, %0; \
+		mov r1, %1; \
+		svc 2; \
+	" :: "r" (result), "r" (args));
+	return result;
+}
+
+NOOPTIMIZE
+FRESULT f_readdir(DIR *dir, FILINFO *fileinfo)
+{
+	volatile FRESULT result = FR_OK;
+	uint32_t args[3] = { 7, (uint32_t)dir, (uint32_t)fileinfo };
+	asm("\
+		mov r0, %0; \
+		mov r1, %1; \
+		svc 2; \
+	" :: "r" (result), "r" (args));
+	return result;
+}
+
 extern "C" {
 
 NOOPTIMIZE

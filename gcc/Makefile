@@ -135,6 +135,7 @@ nccode/Sleep.o \
 nccode/FilterChange.o \
 nccode/FilterChangeTimer.o \
 nccode/USBUpdate.o \
+nccode/USBUpdateFiles.o \
 nccode/Warning.o \
 nccode/Errors.o \
 nccode/Init.o \
@@ -227,6 +228,7 @@ OBJS_AS_ARGS_USER += \
 "nccode/FilterChange.o" \
 "nccode/FilterChangeTimer.o" \
 "nccode/USBUpdate.o" \
+"nccode/USBUpdateFiles.o" \
 "nccode/Warning.o" \
 "nccode/Errors.o" \
 "nccode/Init.o" \
@@ -323,6 +325,7 @@ DEPS_AS_ARGS_USER += \
 "nccode/FilterChange.d" \
 "nccode/FilterChangeTimer.d" \
 "nccode/USBUpdate.d" \
+"nccode/USBUpdateFiles.d" \
 "nccode/Warning.d" \
 "nccode/Errors.d" \
 "nccode/Init.d" \

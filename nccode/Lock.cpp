@@ -19,6 +19,7 @@ static Screen Lock (
 	// Initialization function
 	[](void) {
 		lockEnabled = MainBoard::isLocked();
+		updateToggle();
 	},
 	// Pre-draw function
 	[](void) {

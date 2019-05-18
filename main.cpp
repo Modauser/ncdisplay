@@ -166,6 +166,14 @@ uint32_t fatfs_svc_handler(uint32_t *fatfs_args)
 		ret = (uint32_t)f_gets((TCHAR *)fatfs_args[1], fatfs_args[2],
 			(FIL *)fatfs_args[3]);
 		break;
+	case 6:
+		ret = (uint32_t)f_opendir((DIR *)fatfs_args[1], (const TCHAR *)
+			fatfs_args[2]);
+		break;
+	case 7:
+		ret = (uint32_t)f_readdir((DIR *)fatfs_args[1], (FILINFO *)
+			fatfs_args[2]);
+		break;
 	default:
 		break;
 	}
