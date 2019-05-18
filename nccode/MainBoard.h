@@ -150,6 +150,7 @@ public:
 	static bool isLocked(void);
 	static void setLocked(bool locked);
 
+	static void allowDispenseError(bool yes = true);
 	static void clearDispenseError(void);
 
 	[[noreturn]]

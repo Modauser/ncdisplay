@@ -91,7 +91,7 @@ static Screen Dispense (
 	[](void) {
 		MainBoard::updateModelNumber();
 
-		timeDateCounter = 2000;
+		timeDateCounter = 2000 - 1;
 		showHotDispense(false);
 		setVisibilities();
 	},

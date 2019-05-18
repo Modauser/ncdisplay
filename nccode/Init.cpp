@@ -51,6 +51,7 @@ void setup()
 
 	auto lang = MainBoard::getLanguage();
 	LanguageString::setCurrentLanguage(static_cast<Language>(lang));
+	//MainBoard::allowDispenseError();
 	ScreenManager::setCurrent(lang != 9 ? ScreenID::Setup :
 		ScreenID::WelcomeLanguage);
 }
