@@ -27,13 +27,14 @@ char *date(char *buf, int mmddyy, char splitter)
 char *hour(char *buf, int hour)
 {
 	if (MainBoard::is24Hour()) {
-		sprintf(buf, "%2d", hour);
+		sprintf(buf, "%d", hour);
 	} else {
-		bool pm = hour > 12;
+		bool pm = hour > 11;
+		if (pm)
+			hour -= 12;
 		if (hour == 0)
 			hour = 12;
-		sprintf(buf, "%2d %cM", pm ? hour - 12 : hour,
-			pm ? 'P' : 'A');
+		sprintf(buf, "%d %cM", hour, pm ? 'P' : 'A');
 	}
 	return buf;
 }

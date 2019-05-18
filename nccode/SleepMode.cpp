@@ -9,6 +9,7 @@
 #include "Settings.h"
 
 #include <cctype>
+#include <cstring>
 #include <gameduino2/GD2.h>
 
 static bool sleepModeOn = false;
@@ -16,7 +17,7 @@ static bool sleepSettingHours = false;
 static bool sleepSettingWeekday = false;
 
 static char sleepHourStrings[4][Format::size::hour + 2] = {
-	"", "- ", "", "- "
+	"", "", "", ""
 };
 static unsigned int sleepHours[4] = {
 	25, 25, 25, 25
@@ -35,9 +36,9 @@ static const LanguageString smWeekend ({
 	"Sabado - Domingo:"
 });
 
-static void updateAfterToggle(void);
 static void sleepSetVisibilities(void);
 static void updateSaveButtonText(void);
+static void updateSleepHourText(void);
 
 static Screen SleepMode (
 	ScreenID::SleepMode,
@@ -47,20 +48,20 @@ static Screen SleepMode (
 	[](void) {
 		MainBoard::getSleepmodeHours(sleepHours);
 		sleepModeOn = MainBoard::getSleepmodeEnabled();
-		sleepSettingHours = false;
 
-		updateAfterToggle();
+		sleepSettingHours = false;
 		sleepSetVisibilities();
 
-		if (!sleepModeOn) {
-			sprintf(sleepHourStrings[0], "ALL");
-			sprintf(sleepHourStrings[2], "ALL");
-		} else {
-			if (sleepHours[0] == 25)
-				sprintf(sleepHourStrings[0], "OFF");
-			if (sleepHours[2] == 25)
-				sprintf(sleepHourStrings[2], "OFF");
-		}
+		if (sleepHours[0] == 25)
+			sleepHours[1] = 25;
+		else if (sleepHours[1] == 25)
+			sleepHours[0] = 25;
+		if (sleepHours[2] == 25)
+			sleepHours[3] = 25;
+		else if (sleepHours[3] == 25)
+			sleepHours[2] = 25;
+
+		updateSleepHourText();
 	},
 	// Pre-draw function
 	[](void) {
@@ -84,11 +85,15 @@ static Screen SleepMode (
 			GD.cmd_text(20, 260, FONT_LIGHT, 0, smWeekend());
 
 			GD.cmd_text(160, 240, FONT_SMALL, 0, sleepHourStrings[0]);
-			if (isdigit(sleepHourStrings[0][0]))
-				GD.cmd_text(200, 240, FONT_SMALL, 0, sleepHourStrings[1]);
+			if (isdigit(sleepHourStrings[0][0])) {
+				GD.cmd_text(210, 240, FONT_SMALL, 0, "-");
+				GD.cmd_text(220, 240, FONT_SMALL, 0, sleepHourStrings[1]);
+			}
 			GD.cmd_text(160, 260, FONT_SMALL, 0, sleepHourStrings[2]);
-			if (isdigit(sleepHourStrings[2][0]))
-				GD.cmd_text(200, 260, FONT_SMALL, 0, sleepHourStrings[3]);
+			if (isdigit(sleepHourStrings[2][0])) {
+				GD.cmd_text(210, 260, FONT_SMALL, 0, "-");
+				GD.cmd_text(220, 260, FONT_SMALL, 0, sleepHourStrings[3]);
+			}
 		} else {
 			GD.cmd_text(136, 150, FONT_TITLE, OPT_CENTER, LanguageString({
 				"Set Operating Hours",
@@ -132,7 +137,8 @@ static Screen SleepMode (
 	Button({180, 85}, Button::drawToggle, [](bool press) {
 		if (!press) {
 			sleepModeOn ^= true;
-			updateAfterToggle();
+			sleepSetVisibilities();
+			updateSleepHourText();
 		}
 	}),
 	Button({0, 120}, Button::drawMenuItem, {
@@ -166,52 +172,69 @@ static Screen SleepMode (
 		if (press)
 			return;
 
-		auto& hour = sleepHours[sleepSettingWeekday ? 0 : 2];
-		if (hour < 23)
-			hour++;
-		else
-			hour = 0;
+		int index = sleepSettingWeekday ? 0 : 2;
+		auto& h = sleepHours[index];
+		h++;
+		if (h > 25) {
+			h = 0;
+		} else if (h > 23) {
+			h = 25;
+			sleepHours[index + 1] = 25;
+		}
+		updateSleepHourText();
 	}),
 	Button({34, 282}, Button::drawDownButton, [](bool press) {
 		if (press)
 			return;
 
-		auto& hour = sleepHours[sleepSettingWeekday ? 0 : 2];
-		if (hour > 0)
-			hour--;
-		else
-			hour = 23;
+		int index = sleepSettingWeekday ? 0 : 2;
+		auto& h = sleepHours[index];
+		if (h == 24) {
+			h = 23;
+		} else if (h > 0) {
+			h--;
+		} else {
+			h = 25;
+			sleepHours[index + 1] = 25;
+		}
+		updateSleepHourText();
 	}),
 	Button({168, 210}, Button::drawUpButton, [](bool press) {
 		if (press)
 			return;
 
-		auto& hour = sleepHours[sleepSettingWeekday ? 1 : 3];
-		if (hour < 23)
-			hour++;
-		else
-			hour = 0;
+		int index = sleepSettingWeekday ? 1 : 3;
+		auto& h = sleepHours[index];
+		h++;
+		if (h > 25) {
+			h = 0;
+		} else if (h > 23) {
+			h = 25;
+			sleepHours[index - 1] = 25;
+		}
+		updateSleepHourText();
 	}),
 	Button({168, 282}, Button::drawDownButton, [](bool press) {
 		if (press)
 			return;
 
-		auto& hour = sleepHours[sleepSettingWeekday ? 1 : 3];
-		if (hour > 0)
-			hour--;
-		else
-			hour = 23;
+		int index = sleepSettingWeekday ? 1 : 3;
+		auto& h = sleepHours[index];
+		if (h == 24) {
+			h = 23;
+		} else if (h > 0) {
+			h--;
+		} else {
+			h = 25;
+			sleepHours[index - 1] = 25;
+		}
+		updateSleepHourText();
 	})
 );
 
-void updateAfterToggle(void)
-{
-	SleepMode.getButton(1).setForcePressed(sleepModeOn);
-	SleepMode.getButton(2).setVisibility(sleepModeOn);
-}
-
 void sleepSetVisibilities(void)
 {
+	SleepMode.getButton(1).setForcePressed(sleepModeOn);
 	SleepMode.getButton(1).setVisibility(!sleepSettingHours);
 	SleepMode.getButton(2).setVisibility(sleepModeOn & !sleepSettingHours);
 	SleepMode.getButton(4).setVisibility(sleepSettingHours);
@@ -228,4 +251,18 @@ void updateSaveButtonText(void)
 		lStringNext : lStringSave);
 }
 
+void updateSleepHourText(void)
+{
+	if (!sleepModeOn) {
+		strcpy(sleepHourStrings[0], "ALL");
+		strcpy(sleepHourStrings[2], "ALL");
+	} else {
+		for (int i = 0; i < 4; i++) {
+			if (sleepHours[i] == 25)
+				strcpy(sleepHourStrings[i], "OFF");
+			else
+				Format::hour(sleepHourStrings[i], sleepHours[i]);
+		}
+	}
+}
 

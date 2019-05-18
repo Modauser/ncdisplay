@@ -4,10 +4,12 @@
  * user interaction.
  */
 #include "type/Assets.h"
+#include "MainBoard.h"
 #include "type/Screen.h"
 
 #include <gameduino2/GD2.h>
 
+static bool inSleepMode = false;
 static char sleepImagePath[] = "sleep0.jpg";
 static int sleepImageCurrent = 1;
 static int sleepImageLast = -1;
@@ -20,17 +22,25 @@ static Screen Sleep (
 	// Initialization function
 	[](void) {
 		sleepImageCounter = 0;
+		inSleepMode = MainBoard::getSleepmodeEnabled();
 	},
 	// Pre-draw function
 	[](void) {
-		if (sleepImageCurrent != sleepImageLast) {
-			sleepImageLast = sleepImageCurrent;
+		if (inSleepMode) {
+			if (sleepImageLast != 0x1234) {
+				sleepImageLast = 0x1234;
+				loadImage(SLEEP_HANDLE, "sleepmode.jpg", 0);
+			}
+		} else {
+			if (sleepImageCurrent != sleepImageLast) {
+				sleepImageLast = sleepImageCurrent;
 
-			sleepImagePath[5] = sleepImageCurrent + '0';
-			GD.BitmapHandle(SLEEP_HANDLE);
-			GD.cmd_loadimage(0, 0);
-			GD.load(sleepImagePath);
-			GD.finish();
+				sleepImagePath[5] = sleepImageCurrent + '0';
+				GD.BitmapHandle(SLEEP_HANDLE);
+				GD.cmd_loadimage(0, 0);
+				GD.load(sleepImagePath);
+				GD.finish();
+			}
 		}
 
 		// Draw the sleep image
@@ -44,18 +54,20 @@ static Screen Sleep (
 		GD.Vertex2ii(0, 420);
 		GD.Vertex2ii(272, 480);
 
-		GD.ColorRGB(WHITE);
-		GD.cmd_text(136, 450, FONT_SMALL, OPT_CENTER, LanguageString({
-			"TOUCH TO BEGIN"
-		})());
+		if (!inSleepMode) {
+			GD.ColorRGB(WHITE);
+			GD.cmd_text(136, 450, FONT_SMALL, OPT_CENTER, LanguageString({
+				"TOUCH TO BEGIN"
+			})());
 
-		sleepImageCounter += 10;
-		if (sleepImageCounter >= SLEEP_IMGSWITCH) {
-			sleepImageCounter = 0;
+			sleepImageCounter += 10;
+			if (sleepImageCounter >= SLEEP_IMGSWITCH) {
+				sleepImageCounter = 0;
 
-			sleepImageCurrent++;
-			if (sleepImageCurrent > 3)
-				sleepImageCurrent = 1;
+				sleepImageCurrent++;
+				if (sleepImageCurrent > 3)
+					sleepImageCurrent = 1;
+			}
 		}
 
 		GD.get_inputs();

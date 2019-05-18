@@ -14,7 +14,7 @@ void loadImage(int handle, const char *path, uint32_t addr)
 {
   //uint32_t base, width, height;
 
-  addr = (addr + 1024) & ~1023;
+  addr = (addr + 1023) & ~1023;
 
   GD.BitmapHandle(handle);
   GD.cmd_loadimage(addr, 0);

@@ -225,8 +225,7 @@ void MainBoard::getSleepmodeHours(unsigned int *buf)
 
 void MainBoard::setSleepmodeHours(const unsigned int *hours)
 {
-	serialPrintf("@N%2u%2u%2u%2u@G%1u",
-		hours[0], hours[1], hours[2], hours[3]);
+	serialPrintf("@N%02u%02u%02u%02u", hours[0], hours[1], hours[2], hours[3]);
 }
 
 bool MainBoard::getSleepmodeEnabled(void)
@@ -237,7 +236,7 @@ bool MainBoard::getSleepmodeEnabled(void)
 
 void MainBoard::setSleepmodeEnabled(bool en)
 {
-	serialPrintf("@H%1u", en ? 1 : 0);
+	serialPrintf("@G%01u", en ? 1 : 0);
 }
 
 void MainBoard::clearDispenseError(void)
