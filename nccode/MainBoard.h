@@ -157,6 +157,8 @@ public:
 	static void autofill(void);
 
 	static void factoryReset(void);
+
+	static void getBottlesSaved(char *buf);
 };
 
 #endif // MAINBOARD_H_

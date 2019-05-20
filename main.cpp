@@ -195,14 +195,16 @@ int initDisks(void)
 	} while (status != 0 && status != STA_NODISK);
 
 	if (status == STA_NODISK) {
-		//printf("SD card not found.\r\n");
+		// No SD card found
 		ret = -1;
 		return ret;
 	} else {
 		// SD card found; mount it
 		result = f_mount(&sdmmc_fatfs, DRV_SD, 1);
-		//if (result != FR_OK)
-			//printf("SD card mounting failed (%d).\r\n", result);
+		if (result != FR_OK) {
+			ret = -1; // Maybe use USB instead, see above
+			return ret;
+		}
 	}
 
 #ifdef ALLOW_USB
@@ -219,7 +221,7 @@ int initDisks(void)
 		status = STA_NODISK;
 
 	if (status == STA_NODISK) {
-		//printf("USB drive not found.\r\n");
+		// No USB found
 		ret = 1;
 	} else {
 		// USB drive found; mount it

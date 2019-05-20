@@ -53,7 +53,7 @@ extern uint32_t FREE_MEM;
  * @param path The path of the image to load
  * @param addr The graphic memory address to load the image to
  */
-void loadImage(int handle, const char *path, uint32_t addr = FREE_MEM);
+void loadImage(int handle, const char *path, uint32_t addr = 0);
 
 /**
  * Defines from gd3asset

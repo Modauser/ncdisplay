@@ -261,3 +261,22 @@ void MainBoard::factoryReset(void)
 	serialPrintf("@Q1");
 }
 
+void MainBoard::getBottlesSaved(char *buf)
+{
+	buf[0] = '\0';
+	serialPrintf("^B");
+
+	if (serialGetchar() != '$')
+		return;
+
+	while (1) {
+		auto c = serialGetchar();
+		if (c == '$') {
+			*buf = '\0';
+			break;
+		}
+
+		*buf++ = c;
+	}
+}
+

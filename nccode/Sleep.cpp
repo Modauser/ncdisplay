@@ -14,6 +14,7 @@ static char sleepImagePath[] = "sleep0.jpg";
 static int sleepImageCurrent = 1;
 static int sleepImageLast = -1;
 static unsigned int sleepImageCounter;
+static char sleepBottlesUsed[8];
 
 static Screen Sleep (
 	ScreenID::Sleep,
@@ -23,6 +24,7 @@ static Screen Sleep (
 	[](void) {
 		sleepImageCounter = 0;
 		inSleepMode = MainBoard::getSleepmodeEnabled();
+		MainBoard::getBottlesSaved(sleepBottlesUsed);
 	},
 	// Pre-draw function
 	[](void) {
@@ -55,6 +57,12 @@ static Screen Sleep (
 		GD.Vertex2ii(272, 480);
 
 		if (!inSleepMode) {
+			if (sleepImageCurrent == 2) {
+				GD.ColorRGB(NC_FDGND_COLOR);
+				GD.cmd_text(136, 100, FONT_SMALL, OPT_CENTER,
+					sleepBottlesUsed);
+			}
+			
 			GD.ColorRGB(WHITE);
 			GD.cmd_text(136, 450, FONT_SMALL, OPT_CENTER, LanguageString({
 				"TOUCH TO BEGIN"
