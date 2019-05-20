@@ -1,0 +1,10 @@
+## simulator
+
+This programs simulates the main board, allowing the display to properly boot/run
+without using the real main board.
+
+To use, build the program with `make`, then connect a USB/serial converter between
+the computer and the display (make sure it shows as `/dev/ttyUSB0`), then run
+`./simulator`. Press Ctrl+C to end the simulation, and make sure to start the
+simulator before powering on the display.
+
