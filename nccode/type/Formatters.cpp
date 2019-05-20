@@ -19,7 +19,7 @@ char *temperature(char *buf, int number)
 
 char *date(char *buf, int mmddyy, char splitter)
 { 
-	sprintf(buf, "%d%c%2d%c20%02d", ((mmddyy >> 16) & 0xFF), splitter,
+	sprintf(buf, "%d%c%d%c20%02d", ((mmddyy >> 16) & 0xFF), splitter,
 		((mmddyy >> 8) & 0xFF), splitter, mmddyy & 0xFF);
 	return buf;
 }
