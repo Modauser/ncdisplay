@@ -51,7 +51,7 @@ static Screen Sleep (
 		GD.Begin(BITMAPS);
 		GD.Vertex2ii(0, 0, SLEEP_HANDLE);
 
-		GD.ColorRGB(NC_FRGND_COLOR);
+		GD.ColorRGB(NC_BKGND_COLOR);
 		GD.Begin(RECTS);
 		GD.Vertex2ii(0, 420);
 		GD.Vertex2ii(272, 480);
@@ -63,7 +63,7 @@ static Screen Sleep (
 					sleepBottlesUsed);
 			}
 			
-			GD.ColorRGB(WHITE);
+			GD.ColorRGB(NC_FRGND_COLOR);
 			GD.cmd_text(136, 450, FONT_SMALL, OPT_CENTER, LanguageString({
 				"TOUCH TO BEGIN"
 			})());
