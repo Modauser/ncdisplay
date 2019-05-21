@@ -241,7 +241,7 @@ void MainBoard::setSleepmodeEnabled(bool en)
 
 void MainBoard::allowDispenseError(bool yes)
 {
-	serialPrintf(yes ? "@J\x0" : "@J\x1");
+	serialPrintf("@J%01u", yes ? 0 : 1);
 }
 
 void MainBoard::clearDispenseError(void)

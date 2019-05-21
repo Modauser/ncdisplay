@@ -51,23 +51,24 @@ static Screen Sleep (
 		GD.Begin(BITMAPS);
 		GD.Vertex2ii(0, 0, SLEEP_HANDLE);
 
-		GD.ColorRGB(NC_BKGND_COLOR);
-		GD.Begin(RECTS);
-		GD.Vertex2ii(0, 420);
-		GD.Vertex2ii(272, 480);
-
 		if (!inSleepMode) {
-			if (sleepImageCurrent == 2) {
-				GD.ColorRGB(NC_FDGND_COLOR);
-				GD.cmd_text(136, 100, FONT_SMALL, OPT_CENTER,
-					sleepBottlesUsed);
-			}
-			
+
+			GD.ColorRGB(NC_BKGND_COLOR);
+			GD.Begin(RECTS);
+			GD.Vertex2ii(0, 420);
+			GD.Vertex2ii(272, 480);
+
 			GD.ColorRGB(NC_FRGND_COLOR);
 			GD.cmd_text(136, 450, FONT_SMALL, OPT_CENTER, LanguageString({
 				"TOUCH TO BEGIN"
 			})());
 
+			if (sleepImageCurrent == 2) {
+				GD.ColorRGB(NC_FDGND_COLOR);
+				GD.cmd_text(136, 130, FONT_SMALL, OPT_CENTER,
+					sleepBottlesUsed);
+			}
+			
 			sleepImageCounter += 10;
 			if (sleepImageCounter >= SLEEP_IMGSWITCH) {
 				sleepImageCounter = 0;

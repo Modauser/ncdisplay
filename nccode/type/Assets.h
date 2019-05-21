@@ -27,9 +27,12 @@ constexpr unsigned int SLEEP_IMGSWITCH = 10 * 1000;
 // Common colors
 constexpr uint32_t BLACK          = 0x000000;
 constexpr uint32_t WHITE          = 0xFFFFFF;
+constexpr uint32_t TINT_RED       = 0xDE0D14;
+constexpr uint32_t TINT_GREEN     = 0x12A834;
+constexpr uint32_t TINT_BLUE      = 0x024FA6;
 constexpr uint32_t NC_BKGND_COLOR = 0xD6ECF9;
-constexpr uint32_t NC_FRGND_COLOR = 0x0268BD;
-constexpr uint32_t NC_FDGND_COLOR = 0x002860;
+constexpr uint32_t NC_FRGND_COLOR = 0x026FB6;
+constexpr uint32_t NC_FDGND_COLOR = 0x0C3D6B;
 constexpr uint32_t NC_ONTOG_COLOR = 0x5EF6B8;
 constexpr uint32_t NC_OFTOG_COLOR = 0xBBBBBB;
 constexpr uint32_t NC_GREEN_COLOR = NC_ONTOG_COLOR;

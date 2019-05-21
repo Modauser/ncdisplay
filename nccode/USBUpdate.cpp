@@ -38,8 +38,10 @@ bool USBUpdateCheck(void)
 		return false;
 
 	GD.ClearColorRGB(NC_BKGND_COLOR);
+	GD.ColorRGB(NC_FRGND_COLOR);
 	GD.Clear();
-	GD.cmd_text(0, 0, 18, 0, "Update found. Loading...");
+	GD.cmd_text(136, 30, 23, OPT_CENTER, "USB Firmware Update");
+	GD.cmd_text(10, 140, 18, 0, "Loading update...");
 	GD.swap();
 
 	// Load file into unused memory
@@ -48,10 +50,15 @@ bool USBUpdateCheck(void)
 	if (result != FR_OK || bytesRead != size)
 		return false;
 
+	GD.ClearColorRGB(NC_BKGND_COLOR);
+	GD.ColorRGB(NC_FRGND_COLOR);
 	GD.Clear();
-	GD.cmd_text(0, 0, 18, 0, "Update found. Loading...");
-	GD.cmd_text(0, 20, 18, 0, "Ready. Updating...");
-	GD.cmd_text(0, 40, 18, 0, "Will reset when finished.");
+	GD.cmd_text(136, 30, 23, OPT_CENTER, "USB Firmware Update");
+	GD.cmd_text(10, 140, 18, 0, "Loading update...");
+	GD.cmd_text(10, 170, 18, 0, "Update loaded.");
+	GD.cmd_text(10, 200, 18, 0, "Applying update...");
+	GD.cmd_text(10, 230, 18, 0, "Display resets when finished.");
+	GD.cmd_text(10, 260, 18, 0, "Remove USB after setup complete.");
 	GD.swap();
 
 	f_close(&fd);

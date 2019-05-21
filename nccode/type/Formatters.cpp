@@ -6,14 +6,25 @@ namespace Format {
 
 char *flowRate(char *buf, int number)
 {
-	sprintf(buf, "%d.%1d %s", number / 10, number % 10,
-		MainBoard::isMetric() ? "L" : "GPM");
+	const char *unit = "GPM";
+	if (MainBoard::isMetric()) {
+		number = GPMtoL(number);
+		unit = "L";
+	}
+
+	sprintf(buf, "%d.%1d %s", number / 10, number % 10, unit);
 	return buf;
 }
 
 char *temperature(char *buf, int number)
 {
-	sprintf(buf, "%u %c", number, MainBoard::isMetric() ? 'C' : 'F');
+	char unit = 'F';
+	if (MainBoard::isMetric()) {
+		number = FtoC(number);
+		unit = 'C';
+	}
+
+	sprintf(buf, "%d %c", number, unit);
 	return buf;
 }
 

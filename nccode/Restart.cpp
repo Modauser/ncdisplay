@@ -15,11 +15,11 @@ static Screen Restart (
 	nullptr,
 	// Pre-draw function
 	[](void) {
-		GD.ClearColorRGB(0x4040FF);
+		GD.ClearColorRGB(TINT_BLUE);
 		GD.Clear();
 
 		GD.Begin(BITMAPS);
-		GD.ColorRGB(0x4040FF);
+		GD.ColorRGB(TINT_BLUE);
 		GD.Vertex2ii(0, 130, HOMEWTR_HANDLE);
 		GD.ColorRGB(WHITE);
 		GD.Vertex2ii(90, 200, RESTART_HANDLE);

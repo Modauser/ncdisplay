@@ -41,7 +41,7 @@ static Screen Lock (
 
 		GD.ColorRGB(WHITE);
 		GD.Begin(BITMAPS);
-		GD.Vertex2ii(66, 140, FREE_HANDLE);
+		GD.Vertex2ii(104, 197, FREE_HANDLE);
 	},
 	// Buttons
 	Button({0, 0}, Button::drawBackArrow, [](bool press) {

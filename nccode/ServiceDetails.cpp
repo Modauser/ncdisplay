@@ -75,15 +75,9 @@ static Screen ServiceDetails (
 		serialPrintf("@c");
 		Format::flowRate(serviceFlowHot, serialGet());
 		serialPrintf("@d");
-		int temp = serialGet();
-		if (MainBoard::isMetric())
-			temp = FtoC(temp);
-		Format::temperature(serviceTempIce, temp);
+		Format::temperature(serviceTempIce, serialGet());
 		serialPrintf("@e");
-		temp = serialGet();
-		if (MainBoard::isMetric())
-			temp = FtoC(temp);
-		Format::temperature(serviceTempHot, temp);
+		Format::temperature(serviceTempHot, serialGet());
 
 		serialPrintf("@(");
 		int val = serialGet() << 16;
@@ -124,20 +118,20 @@ static Screen ServiceDetails (
 		GD.cmd_text(120, 160, FONT_SMALL, 0, serviceFlowHot);
 
 		GD.cmd_text(20, 195, FONT_LIGHT, 0, Settings::getLabel(19));
-		GD.cmd_text(20, 245, FONT_LIGHT, 0, Settings::getLabel(20));
-		GD.cmd_text(20, 295, FONT_LIGHT, 0, Settings::getLabel(22));
-		GD.cmd_text(20, 345, FONT_LIGHT, 0, Settings::getLabel(21));
+		GD.cmd_text(20, 240, FONT_LIGHT, 0, Settings::getLabel(20));
+		GD.cmd_text(20, 285, FONT_LIGHT, 0, Settings::getLabel(22));
+		GD.cmd_text(20, 330, FONT_LIGHT, 0, Settings::getLabel(21));
 
 		GD.cmd_text(20, 215, FONT_SMALL, 0, serviceTempIce);
-		GD.cmd_text(20, 265, FONT_SMALL, 0, serviceTempHot);
-		GD.cmd_text(20, 315, FONT_SMALL, 0, serviceLastChanged);
+		GD.cmd_text(20, 260, FONT_SMALL, 0, serviceTempHot);
+		GD.cmd_text(20, 305, FONT_SMALL, 0, serviceLastChanged);
 
 		for (int i = 0; i < 3; i++) {
 			if (*serviceLog[i].date == '\0')
 				break;
-			GD.cmd_text(20, 365 + i * 40, FONT_SMALL, 0,
+			GD.cmd_text(20, 350 + i * 40, FONT_SMALL, 0,
 				serviceLog[i].date);
-			GD.cmd_text(30, 365 + i * 40 + 20, FONT_SMALL, 0,
+			GD.cmd_text(30, 350 + i * 40 + 20, FONT_SMALL, 0,
 				serviceLog[i].description);
 		}
 	},

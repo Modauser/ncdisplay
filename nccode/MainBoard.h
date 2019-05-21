@@ -13,8 +13,12 @@ extern int (*serialPrintf)(const char *, ...);
 extern int serialGetchar(void);
 int serialGet(void);
 
-constexpr int gal2liter(int gallons) {
+constexpr int GaltoL(int gallons) {
 	return gallons * 4;
+}
+constexpr int GPMtoL(int gpm) {
+	// Flow rate readings are x10
+	return gpm * 40;
 }
 constexpr int FtoC(int f) {
 	return (f - 32) / 2;
@@ -99,7 +103,7 @@ public:
 	}
 
 	static inline int getFilterRemaining(void) {
-		return inMetric ? gal2liter(filterRemaining) : filterRemaining;
+		return inMetric ? GaltoL(filterRemaining) : filterRemaining;
 	}
 	static int updateFilterRemaining(void);
 
