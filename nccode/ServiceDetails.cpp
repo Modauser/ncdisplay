@@ -6,6 +6,7 @@
 #include "type/Screen.h"
 #include "MainBoard.h"
 #include "Settings.h"
+#include "SystemCalls.h"
 
 #include <gameduino2/GD2.h>
 

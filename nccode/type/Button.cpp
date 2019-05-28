@@ -65,12 +65,6 @@ void Button::doAction(void)
 		action(pressed);
 }
 
-void Button::noDraw(const vec2& xy, bool pressed)
-{
-	(void)xy;
-	(void)pressed;
-}
-
 void Button::drawDots(const vec2& xy, bool pressed)
 {
 	(void)xy;

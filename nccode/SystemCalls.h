@@ -6,6 +6,8 @@
 #ifndef SYSTEMCALLS_H_
 #define SYSTEMCALLS_H_
 
+#include <cstdint>
+
 /**
  * Gets the address of the system binary's printf function, used for UART
  * communication with the main board.
