@@ -2,6 +2,7 @@
  * @file Button.h
  * @brief Provides support for customizable buttons for screens.
  */
+
 #ifndef BUTTON_H_
 #define BUTTON_H_
 
@@ -16,32 +17,62 @@ struct vec2 {
 		: x(_x), y(_y) {}
 };
 
-#define PRESS_FORCED     (1 << 1)
-
 /**
- * Creates a graphical button that can trigger custom actions.
+ * @class Button
+ * @brief Creates a graphical button that can trigger custom actions.
+ *
  * Supports bitmaps or a custom function for rendering (with or without text).
  * Can trigger actions on presses or releases.
  */
 class Button {
 private:
+	/**
+	 * The button's location.
+	 */
 	vec2 xy;
 
+	/**
+	 * The bitmap handle for the button (-1 if none).
+	 */
 	int handle;
-	LanguageString text;
-	void *render; // Custom render function
 
+	/**
+	 * The button's text (empty if no text).
+	 */
+	LanguageString text;
+
+	/**
+	 * The button's custom render function (nullptr if none).
+	 */
+	void *render;
+
+	/**
+	 * True if the button should be seen.
+	 */
 	bool visible;
+
+	/**
+	 * True if the button is pressed; false if released.
+	 */
 	bool pressed;
+
+	/**
+	 * If true, button will always be rendered in a pressed state.
+	 */
 	bool forcePressed;
 
-	// Points to custom action code
-	// bool argument is true on presses, false on releases
+	/**
+	 * Points to custom action code.
+	 * @param True on button press, false no button release
+	 */
 	void (*action)(bool);
 
 public:
 	/**
 	 * Creates a button that renders the given bitmap handle.
+	 * @param _xy The button's location
+	 * @param _handle The bitmap handle of the button's icon
+	 * @param _action The button's press/release action
 	 */
 	constexpr Button(vec2 _xy, int _handle, void (*_action)(bool)
 		= nullptr)
@@ -56,6 +87,10 @@ public:
 	/**
 	 * Creates a button with a custom render function that includes the
 	 * given text.
+	 * @param _xy The button's location
+	 * @param _render The button's custom render function, with text
+	 * @param _text The button's text
+	 * @param _action The button's press/release action
 	 */
 	constexpr Button(vec2 _xy, void (*_render)(const vec2&, bool,
 		const LanguageString&), const LanguageString& _text,
@@ -71,6 +106,9 @@ public:
 
 	/**
 	 * Creates a button with a custom render function.
+	 * @param _xy The button's location
+	 * @param _render The button's custom render function
+	 * @param _action The button's press/release action
 	 */
 	constexpr Button(vec2 _xy, void (*_render)(const vec2&, bool),
 		void (*_action)(bool) = nullptr)
@@ -82,63 +120,153 @@ public:
 		  forcePressed(false),
 		  action(_action) {}
 
-	// Renders the button
+	/**
+	 * Renders the button.
+	 */
 	void draw(void);
-	// Runs the button's action code
-	// (that gets passed the button's current press state)
+
+	/**
+	 * Runs the button's action code if it has any.
+	 */
 	void doAction(void);
 
-	// Gets the current press state of the button
+	/**
+	 * Gets the current press state of the button.
+	 * @return True for pressed, false for released
+	 */
 	bool getPressed(void) const;
 
-	// Forces pressed state for things like switches/toggles
+	/**
+	 * Forces pressed state, keeping button rendered as pressed.
+	 * @param p True to force pressed state.
+	 */ 
 	void setForcePressed(bool p);
-	// Sets the press state of the button
+
+	/**
+	 * Sets the press state of the button.
+	 * @param p True for pressed, false for released
+	 */
 	void setPressed(bool p);
-	// Sets the button's text, only if button was constructed with text
+
+	/**
+	 * Sets the button's text (only if button was constructed with text).
+	 * @param t New text for the button
+	 */
 	void setText(const LanguageString& t);
-	// Sets the button's visibility (button can't be pressed when invisible)
+
+	/**
+	 * Sets the button's visibility.
+	 * If not visible, button won't be shown and can't be pressed.
+	 */ 
 	void setVisibility(bool v);
 
+	/**
+	 * Sets the button's position.
+	 * @param _xy New position for the button
+	 */
 	inline void setPosition(vec2 _xy) {
 		xy = _xy;
 	}
 
+	/**
+	 * Sets a new render function for the button (excluding text).
+	 * If button started with text, render function should not change to one
+	 * without text.
+	 * @param _render New render function
+	 */
 	void setRender(void (*_render)(const vec2&, bool));
+
+	/**
+	 * Sets a new render function for the button (including text).
+	 * If button started without text, render function should not change to
+	 * one with text.
+	 * @param _render New render function
+	 */
 	void setRender(void (*_render)(const vec2&, bool, const LanguageString&));
 
-	// Below are provided custom render functions, that create commonly
-	// used UI elements:
-
-	// Draws nothing
-	static void noDraw(const vec2& xy, bool);
-	// Draws the three dots (settings icon)
+	/**
+	 * Pre-defined button render function:
+	 * Draws the three dots (settings icon).
+	 */
 	static void drawDots(const vec2& xy, bool);
-	// Draws the top-left back arrow
+	/**
+	 * Pre-defined button render function:
+	 * Draws the top-left back arrow.
+	 */
 	static void drawBackArrow(const vec2& xy, bool);
-	// Draws a menu item (settings screen entries)
+
+	/**
+	 * Pre-defined button render function:
+	 * Draws a menu item (settings screen entries).
+	 */
 	static void drawMenuItem(const vec2& xy, bool, const LanguageString& text);
-	// Draws a dispenser button
+
+	/**
+	 * Pre-defined button render function:
+	 * Draws a dispenser button.
+	 */
 	static void drawDispenserItem(const vec2& xy, bool, const LanguageString& text);
-	// Draws a scroll button (used in the language menu)
+
+	/**
+	 * Pre-defined button render function:
+	 * Draws a scroll button (used in the language menu).
+	 */
 	static void drawScrollButton(const vec2& xy, bool);
-	// Draws an up-arrow button (time/date selectors)
+
+	/**
+	 * Pre-defined button render function:
+	 * Draws an up-arrow button (e.g. time/date selectors).
+	 */
 	static void drawUpButton(const vec2& xy, bool);
-	// Draws a down-arrow button (time/date selectors)
+
+	/**
+	 * Pre-defined button render function:
+	 * Draws a down-arrow button (e.g. time/date selectors).
+	 */
 	static void drawDownButton(const vec2& xy, bool);
-	// Draws a full-width button with text ("SAVE" buttons at screen bottom)
+
+	/**
+	 * Pre-defined button render function:
+	 * Draws a full-width button with text (e.g. "SAVE" buttons at screen
+	 * bottom).
+	 */
 	static void drawFullWidth(const vec2& xy, bool, const LanguageString& text);
-	// Draws a small left arrow (temperature selector)
+
+	/**
+	 * Pre-defined button render function:
+	 * Draws a small left arrow (e.g. temperature selector).
+	 */
 	static void drawSmallLeft(const vec2& xy, bool);
-	// Draws a small right arrow (temperature selector)
+
+	/**
+	 * Pre-defined button render function:
+	 * Draws a small right arrow (e.g. temperature selector).
+	 */
 	static void drawSmallRight(const vec2& xy, bool);
-	// Draws a button that should be exclusive to its pair (AM/PM or 24HR)
+
+	/**
+	 * Pre-defined button render function:
+	 * Draws a button that should be exclusive to its pair (e.g. AM/PM or
+	 * 24HR toggle).
+	 */
 	static void drawExclusiveOption(const vec2& xy, bool, const LanguageString& text);
-	// Draws a togglable switch (SleepMode enable)
+
+	/**
+	 * Pre-defined button render function:
+	 * Draws a togglable switch (e.g. SleepMode enable).
+	 */
 	static void drawToggle(const vec2& xy, bool);
-	// Used for welcome language select buttons
+
+	/**
+	 * Pre-defined button render function:
+	 * Used for welcome language select buttons.
+	 */
 	static void drawWelcomeSelect(const vec2& xy, bool);
-	// Used for cautionary buttons (warning screen, hot dispense)
+
+	/**
+	 * Pre-defined button render function:
+	 * Used for cautionary buttons (warning screen, hot dispense).
+	 */
 	static void drawRedFullWidth(const vec2& xy, bool, const LanguageString& text);
 };
 

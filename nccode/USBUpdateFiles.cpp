@@ -1,7 +1,11 @@
 /**
  * @file USBUpdateFiles.cpp
- * @brief Screen for updating config files from the USB drive.
+ * @brief Prompt for updating/creating files on the SD card.
+ *
+ * Files can be placed on a USB drive to have them copied to the SD card, which
+ * is handled in USBUpdateFiles().
  */
+
 #include "type/Assets.h"
 #include "type/Screen.h"
 
@@ -17,6 +21,10 @@ static char srcFile[68];
 
 static void failedFileCopy(const char *msg);
 
+/**
+ * Renders the copying prompt for the current file.
+ * @param extra A function to do extra rendering if necessary
+ */
 static void renderPrompt(std::function<void(void)> extra = [](){})
 {
 		GD.ClearColorRGB(NC_BKGND_COLOR);
@@ -39,37 +47,51 @@ static void renderPrompt(std::function<void(void)> extra = [](){})
 		GD.swap();
 }
 
+/**
+ * Checks for files on the USB, then prompts to copy them to the SD card if
+ * necessary.
+ */
 void USBUpdateFiles(void)
 {
 	bool hadFiles = false;
+
+	// Try to load the USB drive
 	FRESULT res = f_opendir(&rootDirectory, DRV_USB);
 	if (res != FR_OK)
 		return;
 
 	while (1) {
+		// Get next file
 		res = f_readdir(&rootDirectory, &fileInfo);
+
+		// If error or none found, leave the loop
 		if (res != FR_OK || fileInfo.fname[0] == '\0')
 			break;
+		// Skip directorys
 		if (fileInfo.fname[0] == '.' || (fileInfo.fattrib & AM_DIR))
 			continue;
 
+		// Load the file's name and show the prompt
 		hadFiles = true;
 		fileName = fileInfo.fname;
-
 		renderPrompt();
 
+		// Wait for input
 		do {
 			delay_ms(10);
 			GD.get_inputs();
 		} while (GD.inputs.tag == 0);
 
+		// Get tag of pressed button
 		int tag = GD.inputs.tag;
 
+		// Wait for release
 		do {
 			delay_ms(10);
 			GD.get_inputs();
 		} while (GD.inputs.tag != 0);
 
+		// If 'Copy' was pressed, copy the file
 		if (tag == 1) {
 			UINT bytesRead;
 			FIL src, dst;
@@ -79,6 +101,7 @@ void USBUpdateFiles(void)
 				GD.cmd_text(10, 220, 18, 0, "Copying...");
 			});
 
+			// Load the USB file
 			strcpy(srcFile, DRV_USB);
 			strcat(srcFile, fileName);
 			res = f_open(&src, srcFile, FA_READ);
@@ -88,6 +111,7 @@ void USBUpdateFiles(void)
 				continue;
 			}
 
+			// Read the entire file into memory
 			extern void *UPDATE_LOAD_ADDR;
 			FSIZE_t size = f_size(&src);
 			res = f_read(&src, UPDATE_LOAD_ADDR, size, &bytesRead);
@@ -96,6 +120,7 @@ void USBUpdateFiles(void)
 				continue;
 			}
 
+			// Create the file on the SD card (overwrites existing)
 			res = f_open(&dst, fileName, FA_WRITE |
 				FA_CREATE_ALWAYS);
 			if (res != FR_OK) {
@@ -103,6 +128,7 @@ void USBUpdateFiles(void)
 				continue;
 			}
 
+			// Write the USB file's data to the SD card file
 			res = f_write(&dst, UPDATE_LOAD_ADDR, size, &bytesRead);
 			if (res != FR_OK || bytesRead != size) {
 				failedFileCopy("Partial file copy!");
@@ -121,6 +147,7 @@ void USBUpdateFiles(void)
 		}
 	}
 
+	// Show a finished message if files were prompted for
 	if (hadFiles) {
 		GD.ClearColorRGB(NC_BKGND_COLOR);
 		GD.ColorRGB(NC_FRGND_COLOR);

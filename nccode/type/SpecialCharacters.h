@@ -1,3 +1,11 @@
+/**
+ * @file SpecialCharacters.h
+ * @brief Defines font characters for special symbols.
+ *
+ * Custom font files had to be made due to the design of the FT81x graphics
+ * chip. So, non-English symbols had to be moved to different locations. All
+ * relocated symbols are defined in this file.
+ */
 #ifndef SPECIALCHARACTERS_H_
 #define SPECIALCHARACTERS_H_
 

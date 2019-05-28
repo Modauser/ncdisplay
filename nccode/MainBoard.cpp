@@ -1,9 +1,6 @@
-/**
- * @file MainBoard.cpp
- * @brief Main interface for communicating with the main board.
- */
 #include "type/Assets.h"
 #include "MainBoard.h"
+#include "SystemCalls.h"
 
 #include <fatfs/ff.h>
 #include <hal_delay.h>

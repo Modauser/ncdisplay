@@ -1,8 +1,3 @@
-/**
- * @file Assets.cpp
- * @brief Functions for loading visual assets, and for other miscellaneous
- * things.
- */
 #include "Assets.h"
 #include "NirmalaMod.h" // Contains font data 
 

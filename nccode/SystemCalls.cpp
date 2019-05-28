@@ -1,7 +1,3 @@
-/**
- * @file SystemCalls.cpp
- * @brief Exposes core functionality provided by main firmware.
- */
 #include "type/Assets.h"
 
 #include <fatfs/ff.h>

@@ -2,6 +2,7 @@
  * @file MainBoard.h
  * @brief Main interface for communicating with the main board.
  */
+
 #ifndef MAINBOARD_H_
 #define MAINBOARD_H_
 
@@ -9,21 +10,54 @@
 
 #include <array>
 
-extern int (*serialPrintf)(const char *, ...);
-extern int serialGetchar(void);
+/**
+ * Printf that communicates with UART to the main board.
+ * @param s Format string
+ * @param ... Arguments for format string
+ */
+extern int (*serialPrintf)(const char *s, ...);
+
+/**
+ * Fetches a 'response' character from the main board.
+ *
+ * Main board responds in bytes separated by '$', this consumes the '$' then
+ * returns the next character.
+ * @return Byte from main board
+ */
 int serialGet(void);
 
+/**
+ * Converts gallons to liters.
+ *
+ * Does a rough conversion to avoid floating-point math.
+ */
 constexpr int GaltoL(int gallons) {
 	return gallons * 4;
 }
+
+/**
+ * Converts gallons per minute (x10) to liters per minute.
+ *
+ * Does a rough conversion to avoid floating-point math.
+ */
 constexpr int GPMtoL(int gpm) {
 	// Flow rate readings are x10
 	return gpm * 40;
 }
+
+/**
+ * Converts degrees Fahrenheit to Celsius.
+ *
+ * Does a rough conversion to avoid floating-point math.
+ */
 constexpr int FtoC(int f) {
 	return (f - 32) / 2;
 }
 
+/**
+ * @enum FilterType
+ * @brief Enumerates possible filter types.
+ */
 enum class FilterType : char {
 	CarbonPlus = 0,
 	CarbonPro,
@@ -32,6 +66,15 @@ enum class FilterType : char {
 	CarbonSilv
 };
 
+/**
+ * @class MainBoard
+ * @brief An interface to handle most (or all) main board communication.
+ *
+ * Most main board queries have an update...() and get...() pair. 'Update' calls
+ * request this class to get the latest value from the main board, 'get' calls
+ * return the latest stored value. 'get' calls without 'update' pairs retrieve
+ * data from the main board within the 'get' call.
+ */
 class MainBoard {
 private:
 	static bool inMetric;

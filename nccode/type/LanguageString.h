@@ -2,6 +2,7 @@
  * @file LanguageString.h
  * @brief Provides a class for handling strings in multiple languages.
  */
+
 #ifndef LANGSTR_H_
 #define LANGSTR_H_
 
@@ -11,44 +12,57 @@
 
 /**
  * Defines possible languages.
+ *
  * Order is important; it matches the language value on the main board.
  */
 enum class Language : unsigned int {
-	English = 0,
-	German,
-	French,
-	Spanish,
-	Dutch,
-	Swedish,
-	Norweigan,
-	Danish,
-	Count
+	English = 0, /**< English */
+	German,      /**< German (Deutsch) */
+	French,      /**< French (Francais) */
+	Spanish,     /**< Spanish (Espanol) */
+	Dutch,       /**< Dutch (Nederlands) */
+	Swedish,     /**< Swedish (Svenskt) */
+	Norweigan,   /**< Norweigan (Norsk) */
+	Danish,      /**< Danish (Dansk) */
+	Count        /**< Language count for testing language number validity */
 };
 
 /**
- * Allows text to be defined for multiple languages.
- * When text is requested from an object of this class, the proper language
- * string will be returned according to the overall current language.
+ * @class LanguageString
+ * @brief Handles string switching based on language.
+ *
+ * Allows text to be defined for multiple languages. When text is requested from
+ * this class, the proper language string will be returned according to the
+ * global current language.
  */
 class LanguageString {
 private:
 
-	// States the current language being used
+	/**
+	 * Stores the current language being used system-wide.
+	 */
 	static Language currentLanguage;
 
-	// An array for each language's text
+	/**
+	 * An array for text in each language.
+	 */
 	const char *strings[static_cast<unsigned int>(Language::Count)];
 
 public:
-	// Fills all text entries with empty strings
+	/**
+	 * Fills all string entries with empty strings.
+	 */
 	constexpr LanguageString(void)
 		: strings{} {
 		for (auto& s : strings)
 			s = "";
 	}
 
-	// Fills the strings array for as many languages as provided
-	// Undefined entries will point to the first (English) entry
+	/**
+	 * Fills the strings array for the languages provided.
+	 * String order must match that of the Language enum. Undefined entries
+	 * will be set to the first (i.e. English).
+	 */
 	template<typename... T>
 	constexpr LanguageString(const T&... s)
 		: strings{s...} {
@@ -58,27 +72,52 @@ public:
 		}
 	}
 
-	// Fetches the string for the current language
+	/**
+	 * Fetches text for the current or given language.
+	 * @param lang The desired language
+	 * @return The text in the given language
+	 */
 	const char *operator()(Language lang = currentLanguage) const; 
 
-	// Returns true if this object was initialized with non-empty values
+	/**
+	 * Checks if the object was initialized with text.
+	 * @return True if object contains no text
+	 */
 	bool empty(void) const; 
 
-
-
-	// Sets the current language for all LanguageStrings
+	/**
+	 * Sets the current language, used by all LanguageString instances.
+	 * @param l The new current language
+	 */
 	static void setCurrentLanguage(Language l);
 
-	// Converts file special characters to font characters
+	/**
+	 * Converts Unicode characters in the given text buffer to renderable
+	 * characters.
+	 * Special/accented characters have different values in the display's
+	 * custom font files.
+	 * @param Text to convert
+	 * @return The text, now converted
+	 */
 	static char *convertFileText(char *);
 
+	/**
+	 * Retrieves the current language.
+	 * @return The current language
+	 */
 	inline static const Language& getCurrentLanguage(void) {
 		return currentLanguage;
 	}
 };
 
-// Some common strings predefined to save space
+/**
+ * Next text ("NEXT"), defined once to prevent extra declarations.
+ */
 extern const LanguageString lStringNext;
+
+/**
+ * Save text ("SAVE"), defined once to prevent extra declarations.
+ */
 extern const LanguageString lStringSave;
 
 #endif // LANGSTR_H_

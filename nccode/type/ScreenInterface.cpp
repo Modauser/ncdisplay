@@ -11,12 +11,14 @@ void ScreenManager::addScreen(ScreenID id, ScreenInterface *screen) {
 }
 
 void ScreenManager::setCurrent(ScreenID id) {
+	// Load the forced parent if there is one
 	if (forcedParent != nullptr) {
 		current = forcedParent;
 		current->prepare();
 		forcedParent = nullptr;
 	} else if (auto screen = screens[static_cast<std::size_t>(id)];
 		current != screen) {
+		// Load screen's parent
 		current = screen;
 		current->prepare();
 	}

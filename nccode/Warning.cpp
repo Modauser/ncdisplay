@@ -2,11 +2,16 @@
  * @file Warning.cpp
  * @brief Customizable screen for warning messages (factory reset/autofill).
  */
+
 #include "type/Assets.h"
 #include "type/Screen.h"
 
 #include <gameduino2/GD2.h>
 
+/**
+ * The warning message to be displayed.
+ * If left as nullptr, no message is shown.
+ */
 const LanguageString *warningMessage = nullptr;
 ScreenID warningProceedScreen = ScreenID::Advanced;
 void (*warningProceedFunc)(void) = nullptr;

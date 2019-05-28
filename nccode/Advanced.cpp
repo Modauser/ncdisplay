@@ -2,12 +2,15 @@
  * @file Advanced.cpp
  * @brief The advanced settings menu.
  */
+
 #include "type/Assets.h"
 #include "type/Screen.h"
 #include "MainBoard.h"
 
 #include <gameduino2/GD2.h>
 
+// External variables for the warning screens. We set them if we plan to show
+// a warning screen.
 extern const LanguageString *warningMessage;
 extern ScreenID warningProceedScreen;
 extern void (*warningProceedFunc)(void);

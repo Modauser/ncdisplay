@@ -11,12 +11,19 @@
 #include <fatfs/ff.h>
 #include <gameduino2/GD2.h>
 
+/**
+ * Error text for Green/Red errors, for each main language.
+ */
 static const LanguageString errorFile ({
 	DRV_SD "English0.txt",
 	DRV_SD "German00.txt",
 	DRV_SD "French00.txt",
 	DRV_SD "Spanish0.txt"
 });
+
+/**
+ * System error text, for each main language.
+ */
 static const LanguageString systemErrorFile ({
 	DRV_SD "EngErr00.txt",
 	DRV_SD "GerErr00.txt",

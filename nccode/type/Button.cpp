@@ -1,7 +1,3 @@
-/**
- * @file Button.cpp
- * @brief Provides support for customizable buttons for screens.
- */
 #include "Assets.h"
 #include "Button.h"
 

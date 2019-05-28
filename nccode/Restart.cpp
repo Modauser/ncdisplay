@@ -7,6 +7,14 @@
 
 #include <gameduino2/GD2.h>
 
+static const LanguageString restartTitle ({
+	"PLEASE RESTART"
+});
+
+static const LanguageString restartMessage ({
+	"Power button is located\n\non back of unit"
+});
+
 static Screen Restart (
 	ScreenID::Restart,
 	// Parent screen
@@ -24,9 +32,8 @@ static Screen Restart (
 		GD.ColorRGB(WHITE);
 		GD.Vertex2ii(90, 200, RESTART_HANDLE);
 
-		GD.cmd_text(136, 90, FONT_LARGE, OPT_CENTER, "PLEASE RESTART");
-		GD.cmd_text(136, 400, FONT_TITLE, OPT_CENTER,
-			"Power button is located\n\non back of unit");
+		GD.cmd_text(136, 90, FONT_LARGE, OPT_CENTER, restartTitle());
+		GD.cmd_text(136, 400, FONT_TITLE, OPT_CENTER, restartMessage());
 	}
 );
 

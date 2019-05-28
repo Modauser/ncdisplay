@@ -9,20 +9,42 @@
 
 #include <gameduino2/GD2.h>
 
+// True if dispensing water
 static bool mainDispensing = false;
+// True if showing dispense hot button
 static bool hotDispensing = false;
+
 static unsigned int hotTimeout = 0;
 static unsigned int mainAniImage = 0;
 static unsigned int mainAniCounter = 0;
 static unsigned int mainAniCounterMax = 2;
 static unsigned int timeDateCounter = 0;
 
+/**
+ * Shows or hides the dispense hot button and warning.
+ * @param show True to show dispense hot button/warning
+ */
 static void showHotDispense(bool show);
+
+/**
+ * Refreshes visibilities of buttons/text based on current state.
+ */
 static void setVisibilities(void);
+
+/**
+ * Render function for a full-width dispense button.
+ * @see Button.h
+ */
 void bigDispenseButton(const vec2& xy, bool pressed, const LanguageString& text);
 
+/**
+ * Does the appropriate action when a dispense button is pressed.
+ * @param letter Letter associated with button (e.g. 'C' for cold)
+ * @param pressed Button pressed/released state
+ */
 static void doPress(char letter, bool pressed)
 {
+	// Begin dispensing on press
 	if (pressed) {
 		if (Error::shouldDispense() && !mainDispensing) {
 			mainDispensing = true;
@@ -32,6 +54,7 @@ static void doPress(char letter, bool pressed)
 			serialPrintf("$%c", letter);
 		}
 	} else {
+		// Send release code
 		mainDispensing = false;
 		serialPrintf("$R$R");
 	}
@@ -57,6 +80,7 @@ static const LanguageString mainDispense2 ({
 	" ",
 	"FOR VAND"
 });
+
 static const LanguageString warningHot ({
 	"WARNING: HOT!",
 	"VORSICHT: HEI" ESZETT "!",
@@ -77,6 +101,8 @@ static const LanguageString dispenseHot ({
 	"VARMT VANN",
 	"TRYK FOR VARMT VAND"
 });
+
+// Estimated widths for "WARNING: HOT!" message box
 static const unsigned int warningHotWidths[] = {
 	11 * 13, 11 * 15, 11 * 17, 11 * 22,
 	11 * 19, 11 * 14, 11 * 21, 11 * 16
@@ -91,7 +117,9 @@ static Screen Dispense (
 	[](void) {
 		MainBoard::updateModelNumber();
 
+		// Trigger time/date update on first render
 		timeDateCounter = 2000 - 1;
+
 		showHotDispense(false);
 		setVisibilities();
 	},
@@ -101,7 +129,8 @@ static Screen Dispense (
 
 		GD.Begin(BITMAPS);
 		if (mainDispensing) {
-			GD.Vertex2ii(76, 0, mainAniImage); // Flow animation image
+			// Draw flow animation
+			GD.Vertex2ii(76, 0, mainAniImage);
 
 			if (++mainAniCounter >= mainAniCounterMax) {
 				mainAniCounter = 0;
@@ -109,6 +138,7 @@ static Screen Dispense (
 					mainAniImage = ANI1_HANDLE;
 			}
 		} else {
+			// Show dispense text
 			GD.Vertex2ii(0, 130, HOMEWTR_HANDLE);
 			GD.ColorRGB(NC_FDGND_COLOR);
 			GD.cmd_text(136, 80, FONT_LARGE, OPT_CENTER,
@@ -123,6 +153,7 @@ static Screen Dispense (
 			GD.cmd_text(186, 460, FONT_TIME, OPT_CENTER,
 				MainBoard::getDate());
 
+			// Show hot dispense warning if hot was selected
 			if (hotDispensing) {
 				auto halfwidth = warningHotWidths[static_cast<int>(
 					LanguageString::getCurrentLanguage())] / 2;
@@ -135,21 +166,24 @@ static Screen Dispense (
 				GD.Vertex2ii(136 - halfwidth, 227);
 				GD.Vertex2ii(136 + halfwidth, 253);
 			
-				// Put error message
+				// Draw warning text
 				GD.ColorRGB(0xFF0000);
 				GD.cmd_text(136, 238, FONT_MESG, OPT_CENTER,
 					warningHot());
 			} else if (Error::hasError()) {
+				// Show errors outside of hot dispense
 				Error::show();
 			}
 		}
 
 		if (!hotDispensing) {
+			// Draw a white rectangle for button borders
 			GD.ColorRGB(WHITE);
 			GD.Begin(RECTS);
 			GD.Vertex2ii(0, 296);
 			GD.Vertex2ii(272, 440);
 		} else if (!mainDispensing && ++hotTimeout >= 200) {
+			// Exit hot dispense mode on timeout
 			showHotDispense(false);
 		}
 
@@ -187,6 +221,7 @@ static Screen Dispense (
 		"VARMT",
 		"VARMT"
 	}, [](bool pressed) {
+		// Show hot dispense button/warning
 		if (!pressed)
 			showHotDispense(true);
 	}),
@@ -220,13 +255,16 @@ static Screen Dispense (
 		doPress('H', pressed);
 	}),
 	Button({0, 0}, Button::drawDots, [](bool pressed) {
-		// On release
 		if (!pressed) {
+			// If dispensing hot, this is actually a back button
 			if (hotDispensing) {
+				// Go back to normal dispense screen
 				showHotDispense(false);
 			} else {
+				// Clear dispense error if necessary
 				if (!Error::shouldDispense())
 					Error::clearDispenseFlag();
+
 				ScreenManager::setCurrent(ScreenID::Settings);
 			}
 		}
@@ -237,13 +275,17 @@ void showHotDispense(bool show)
 {
 	hotDispensing = show;
 	hotTimeout = 0;
+
 	Dispense.getButton(4).setVisibility(show);
 	Dispense.getButton(5).setRender(show ? Button::drawBackArrow :
 		Button::drawDots);
+
 	if (show) {
+		// Hide other dispense buttons
 		for (unsigned int i = 0; i < 4; i++)
 			Dispense.getButton(i).setVisibility(false);
 	} else {
+		// Show dispense buttons
 		Dispense.getButton(0).setVisibility(true);
 		Dispense.getButton(3).setVisibility(true);
 		setVisibilities();
@@ -252,6 +294,7 @@ void showHotDispense(bool show)
 
 void setVisibilities(void)
 {
+	// Prepare dispense buttons based on model number
 	auto model = MainBoard::getModelNumber();
 	if (model < 3)
 		Dispense.getButton(0).setRender(bigDispenseButton);

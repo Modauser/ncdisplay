@@ -1,71 +1,78 @@
+/**
+ * @file main.cpp
+ * @brief Main entry point for system code.
+ */
+
 #include <atmel_start.h>
 #include <gameduino2/GD2.h>
 #include <config/hpl_sercom_config.h>
 #include <spi_lite.h>
 
-// Enables USB drive detection and access
+// Enables USB drive detection and access.
+// Comment to disable.
 #define ALLOW_USB
 
-//extern void setup(void);
-//extern void loop(void);
-
+// Constants used to verify and load the 'user' binary.
+// NCIdentifier is a magic value that appears at the beginning of the binary.
+// ncident is a pointer to where the binary's identifier is stored.
+// ncmain is a function pointer to the 'user' binary entry point.
 constexpr uint32_t NCIdentifier = 0x31415926;
 static uint32_t *ncident = (uint32_t *)0x00040000;
 static void (*ncmain)(void) = (void (*)(void))(0x00040004 | 1);
 
+// FatFS objects for the SD card and USB.
 static FATFS sdmmc_fatfs;
 static FATFS msc_fatfs;
+
+/**
+ * Initializes the SD card and USB (if enabled).
+ * Returns -1 if no SD card, 1 if no USB, or 0 if both are found.
+ */
 int initDisks(void);
 
+// Include FatFS code; workaround to avoid compiling/linking issues.
 #include "fatfs/diskio.c"
 
-void UsageFault_Handler(void)
-{
-	while (1);
-}
-
-void HardFault_Handler(void)
-{
-	while (1);
-}
-
+//
+// Main entry point
+//
 int main(void)
 {
 	// Initializes MCU, drivers and middleware
 	atmel_start_init();
 
-	// Needed so USB interrupts can happen within fatfs service call
+	// Needed so USB interrupts can happen within service calls
 	NVIC_SetPriority(SVCall_IRQn, 250);
 
 	// Enable SPI
 	SPI_0_enable();
 
+	// Initialize storage devices
 	initDisks();
 
 	// Confirm existance of display code, then jump to it
 	if (*ncident == NCIdentifier)
 		ncmain();
 
-	while (1) {
-		//gpio_set_pin_level(LED0, false);
-		//delay_ms(750);
-		//gpio_set_pin_level(LED0, true);
+	while (1)
 		delay_ms(250);
-	}
 }
 
-uint8_t spi_xfer_byte(uint8_t send)
-{
-	return SPI_0_exchange_data(send);
-}
-
-uint32_t fatfs_svc_handler(uint32_t *fatfs_args);
-void firmware_update(uint32_t addr, uint32_t count);
+// Function prototypes for service call handler below
+// Function documentation below
+uint8_t spi_xfer_byte(uint8_t send);
 int serialTest(void);
+void firmware_update(uint32_t addr, uint32_t count);
+uint32_t fatfs_svc_handler(uint32_t *fatfs_args);
+
+/**
+ * Handles service calls, which are made with the "svc" instruction.
+ * 'User' code accesses hardware through making service calls.
+ */
 void SVCall_Handler(void)
 {
+	// Get call arguments from the proper stack (stored in msp or psp).
 	uint32_t *args;
-
 	asm("\
 		tst lr, #4; \
 		ite eq; \
@@ -73,23 +80,37 @@ void SVCall_Handler(void)
 		mrsne %0, psp; \
 	" : "=r" (args));
 
+	// Get the service call number, then make the appropriate call.
 	int svc_number = ((char *)args[6])[-2];
+
 	switch (svc_number) {
+	// "svc 0"
+	// Millisecond delay.
 	case 0:
 		delay_ms(args[1]);
 		break;
+	// "svc 1"
+	// Does a byte transfer over SPI.
 	case 1:
 		*((uint32_t *)args[0]) = spi_xfer_byte(args[1]);
 		break;
+	// "svc 2"
+	// Does a storage device related call.
 	case 2:
 		*((uint32_t *)args[0]) = fatfs_svc_handler((uint32_t *)args[1]);
 		break;
+	// "svc 3"
+	// Does a firmware update.
 	case 3:
 		firmware_update(args[0], args[1]);
 		break;
+	// "svc 4"
+	// Returns location of our printf function, which is connected to UART.
 	case 4:
 		*((uint32_t *)args[0]) = (uint32_t)printf;
 		break;
+	// "svc 5"
+	//  
 	case 5:
 		*((uint32_t *)args[0]) = (args[1] == 0x1234) ? serialTest() :
 			getchar();
@@ -97,6 +118,11 @@ void SVCall_Handler(void)
 	default:
 		break;
 	}
+}
+
+uint8_t spi_xfer_byte(uint8_t send)
+{
+	return SPI_0_exchange_data(send);
 }
 
 int serialTest(void)
@@ -197,13 +223,13 @@ int initDisks(void)
 	if (status == STA_NODISK) {
 		// No SD card found
 		ret = -1;
-		return ret;
+		//return ret;
 	} else {
 		// SD card found; mount it
 		result = f_mount(&sdmmc_fatfs, DRV_SD, 1);
 		if (result != FR_OK) {
 			ret = -1; // Maybe use USB instead, see above
-			return ret;
+			//return ret;
 		}
 	}
 
@@ -234,3 +260,14 @@ int initDisks(void)
 	(void)result;
 	return ret;
 }
+
+void UsageFault_Handler(void)
+{
+	while (1);
+}
+
+void HardFault_Handler(void)
+{
+	while (1);
+}
+

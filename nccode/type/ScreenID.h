@@ -6,37 +6,40 @@
 #define SCREENID_H_
 
 /**
- * Gives a handle for each screen, used to help link them together.
+ * @enum ScreenID
+ * Gives a ID/handle to each screen.
+ * 
+ * To switch screens, the desired screen's ID must be known.
  * Count is used to size the array of known screens.
+ * @see ScreenInterface
  */
 enum class ScreenID {
-	Sleep = 0,
-	MainMenu,
-	Dispense,
-	Settings,
-	ProductInfo,
-	Filter,
-	FilterChange,
-	FilterChangeTimer,
-	TimeDate,
-	Language,
-	SleepMode,
-	Temperature,
-	Advanced,
-	USBUpload,
-	Warning,
-	ServiceDetails,
-	SystemOptions,
-	Lock,
-	Lockscreen,
-	Restart,
-	Fill,
-	WelcomeLanguage,
-	SetupComplete,
-	Setup,
-	SystemError,
+	Sleep = 0,         /**< The sleep image screen */
+	Dispense,          /**< Dispense screen */
+	Settings,          /**< %Settings menu */
+	ProductInfo,       /**< Product info */
+	Filter,            /**< Filter */
+	FilterChange,      /**< Filter change */
+	FilterChangeTimer, /**< Filter change, timer screen */
+	TimeDate,          /**< Time + Date */
+	Language,          /**< Language (set language) */
+	SleepMode,         /**< SleepMode */
+	Temperature,       /**< Temperature */
+	Advanced,          /**< Advanced menu */
+	USBUpload,         /**< USB Upload */
+	Warning,           /**< Red warning (factory reset/autofill) */
+	ServiceDetails,    /**< Service details */
+	SystemOptions,     /**< System options */
+	Lock,              /**< Passcode */
+	Lockscreen,        /**< Enter passcode prompt */
+	Restart,           /**< Please restart */
+	Fill,              /**< FILLING ... WATER SYSTEM */
+	WelcomeLanguage,   /**< Welcome, select language */
+	SetupComplete,     /**< Setup complete */
+	Setup,             /**< Fullscreen ION logo */
+	SystemError,       /**< System error */
 
-	Count
+	Count              /**< Count of defined ScreenID's */
 };
 
 #endif // SCREENID_H_
