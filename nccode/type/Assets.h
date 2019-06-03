@@ -35,7 +35,7 @@ constexpr uint32_t WHITE          = 0xFFFFFF;
 /**
  * Color: Red tint (e.g. Warning screen).
  */
-constexpr uint32_t TINT_RED       = 0xDE0D14;
+constexpr uint32_t TINT_RED       = 0xF50D0A;
 /**
  * Color: Green tint (e.g. Sparkling fill screen).
  */
@@ -100,7 +100,7 @@ void loadImage(int handle, const char *path, uint32_t addr = 0);
 /**
  * Defines where assets end in video memory. Assets start at address zero.
  */
-constexpr uint32_t ASSETS_END = 629252UL;
+constexpr uint32_t ASSETS_END = 638364UL;
 
 /**
  * @enum BitmapHandles

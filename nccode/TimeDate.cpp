@@ -100,7 +100,7 @@ static Screen TimeDate (
 		GD.ColorRGB(BLACK);
 		GD.cmd_number(spot1 + 35, 244, FONT_SMALL, OPT_CENTER,
 			timeDate[idx]);
-		GD.cmd_number(spot2 + 35, 244, FONT_SMALL, OPT_CENTER,
+		GD.cmd_number(spot2 + 35, 244, FONT_SMALL, OPT_CENTER | 2,
 			timeDate[idx + 1]);
 		if (timeSetting) {
 			if (ampm) {

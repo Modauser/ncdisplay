@@ -7,40 +7,40 @@ uint32_t FREE_MEM = ASSETS_END;
 
 void loadImage(int handle, const char *path, uint32_t addr)
 {
-  //uint32_t base, width, height;
+	//uint32_t base, width, height;
 
-  addr = (addr + 1023) & ~1023;
+	addr = (addr + 1023) & ~1023;
 
-  GD.BitmapHandle(handle);
-  GD.cmd_loadimage(addr, 0);
-  GD.load(path);
-  //GD.cmd_getprops(base, width, height);
-  GD.finish();
-  
-  //imageNextAddress = base + width * height * 2;
+	GD.BitmapHandle(handle);
+	GD.cmd_loadimage(addr, 0);
+	GD.load(path);
+	//GD.cmd_getprops(base, width, height);
+	GD.finish();
+	
+	//imageNextAddress = base + width * height * 2;
 }
 
 void displayInit(void)
 {
-  GD.begin();
-
-  // Prepare display
-  GD.wr32(REG_HSIZE, 480);
-  GD.wr32(REG_VSIZE, 272);
-  GD.wr32(REG_HCYCLE, 548);
-  GD.wr32(REG_HOFFSET, 43);
-  GD.wr32(REG_HSYNC0, 0);
-  GD.wr32(REG_HSYNC1, 41);
-  GD.wr32(REG_VCYCLE, 292);
-  GD.wr32(REG_VOFFSET, 12);
-  GD.wr32(REG_VSYNC0, 0);
-  GD.wr32(REG_VSYNC1, 10);
-  GD.wr32(REG_PCLK, 5);
-  GD.wr32(REG_PCLK_POL, 1);
-  GD.wr32(REG_CSPREAD, 1);
-  GD.wr32(REG_DITHER, 1);
-  GD.wr32(REG_ROTATE, 2);
-  GD.wr(REG_SWIZZLE, 0);
+	GD.begin();
+	
+	// Prepare display
+	GD.wr32(REG_HSIZE, 480);
+	GD.wr32(REG_VSIZE, 272);
+	GD.wr32(REG_HCYCLE, 548);
+	GD.wr32(REG_HOFFSET, 43);
+	GD.wr32(REG_HSYNC0, 0);
+	GD.wr32(REG_HSYNC1, 41);
+	GD.wr32(REG_VCYCLE, 292);
+	GD.wr32(REG_VOFFSET, 12);
+	GD.wr32(REG_VSYNC0, 0);
+	GD.wr32(REG_VSYNC1, 10);
+	GD.wr32(REG_PCLK, 5);
+	GD.wr32(REG_PCLK_POL, 1);
+	GD.wr32(REG_CSPREAD, 1);
+	GD.wr32(REG_DITHER, 1);
+	GD.wr32(REG_ROTATE, 2);
+	GD.wr(REG_SWIZZLE, 0);
 }
 
 uint32_t fontLoad(int handle, const byte *header, const char *datafile, uint32_t address)

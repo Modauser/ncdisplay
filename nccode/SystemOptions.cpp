@@ -41,55 +41,55 @@ static Screen SystemOptions (
 		clearScreenWithIonHeader();
 
 		GD.ColorRGB(NC_FDGND_COLOR);
-		GD.cmd_text(30, 75, FONT_SMALL, 0, LanguageString({
+		GD.cmd_text(185, 75, FONT_SMALL, OPT_RIGHTX, LanguageString({
 			"ICE TANK OVER",
 			"EIS-TANK",
 			"ERREUR DE SURCHAUFFE",
 			"ERROR DE SOBRECALENTAMIENTO"
 		})());
-		GD.cmd_text(30, 95, FONT_SMALL, 0, LanguageString({
+		GD.cmd_text(185, 95, FONT_SMALL, OPT_RIGHTX, LanguageString({
 			"TEMP ERROR:",
 			"TEMPERATURFEHLER",
 			"DU BAC " A_GRAVE " GLACE",
 			"DEL TANQUE DE HIELO"
 		})());
-		GD.cmd_text(30, 135, FONT_SMALL, 0, LanguageString({
+		GD.cmd_text(185, 135, FONT_SMALL, OPT_RIGHTX, LanguageString({
 			"DRAIN LEVEL",
 			"NIVEAU DER AUFFANGVORRICHTUNG",
 			"ERREUR NIVEAU DE",
 			"ERROR NIVEL DE",
 		})());
-		GD.cmd_text(30, 155, FONT_SMALL, 0, LanguageString({
+		GD.cmd_text(185, 155, FONT_SMALL, OPT_RIGHTX, LanguageString({
 			"FULL ERROR:",
 			"ABSOLUT FALSCH",
 			"DRAINAGE PLEIN",
 			"DRENAJE LLENO"
 		})());
-		GD.cmd_text(30, 195, FONT_SMALL, 0, LanguageString({
+		GD.cmd_text(185, 195, FONT_SMALL, OPT_RIGHTX, LanguageString({
 			"COOLING FAN",
 			"K" U_UMLAUT "HLUNGSVENTILATOR",
 			"ERREUR VENTILATEUR",
 			"ERROR VENTILADOR",
 		})());
-		GD.cmd_text(30, 215, FONT_SMALL, 0, LanguageString({
+		GD.cmd_text(185, 215, FONT_SMALL, OPT_RIGHTX, LanguageString({
 			"FAILURE ERROR:",
 			"VERSAGT",
 			"DE REFROIDISSEMENT",
 			"DE ENFRIAMIENTO"
 		})());
-		GD.cmd_text(30, 255, FONT_SMALL, 0, LanguageString({
+		GD.cmd_text(185, 255, FONT_SMALL, OPT_RIGHTX, LanguageString({
 			"BOOSTER PUMP",
 			"DRUCKERH" O_UMLAUT "HUNGS-",
 			"POMPE DE SURPRESSION",
 			"BOMBA ELEVADORA DE",
 		})());
-		GD.cmd_text(30, 275, FONT_SMALL, 0, LanguageString({
+		GD.cmd_text(185, 275, FONT_SMALL, OPT_RIGHTX, LanguageString({
 			"ENABLED:",
 			"PUMPE AKTIV",
 			"ACTIV" E_ACUTE "E",
 			"PRESI" O_ACUTE "N ENCENDIDA"
 		})());
-		GD.cmd_text(30, 310, FONT_SMALL, 0, LanguageString({
+		GD.cmd_text(185, 310, FONT_SMALL, OPT_RIGHTX, LanguageString({
 			"SERVICE REMINDER:",
 			"SERVICEERINNERUNG",
 			"RAPPEL DE SERVICE",

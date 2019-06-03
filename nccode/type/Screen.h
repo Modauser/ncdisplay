@@ -40,6 +40,8 @@ private:
 	 */
 	unsigned int sleepCounter;
 
+	unsigned int pressedButton;
+
 	/**
 	 * The array of buttons shown on this screen.
 	 */
@@ -60,7 +62,8 @@ public:
 		std::function<void(void)> _prepare,
 		std::function<void(void)> _show, Args... _buttons)
 		: ScreenInterface(_this, _parent), prepareFunc(_prepare),
-		  showFunc(_show), sleepCounter(0), buttons{_buttons...} {}
+		  showFunc(_show), sleepCounter(0), pressedButton(0),
+		  buttons{_buttons...} {}
 
 	/**
 	 * Calls the screen's prepare/initialization function if one was
@@ -69,6 +72,7 @@ public:
 	void prepare(void) final {
 		if (prepareFunc)
 			prepareFunc();
+		pressedButton = 0;
 	}
 	
 	/**
@@ -94,30 +98,30 @@ public:
 	
 		// Get display inputs
 		GD.get_inputs();
-		auto tag = GD.inputs.tag;
-	
-		// Handle each button (must handle all every time to catch release
-		// events)
-		for (unsigned int i = 0; i < buttons.size(); i++) {
-			bool pressed = (i + 1 == tag);
-			bool change = (pressed != buttons[i].getPressed());
-			buttons[i].setPressed(pressed);
-			if (change) {
-				buttons[i].doAction();
-				break; // Only one change at a time
+
+
+		if (GD.inputs.tag == 0 || GD.inputs.tag > 30) {
+			if (pressedButton != 0) {
+				buttons[pressedButton - 1].setPressed(false);
+				buttons[pressedButton - 1].doAction();
+				pressedButton = 0;
+			} else {
+				// No recent presses, count for sleep
+				sleepCounter += 10;
+				if (sleepCounter >= SLEEP_TIMEOUT) {
+					// Timed out; go to parent
+					sleepCounter = 0;
+					ScreenManager::setCurrent(parent);
+				}
 			}
-		}
-	
-		// If touched, reset the sleep countdown
-		// If no touch, continue sleep countdown
-		if (tag != 0) {
-			sleepCounter = 0;
 		} else {
-			sleepCounter += 10;
-			if (sleepCounter >= SLEEP_TIMEOUT) {
-				// Timed out; go to parent
-				sleepCounter = 0;
-				ScreenManager::setCurrent(parent);
+			// Button press, keep screen on
+			sleepCounter = 0;
+
+			if (pressedButton == 0) {
+				pressedButton = GD.inputs.tag;
+				buttons[pressedButton - 1].setPressed(true);
+				buttons[pressedButton - 1].doAction();
 			}
 		}
 	}

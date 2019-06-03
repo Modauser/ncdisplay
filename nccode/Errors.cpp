@@ -40,7 +40,7 @@ static const std::array<ErrorData, 25> ErrorTable = {{
 /* LED_ICE_COMP_ERROR */	ErrorData(0x56, ErrorType::System, true),
 /* LED_HOT_ERROR */	   	ErrorData(0x35, ErrorType::System, false),
 /* LED_HOT_TANK_ERROR */	ErrorData(0x36, ErrorType::System, true),
-/* LED_ICE_LEVEL_ERROR */	ErrorData(0x75, ErrorType::Red, false),
+/* LED_ICE_LEVEL_ERROR */	ErrorData(0x75, ErrorType::Red, false), // again?
 /* LED_HOT_FILL_ERROR */	ErrorData(0x54, ErrorType::/*System*/None, true),
 /* LED_CARB_LVL_ERROR */	ErrorData(0x95, ErrorType::System, true),
 /* LED_BOARD_ERROR */		ErrorData(0x7F, ErrorType::System, true),

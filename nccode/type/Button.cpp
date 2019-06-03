@@ -315,7 +315,8 @@ void Button::drawWelcomeSelect(const vec2& xy, bool pressed)
 void Button::drawRedFullWidth(const vec2& xy, bool pressed, const LanguageString& text)
 {
 	// Rectangle
-	GD.ColorRGB(pressed ? 0xB00000 : 0xFF0000);
+	uint32_t color = (0x11 * xy.x) << 16;
+	GD.ColorRGB(pressed ? (color - 0x400000) : color);
 	GD.Begin(RECTS);
 	GD.Vertex2ii(0, xy.y + 1);
 	GD.Vertex2ii(272, xy.y + 59);

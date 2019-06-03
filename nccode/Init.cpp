@@ -63,6 +63,9 @@ void setup()
 
 	handshakeTest();
 
+	// Set backlight brightness
+	GD.wr32(REG_PWM_DUTY, 64);
+
 	// Load fonts and images from SD card
 	loadAssets();
 

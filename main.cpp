@@ -110,7 +110,8 @@ void SVCall_Handler(void)
 		*((uint32_t *)args[0]) = (uint32_t)printf;
 		break;
 	// "svc 5"
-	//  
+	// Reads bytes from UART, or does a serial test by checking for received
+	// bytes.
 	case 5:
 		*((uint32_t *)args[0]) = (args[1] == 0x1234) ? serialTest() :
 			getchar();
@@ -127,15 +128,18 @@ uint8_t spi_xfer_byte(uint8_t send)
 
 int serialTest(void)
 {
+	// Wait to see if we receive a byte
 	int i;
 	for (i = 0; !_usart_sync_is_byte_received(&USART_0.device) && i < 12; i++)
 		delay_ms(500);
 
+	// Error on timeout or byte not being a '$'
 	if (i == 12)
 		return -1;
 	if (int dollar = _usart_sync_read_byte(&USART_0.device); dollar != '$')
 		return -1;
 
+	// '$' is always followed by data; return that data
 	return getchar();
 }
 
@@ -171,32 +175,41 @@ uint32_t fatfs_svc_handler(uint32_t *fatfs_args)
 
 	switch (fatfs_args[0]) {
 	case 0:
+		// Opens a file
 		ret = f_open((FIL *)fatfs_args[1], (const TCHAR *)fatfs_args[2],
 			fatfs_args[3]);
 		break;
 	case 1:
+		// Closes the file
 		ret = f_close((FIL *)fatfs_args[1]);
 		break;
 	case 2:
+		// Reads from an opened file
 		ret = f_read((FIL *)fatfs_args[1], (void *)fatfs_args[2],
 			fatfs_args[3], (UINT *)fatfs_args[4]);
 		break;
 	case 3:
+		// Writes to an opened file
 		ret = f_write((FIL *)fatfs_args[1], (const void *)fatfs_args[2],
 			fatfs_args[3], (UINT *)fatfs_args[4]);
 		break;
 	case 4:
+		// Deletes a file
 		ret = f_unlink((const TCHAR *)fatfs_args[1]);
 		break;
 	case 5:
+		// Reads in a line from an opened file
 		ret = (uint32_t)f_gets((TCHAR *)fatfs_args[1], fatfs_args[2],
 			(FIL *)fatfs_args[3]);
 		break;
 	case 6:
+		// Opens a directory (for looking at directory entries)
+		// Note: Opened directories do not need to be closed
 		ret = (uint32_t)f_opendir((DIR *)fatfs_args[1], (const TCHAR *)
 			fatfs_args[2]);
 		break;
 	case 7:
+		// Gets the next entry in the opened directory
 		ret = (uint32_t)f_readdir((DIR *)fatfs_args[1], (FILINFO *)
 			fatfs_args[2]);
 		break;

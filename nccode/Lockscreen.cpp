@@ -62,10 +62,10 @@ static Screen Lockscreen (
 
 		GD.ColorRGB(WHITE);
 		GD.cmd_fgcolor(NC_FRGND_COLOR);
-		GD.cmd_keys(0, 140, 272, 78, FONT_SMALL, OPT_FLAT, "123");
-		GD.cmd_keys(0, 220, 272, 78, FONT_SMALL, OPT_FLAT, "456");
-		GD.cmd_keys(0, 300, 272, 78, FONT_SMALL, OPT_FLAT, "789");
-		GD.cmd_keys(0, 380, 272, 78, FONT_SMALL, OPT_FLAT, " 0<");
+		GD.cmd_keys(0, 140, 272, 78, FONT_LARGE, OPT_FLAT, "123");
+		GD.cmd_keys(0, 220, 272, 78, FONT_LARGE, OPT_FLAT, "456");
+		GD.cmd_keys(0, 300, 272, 78, FONT_LARGE, OPT_FLAT, "789");
+		GD.cmd_keys(0, 380, 272, 78, FONT_LARGE, OPT_FLAT, " 0<");
 
 		if (lockscreenIndex == 4) {
 			lockscreenIndex++;

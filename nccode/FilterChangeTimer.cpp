@@ -4,6 +4,7 @@
  */
 #include "type/Assets.h"
 #include "type/Screen.h"
+#include "MainBoard.h"
 
 #include <gameduino2/GD2.h>
 
@@ -71,7 +72,8 @@ static Screen FilterChangeTimer (
 		"PROGRAMAR TEMPORIZADOR"
 	}, [](bool press) {
 		if (!press) {
-			//serialPrintf("@+%1u@*%1u@$%1u",,, filterType);
+			serialPrintf("@+%1u@*%1u@$%1u", filterTimerGallons,
+				filterTimerMonths, filterType);
 			ScreenManager::setCurrent(ScreenID::Filter);
 		}
 	}),

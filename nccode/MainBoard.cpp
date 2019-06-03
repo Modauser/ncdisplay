@@ -3,6 +3,7 @@
 #include "SystemCalls.h"
 
 #include <fatfs/ff.h>
+#include <gameduino2/GD2.h>
 #include <hal_delay.h>
 
 constexpr const char *piServiceFile = DRV_SD "Service0.txt";
@@ -249,8 +250,15 @@ void MainBoard::clearDispenseError(void)
 void MainBoard::autofill(void)
 {
 	serialPrintf("@i3");
-	while (1)
-		delay_ms(100);
+
+	clearScreenWithIonHeader();
+	GD.cmd_spinner(GD.h / 2, (GD.w / 2), 0, 0);
+	GD.swap();
+
+	delay_ms(3000);
+
+	NVIC_SystemReset();
+	while (1);
 }
 
 void MainBoard::factoryReset(void)

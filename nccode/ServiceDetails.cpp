@@ -66,6 +66,10 @@ static Screen ServiceDetails (
 	ScreenID::Advanced,
 	// Initialization function
 	[](void) {
+		clearScreenWithIonHeader();
+		GD.cmd_spinner(GD.h / 2, (GD.w / 2), 0, 0);
+		GD.swap();
+
 		serialPrintf("@X");
 		serviceMetric = (serialGet() != 0);
 

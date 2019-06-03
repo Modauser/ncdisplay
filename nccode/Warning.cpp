@@ -33,32 +33,31 @@ static Screen Warning (
 
 		GD.ColorRGB(0xFF0000);
 		GD.Begin(RECTS);
-		GD.Vertex2ii(30, 120);
-		GD.Vertex2ii(242, 150);
+		GD.Vertex2ii(30, 150);
+		GD.Vertex2ii(242, 180);
 		GD.ColorRGB(WHITE);
-		GD.Vertex2ii(31, 121);
-		GD.Vertex2ii(241, 149);
+		GD.Vertex2ii(31, 151);
+		GD.Vertex2ii(241, 179);
 
 		if (warningMessage != nullptr) {
-			GD.cmd_text(136, 180, FONT_LIGHT, OPT_CENTERX,
+			GD.cmd_text(136, 210, FONT_LIGHT, OPT_CENTERX,
 				(*warningMessage)(), 30);
 		}
 
 		GD.ColorRGB(0xFF0000);
-		GD.cmd_text(136, 135, FONT_SMALL, OPT_CENTER, "WARNING");
+		GD.cmd_text(136, 165, FONT_SMALL, OPT_CENTER, "WARNING");
 	},
 	// Buttons
-	Button({0, 360}, Button::drawRedFullWidth, "YES", [](bool pressed) {
+	Button({0xF, 360}, Button::drawRedFullWidth, "YES", [](bool pressed) {
 		if (!pressed) {
 			if (warningProceedFunc != nullptr)
 				warningProceedFunc();
 			ScreenManager::setCurrent(warningProceedScreen);
 		}
 	}),
-	Button({0, 420}, Button::drawRedFullWidth, "CANCEL", [](bool pressed) {
+	Button({0xC, 420}, Button::drawRedFullWidth, "CANCEL", [](bool pressed) {
 		if (!pressed)
 			ScreenManager::setCurrent(ScreenID::Advanced);
 	})
 );
-
 
