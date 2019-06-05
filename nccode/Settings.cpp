@@ -12,7 +12,7 @@ static const char *PasswordFile = DRV_SD "Password.txt";
 
 // Label files
 static const LanguageString SettingsFile ({
-	DRV_SD "EngSet01.txt",
+	DRV_SD "EngSet00.txt",
 	DRV_SD "GerSet00.txt",
 	DRV_SD "FreSet00.txt",
 	DRV_SD "SpaSet00.txt"
