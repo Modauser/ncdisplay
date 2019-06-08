@@ -8,11 +8,11 @@ char *flowRate(char *buf, int number)
 {
 	const char *unit = "GPM";
 	if (MainBoard::isMetric()) {
-		number = GPMtoL(number);
+		number = GaltoL(number);
 		unit = "L";
 	}
 
-	sprintf(buf, "%d.%1d %s", number / 10, number % 10, unit);
+	sprintf(buf, "%d.%02d %s", number / 100, number % 100, unit);
 	return buf;
 }
 

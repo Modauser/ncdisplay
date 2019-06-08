@@ -76,13 +76,13 @@ void Button::drawDots(const vec2& xy, bool pressed)
 	GD.Vertex2ii(57, 57);
 
 	GD.ColorRGB(NC_FRGND_COLOR);
-	GD.PointSize(20 * 4);
+	GD.PointSize(16 * 5);
 	GD.Begin(POINTS);
 	GD.Vertex2ii(20, 30);
 	GD.Vertex2ii(33, 30);
 	GD.Vertex2ii(46, 30);
 	GD.ColorRGB(NC_BKGND_COLOR);
-	GD.PointSize(14 * 3);
+	GD.PointSize(16 * 3);
 	GD.Vertex2ii(20, 30);
 	GD.Vertex2ii(33, 30);
 	GD.Vertex2ii(46, 30);
@@ -185,7 +185,7 @@ void Button::drawFullWidth(const vec2& xy, bool pressed, const LanguageString& t
 
 	// Text
 	GD.ColorRGB(WHITE);
-	GD.cmd_text(136, xy.y + 30, FONT_SMALL, OPT_CENTER, text());
+	GD.cmd_text(136, xy.y + 30, FONT_SMALL, OPT_CENTER, text(), 16);
 }
 
 void Button::drawSmallLeft(const vec2& xy, bool pressed)

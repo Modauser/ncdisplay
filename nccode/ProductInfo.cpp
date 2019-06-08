@@ -44,9 +44,9 @@ static Screen ProductInfo (
 			"INFO"
 		})());
 
-		GD.cmd_text(20,  110, FONT_SMALL, 0, Settings::getLabel(0));
-		GD.cmd_text(21,  130, FONT_SMALL, 0, Settings::getLabel(1));
-		GD.cmd_text(20,  150, FONT_SMALL, 0, Settings::getLabel(2));
+		GD.cmd_text(20,  110, FONT_SMALL, 0, Settings::getLabel(Label::Model));
+		GD.cmd_text(21,  130, FONT_SMALL, 0, Settings::getLabel(Label::Serial));
+		GD.cmd_text(20,  150, FONT_SMALL, 0, Settings::getLabel(Label::Software));
 
 		GD.cmd_text(140, 110, FONT_SMALL, 0, piModelString);
 		GD.cmd_text(140, 130, FONT_SMALL, 0, MainBoard::getSerialNumber());
@@ -59,9 +59,9 @@ static Screen ProductInfo (
 			"INFORMACION DEL FILTRO"
 		})());
 
-		GD.cmd_text(20,  220, FONT_SMALL, 0, Settings::getLabel(3));
-		GD.cmd_text(20,  240, FONT_SMALL, 0, Settings::getLabel(4));
-		GD.cmd_text(20,  260, FONT_SMALL, 0, Settings::getLabel(5));
+		GD.cmd_text(20,  220, FONT_SMALL, 0, Settings::getLabel(Label::Type));
+		GD.cmd_text(20,  240, FONT_SMALL, 0, Settings::getLabel(Label::Remaining));
+		GD.cmd_text(20,  260, FONT_SMALL, 0, Settings::getLabel(Label::FlowRate));
 
 	        GD.cmd_text(140, 220, FONT_SMALL, 0, MainBoard::getFilterName());
 	      GD.cmd_number(140, 240, FONT_SMALL, 0, MainBoard::getFilterRemaining());

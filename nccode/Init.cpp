@@ -69,13 +69,13 @@ void setup()
 	// Load fonts and images from SD card
 	loadAssets();
 
-	Settings::loadLabels();
-	Settings::loadPassword();
-
 	// Get the current language
 	auto lang = MainBoard::getLanguage();
 	LanguageString::setCurrentLanguage(static_cast<Language>(lang));
 	MainBoard::allowDispenseError();
+
+	Settings::loadLabels();
+	Settings::loadPassword();
 
 	// Show WelcomeLanguage if just had factory reset
 	// Do normal setup otherwise
@@ -97,13 +97,14 @@ void loop()
 int handshakeTest(void)
 {
 	// Try to get "$0" given by main board on boot
-	auto answer = serialTest();
-	if (answer != '0') {
+	int answer = serialTest();
+	if (answer == -1) {
 		// Maybe board is already on? Try querying language
+		delay_ms(2000);
 		serialPrintf("#6");
 		answer = serialTest();
 		// Valid language?
-		if (answer < static_cast<int>(Language::Count))
+		if (answer != -1)
 			return 0;
 
 		showFatalError("COM error check display cable");

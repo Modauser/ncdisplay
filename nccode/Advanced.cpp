@@ -12,16 +12,32 @@
 // External variables for the warning screens. We set them if we plan to show
 // a warning screen.
 extern const LanguageString *warningMessage;
+extern const LanguageString *warningYes;
 extern ScreenID warningProceedScreen;
 extern void (*warningProceedFunc)(void);
 
 static const LanguageString warningReset ({
-	"Resetting to factory defaults will\nclear all saved settings.\n\nContinue?"
+	"Resetting to factory defaults will\nclear all saved settings.\n\nContinue?",
+	"Auf Fabrikseinstellungen resetten\nwird Alle gespeicherten\n"
+		"Einstellungen werden geloscht.\n\nWeiter?",
+	"R" e_ACUTE "initialiser aux d" e_ACUTE "fauts d'usine effacera\n"
+		"toutes les donn" e_ACUTE "es sauvegard" e_ACUTE "es.\n\n"
+		"Continuer?",
+	"Al restablecer la\nconfiguraci" o_ACUTE "n de f" a_ACUTE "brica\n"
+		"se borrar" a_ACUTE "n todos los\najustes guardados\nContinuar?"
 });
 
 static const LanguageString warningAutofill ({
 	"Internal tanks will be refilled.\nDo not leave unit unattended.\n\nContinue?"
 });
+
+static const LanguageString warningResetYes ({
+	"RESET",
+	"RESETTEN",
+	"R" E_ACUTE "INITIALISER",
+	"REINICAR"
+});
+static const LanguageString warningAutofillYes = "YES";
 
 static const LanguageString lAdvanced ({
 	"Advanced",
@@ -65,6 +81,7 @@ static Screen Advanced (
 	}, [](bool press) {
 		if (!press) {
 			warningMessage = &warningReset;
+			warningYes = &warningResetYes;
 			warningProceedScreen = ScreenID::Restart;
 			warningProceedFunc = MainBoard::factoryReset;
 			ScreenManager::setCurrent(ScreenID::Warning);
@@ -100,6 +117,7 @@ static Screen Advanced (
 	Button({0, 420}, Button::drawMenuItem, "AUTOFILL", [](bool press) {
 		if (!press) {
 			warningMessage = &warningAutofill;
+			warningYes = &warningAutofillYes;
 			warningProceedFunc = MainBoard::autofill;
 			ScreenManager::setCurrent(ScreenID::Warning);
 		}

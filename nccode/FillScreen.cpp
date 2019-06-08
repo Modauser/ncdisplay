@@ -14,9 +14,24 @@
 
 static const std::array<std::tuple<LanguageString, uint32_t,
 	std::function<bool(void)>>, 3> fillScreens = {{
-	{"FILLING COLD\n\nWATER SYSTEM", TINT_BLUE, MainBoard::isColdTankFull},
-	{"FILLING HOT\n\nWATER SYSTEM", TINT_RED, MainBoard::isHotTankFull},
-	{"FILLING SPARKLING\n\nWATER SYSTEM", TINT_GREEN, MainBoard::isSparklingTankFull}
+	{{
+		"FILLING COLD\n\nWATER SYSTEM",
+		"F" U_UMLAUT "LLEN\n\nKALTWASSER",
+		"REMPLISSAGE DU\n\nSYST" E_GRAVE "ME D'EAU FROIDE",
+		"SISTEMA DE LLENADO\n\nDE AGUA FR" I_GRAVE "A"
+	}, TINT_BLUE, MainBoard::isColdTankFull},
+	{{
+		"FILLING HOT\n\nWATER SYSTEM",
+		"F" U_UMLAUT "LLEN\n\nHEISSWASSER",
+		"REMPLISSAGE DU\n\nSYST" E_GRAVE "ME D'EAU CHAUDE",
+		"SISTEMA DE LLENADO\n\nDE AGUA CALIENTE"
+	}, TINT_RED, MainBoard::isHotTankFull},
+	{{
+		"FILLING SPARKLING\n\nWATER SYSTEM",
+		"F" U_UMLAUT "LLEN\n\nSODAWASSER",
+		"REMPLISSAGE DU\n\nSYST" E_GRAVE "ME D'EAU P" E_ACUTE "TILLANTE",
+		"SISTEMA DE LLENADO\n\nDE AGUA CARBONATADA"
+	}, TINT_GREEN, MainBoard::isSparklingTankFull}
 }};
 
 static auto fillScreen = fillScreens.cbegin();

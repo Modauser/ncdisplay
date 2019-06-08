@@ -8,11 +8,18 @@
 #include <gameduino2/GD2.h>
 
 static const LanguageString restartTitle ({
-	"PLEASE RESTART"
+	"PLEASE RESTART",
+	"BITTE NEUSTART",
+	"VEUILLEZ RECOMMENCER",
+	"RESTART"
 });
 
 static const LanguageString restartMessage ({
-	"Power button is located\n\non back of unit"
+	"Power button is located\n\non back of unit",
+	"Power-Knopf ist auf der\n\nR" u_UMLAUT "ckseite der Einheit",
+	"Le bouton d'alimentation est\n\nsitu" e_ACUTE " " a_GRAVE " l'arri"
+		e_GRAVE "re de l'appareil",
+	"Neustart\n\nR" e_ACUTE "initialiser\n\nReiniciar"
 });
 
 static Screen Restart (

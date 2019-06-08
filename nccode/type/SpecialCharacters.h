@@ -11,7 +11,7 @@
 
 #define DEGREE     "\x01"	// 0xB0
 
-//#define A_ACUTE
+#define a_ACUTE    "\x1D"	// 0xE1
 #define E_ACUTE    "\x05"	// 0xC9
 #define e_ACUTE    "\x13"	// 0xE9
 #define I_ACUTE    "\x07"	// 0xCD
@@ -24,6 +24,7 @@
 #define a_GRAVE    "\x10"	// 0xE0
 #define E_GRAVE    "\x06"	// 0xC8
 #define e_GRAVE    "\x14"	// 0xE8
+#define I_GRAVE    "\x1E"	// 0xCC
 #define A_UMLAUT   "\x03"	// 0xC4
 #define a_UMLAUT   "\x11"	// 0xE4
 #define O_UMLAUT   "\x09"	// 0xD6
@@ -39,9 +40,6 @@
 #define CEDILLA    "\x0E"	// 0xC7
 #define cEDILLA    "\x1C"	// 0xE7
 #define ESZETT     "\x0F"	// 0xDF
-
-#define COPYRIGHT  "\x1D"	// 0xA9
-#define REGCOPYR   "\x1E"	// 0xAE
 
 #endif // SPECIALCHARACTERS_H_
 

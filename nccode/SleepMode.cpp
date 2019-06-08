@@ -75,14 +75,14 @@ static Screen SleepMode (
 		GD.cmd_text(20, 90, FONT_TITLE, OPT_CENTERY, "SleepMode");
 
 		if (!sleepSettingHours) {
-			GD.cmd_text(20, 185, FONT_LARGE, 0, LanguageString({
+			GD.cmd_text(8, 185, FONT_LARGE, 0, LanguageString({
 				"OPERATING HOURS",
 				"BETRIEBSSTUNDEN",
 				"HEURES DE FONCTIONNEMENT",
 				"HORAS DE FUNCIONAMIENTO"
 			})());
-			GD.cmd_text(20, 240, FONT_LIGHT, 0, smWeekdays());
-			GD.cmd_text(20, 260, FONT_LIGHT, 0, smWeekend());
+			GD.cmd_text(8, 240, FONT_LIGHT, 0, smWeekdays());
+			GD.cmd_text(8, 260, FONT_LIGHT, 0, smWeekend());
 
 			GD.cmd_text(160, 240, FONT_SMALL, 0, sleepHourStrings[0]);
 			if (isdigit(sleepHourStrings[0][0])) {
@@ -98,24 +98,24 @@ static Screen SleepMode (
 			GD.cmd_text(136, 150, FONT_TITLE, OPT_CENTER, LanguageString({
 				"Set Operating Hours",
 				"Set Betriebsstunden",
-				"Programmer Heures de Fonctionnement",
-				"Programar Horas de Funcionamiento"
+				"Programmer Heures\nde Fonctionnement",
+				"Programar Horas de\nFuncionamiento"
 			})());
-			GD.cmd_text(136, 260, FONT_SMALL, OPT_CENTER, "TO");
+			GD.cmd_text(136, 290, FONT_SMALL, OPT_CENTER, "TO");
 
-			GD.cmd_text(136, 180, FONT_TITLE, OPT_CENTER,
+			GD.cmd_text(136, 210, FONT_TITLE, OPT_CENTER,
 				sleepSettingWeekday ? smWeekdays() : smWeekend());
 
 			GD.ColorRGB(WHITE);
 			GD.Begin(RECTS);
-			GD.Vertex2ii(34, 244); GD.Vertex2ii(104, 282);
-			GD.Vertex2ii(168, 244); GD.Vertex2ii(238, 282);
+			GD.Vertex2ii(34, 274); GD.Vertex2ii(104, 312);
+			GD.Vertex2ii(168, 274); GD.Vertex2ii(238, 312);
 			GD.ColorRGB(BLACK);
 
 			int i = sleepSettingWeekday ? 0 : 2;
-			GD.cmd_text(69, 263, FONT_SMALL, OPT_CENTER,
+			GD.cmd_text(69, 293, FONT_SMALL, OPT_CENTER,
 				sleepHourStrings[i]);
-			GD.cmd_text(203, 263, FONT_SMALL, OPT_CENTER,
+			GD.cmd_text(203, 293, FONT_SMALL, OPT_CENTER,
 				sleepHourStrings[i + 1]);
 		}
 	},
@@ -168,7 +168,7 @@ static Screen SleepMode (
 			ScreenManager::setCurrent(ScreenID::Settings);
 		}
 	}),
-	Button({34, 210}, Button::drawUpButton, [](bool press) {
+	Button({34, 240}, Button::drawUpButton, [](bool press) {
 		if (press)
 			return;
 
@@ -183,7 +183,7 @@ static Screen SleepMode (
 		}
 		updateSleepHourText();
 	}),
-	Button({34, 282}, Button::drawDownButton, [](bool press) {
+	Button({34, 312}, Button::drawDownButton, [](bool press) {
 		if (press)
 			return;
 
@@ -199,7 +199,7 @@ static Screen SleepMode (
 		}
 		updateSleepHourText();
 	}),
-	Button({168, 210}, Button::drawUpButton, [](bool press) {
+	Button({168, 240}, Button::drawUpButton, [](bool press) {
 		if (press)
 			return;
 
@@ -214,7 +214,7 @@ static Screen SleepMode (
 		}
 		updateSleepHourText();
 	}),
-	Button({168, 282}, Button::drawDownButton, [](bool press) {
+	Button({168, 312}, Button::drawDownButton, [](bool press) {
 		if (press)
 			return;
 

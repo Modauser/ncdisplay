@@ -13,6 +13,7 @@
  * If left as nullptr, no message is shown.
  */
 const LanguageString *warningMessage = nullptr;
+const LanguageString *warningYes = nullptr;
 ScreenID warningProceedScreen = ScreenID::Advanced;
 void (*warningProceedFunc)(void) = nullptr;
 
@@ -45,17 +46,28 @@ static Screen Warning (
 		}
 
 		GD.ColorRGB(0xFF0000);
-		GD.cmd_text(136, 165, FONT_SMALL, OPT_CENTER, "WARNING");
+		GD.cmd_text(136, 165, FONT_SMALL, OPT_CENTER, LanguageString({
+			"WARNING",
+			"VORSICHT",
+			"ATTENTION",
+			"ADVERTENCIA"
+		})());
 	},
 	// Buttons
-	Button({0xF, 360}, Button::drawRedFullWidth, "YES", [](bool pressed) {
+	Button({0xF, 360}, Button::drawRedFullWidth, *warningYes,
+	[](bool pressed) {
 		if (!pressed) {
 			if (warningProceedFunc != nullptr)
 				warningProceedFunc();
 			ScreenManager::setCurrent(warningProceedScreen);
 		}
 	}),
-	Button({0xC, 420}, Button::drawRedFullWidth, "CANCEL", [](bool pressed) {
+	Button({0xC, 420}, Button::drawRedFullWidth, {
+		"CANCEL",
+		"CANCEL",
+		"ANNULER",
+		"CANCELAR"
+	}, [](bool pressed) {
 		if (!pressed)
 			ScreenManager::setCurrent(ScreenID::Advanced);
 	})

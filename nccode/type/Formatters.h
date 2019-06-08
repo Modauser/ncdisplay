@@ -22,7 +22,7 @@ namespace Format {
 		 * Max buffer size necessary for flow rate.
 		 * @see Format::flowRate()
 		 */
-		constexpr std::size_t flowRate = 8;
+		constexpr std::size_t flowRate = 9;
 		/**
 		 * Max buffer size necessary for temperature.
 		 * @see Format::temperature()

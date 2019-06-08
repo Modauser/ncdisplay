@@ -15,6 +15,7 @@ static unsigned char sysOptionToggles[5] = {
 
 static void setMetric(bool metric);
 static void toggleOption(unsigned int index);
+static void updateToggles(void);
 
 static Screen SystemOptions (
 	ScreenID::SystemOptions,
@@ -35,6 +36,8 @@ static Screen SystemOptions (
 		serialPrintf("@X");
 		sysOptionMetric = serialGet();
 		setMetric(sysOptionMetric);
+
+		updateToggles();
 	},
 	// Pre-draw function
 	[](void) {
@@ -42,59 +45,35 @@ static Screen SystemOptions (
 
 		GD.ColorRGB(NC_FDGND_COLOR);
 		GD.cmd_text(185, 75, FONT_SMALL, OPT_RIGHTX, LanguageString({
-			"ICE TANK OVER",
-			"EIS-TANK",
-			"ERREUR DE SURCHAUFFE",
-			"ERROR DE SOBRECALENTAMIENTO"
-		})());
-		GD.cmd_text(185, 95, FONT_SMALL, OPT_RIGHTX, LanguageString({
-			"TEMP ERROR:",
-			"TEMPERATURFEHLER",
-			"DU BAC " A_GRAVE " GLACE",
-			"DEL TANQUE DE HIELO"
-		})());
+			"ICE TANK OVER\nTEMP ERROR:",
+			"EIS-TANK\nTEMPERATURFEHLER",
+			"ERREUR DE SURCHAUFFE\nDU BAC " A_GRAVE " GLACE",
+			"ERROR DE\nSOBRECALENTAMIENTO\nDEL TANQUE DE HIELO"
+		})(), 16);
 		GD.cmd_text(185, 135, FONT_SMALL, OPT_RIGHTX, LanguageString({
-			"DRAIN LEVEL",
-			"NIVEAU DER AUFFANGVORRICHTUNG",
-			"ERREUR NIVEAU DE",
-			"ERROR NIVEL DE",
-		})());
-		GD.cmd_text(185, 155, FONT_SMALL, OPT_RIGHTX, LanguageString({
-			"FULL ERROR:",
-			"ABSOLUT FALSCH",
-			"DRAINAGE PLEIN",
-			"DRENAJE LLENO"
-		})());
+			"DRAIN LEVEL\nFULL ERROR",
+			"NIVEAU DER\nAUFFANGVORRICHTUNG\nABSOLUT FALSCH",
+			"ERREUR NIVEAU DE\nDRAINAGE PLEIN",
+			"ERROR NIVEL DE\nDRENAJE LLENO",
+		})(), 16);
 		GD.cmd_text(185, 195, FONT_SMALL, OPT_RIGHTX, LanguageString({
-			"COOLING FAN",
-			"K" U_UMLAUT "HLUNGSVENTILATOR",
-			"ERREUR VENTILATEUR",
-			"ERROR VENTILADOR",
-		})());
-		GD.cmd_text(185, 215, FONT_SMALL, OPT_RIGHTX, LanguageString({
-			"FAILURE ERROR:",
-			"VERSAGT",
-			"DE REFROIDISSEMENT",
-			"DE ENFRIAMIENTO"
-		})());
+			"COOLING FAN\nFAILURE ERROR:",
+			"K" U_UMLAUT "HLUNGSVENTILATOR\nVERSAGT",
+			"ERREUR VENTILATEUR\nDE REFROIDISSEMENT",
+			"ERROR VENTILADOR DE\nENTRIAMIENTO",
+		})(), 16);
 		GD.cmd_text(185, 255, FONT_SMALL, OPT_RIGHTX, LanguageString({
-			"BOOSTER PUMP",
-			"DRUCKERH" O_UMLAUT "HUNGS-",
-			"POMPE DE SURPRESSION",
-			"BOMBA ELEVADORA DE",
-		})());
-		GD.cmd_text(185, 275, FONT_SMALL, OPT_RIGHTX, LanguageString({
-			"ENABLED:",
-			"PUMPE AKTIV",
-			"ACTIV" E_ACUTE "E",
-			"PRESI" O_ACUTE "N ENCENDIDA"
-		})());
+			"BOOSTER PUMP\nENABLED:",
+			"DRUCKERH" O_UMLAUT "HUNGS-\nPUMPE AKTIV",
+			"POMPE DE SURPRESSION\nACTIV" E_ACUTE "E",
+			"BOMBA ELEVADORA DE\nPRESI" O_ACUTE "N ENCENDIDA",
+		})(), 16);
 		GD.cmd_text(185, 310, FONT_SMALL, OPT_RIGHTX, LanguageString({
 			"SERVICE REMINDER:",
 			"SERVICEERINNERUNG",
 			"RAPPEL DE SERVICE",
 			"SVC REMINDER"
-		})());
+		})(), 16);
 	},
 	// Buttons
 	Button({0, 0}, Button::drawBackArrow, [](bool press) {
@@ -164,5 +143,13 @@ void toggleOption(unsigned int index)
 	sysOptionToggles[index] ^= 1;
 	SystemOptions.getButton(index + 1).setForcePressed(
 		sysOptionToggles[index]);
+}
+
+void updateToggles(void)
+{
+	for (unsigned int i = 0; i < 5; i++) {
+		SystemOptions.getButton(i + 1).setForcePressed(
+			sysOptionToggles[i]);
+	}
 }
 

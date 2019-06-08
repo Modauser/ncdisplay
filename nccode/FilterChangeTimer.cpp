@@ -26,8 +26,8 @@ static Screen FilterChangeTimer (
 		GD.cmd_text(136, 90, FONT_TITLE, OPT_CENTER, LanguageString({
 			"Set Filter Timer",
 			"Filtertimer Einstellen",
-			"Programmer le temporisateur du filtre",
-			"Programar temporizador del Filtro"
+			"Programmer le\ntemporisateur du filtre",
+			"Programar temporizador\ndel Filtro"
 		})());
 
 		GD.cmd_text(69, 185, FONT_SMALL, OPT_CENTERX, LanguageString({
@@ -72,8 +72,10 @@ static Screen FilterChangeTimer (
 		"PROGRAMAR TEMPORIZADOR"
 	}, [](bool press) {
 		if (!press) {
-			serialPrintf("@+%1u@*%1u@$%1u", filterTimerGallons,
-				filterTimerMonths, filterType);
+			serialPrintf("@+%c@*%01u@$%01u",
+				filterTimerGallons == 750 ? '1' : '3',
+				filterTimerMonths / 3 - 1,
+				filterType);
 			ScreenManager::setCurrent(ScreenID::Filter);
 		}
 	}),

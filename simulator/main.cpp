@@ -14,7 +14,7 @@ public:
 	Serial(void) {
 		fd = fopen("/dev/ttyUSB0", "ab+");
 		if (fd != nullptr)
-			std::cout << "Success\n";
+			std::cout << "Success" << std::endl;
 	}
 	~Serial(void) {
 		fclose(fd);
@@ -22,8 +22,10 @@ public:
 
 	void write(char c) {
 		std::cout << ">>> " << (int)c << std::endl;
-		if (fd == nullptr)
+		if (fd == nullptr) {
+			std::cout << "ouch" << std::endl;
 			return;
+		}
 		fputc('$', fd);
 		fputc(c, fd);
 	}
@@ -34,8 +36,10 @@ public:
 	}
 
 	int read(void) {
-		if (fd == nullptr)
+		if (fd == nullptr) {
+			std::cout << "ouch" << std::endl;
 			return 0;
+		}
 		int c = fgetc(fd);
 		std::cout << "> " << c << std::endl;
 		return c;
@@ -56,31 +60,31 @@ int main(void)
 			shouldRun = false;
 			break;
 		case '@':
-			std::cout << "Request code\n";
+			std::cout << "Request code" << std::endl;
 			handleRequest();
 			break;
 		case '#':
-			std::cout << "Startup code\n";
+			std::cout << "Startup code" << std::endl;
 			handleStartup();
 			break;
 		case '$':
-			std::cout << "Dispense code\n";
+			std::cout << "Dispense code" << std::endl;
 			handleDispense();
 			break;
 		case '%':
-			std::cout << "Error code\n";
+			std::cout << "Error code" << std::endl;
 			input = serial.read();
 			if (input == '?')
 				serial.write(0);
 			break;
 		case '^':
-			std::cout << "Bottle code\n";
+			std::cout << "Bottle code" << std::endl;
 			input = serial.read();
 			if (input == 'B')
 				serial.write("123", 3);
 			break;
 		default:
-			std::cout << "Unknown code\n";
+			std::cout << "Unknown code" << std::endl;
 			break;
 		}
 	}

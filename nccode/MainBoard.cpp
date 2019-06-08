@@ -21,7 +21,7 @@ const std::array<const char *, 5> MainBoard::filterReorders = {
 	"6905",
 	"6906",
 	"5341",
-	"Unknown"
+	"6900"
 };
 
 char MainBoard::date[Format::size::date];
@@ -252,6 +252,7 @@ void MainBoard::autofill(void)
 	serialPrintf("@i3");
 
 	clearScreenWithIonHeader();
+	GD.ColorRGB(NC_FRGND_COLOR);
 	GD.cmd_spinner(GD.h / 2, (GD.w / 2), 0, 0);
 	GD.swap();
 

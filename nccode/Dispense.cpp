@@ -249,7 +249,7 @@ static Screen Dispense (
 	}, [](bool pressed) {
 		doPress('A', pressed);
 	}),
-	Button({0, 298}, Button::drawRedFullWidth, dispenseHot,
+	Button({0xF, 298}, Button::drawRedFullWidth, dispenseHot,
 	[](bool pressed) {
 		hotTimeout = 0;
 		doPress('H', pressed);

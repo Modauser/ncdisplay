@@ -40,16 +40,16 @@ static const std::array<ErrorData, 25> ErrorTable = {{
 /* LED_ICE_COMP_ERROR */	ErrorData(0x56, ErrorType::System, true),
 /* LED_HOT_ERROR */	   	ErrorData(0x35, ErrorType::System, false),
 /* LED_HOT_TANK_ERROR */	ErrorData(0x36, ErrorType::System, true),
-/* LED_ICE_LEVEL_ERROR */	ErrorData(0x75, ErrorType::Red, false), // again?
-/* LED_HOT_FILL_ERROR */	ErrorData(0x54, ErrorType::/*System*/None, true),
+/* LED_ICE_LEVEL_ERROR */	ErrorData(0x75, ErrorType::System, true),
+/* LED_HOT_FILL_ERROR */	ErrorData(0x54, ErrorType::System, true),
 /* LED_CARB_LVL_ERROR */	ErrorData(0x95, ErrorType::System, true),
 /* LED_BOARD_ERROR */		ErrorData(0x7F, ErrorType::System, true),
 /* LED_NO_CAL_ERROR */		ErrorData(0x9F, ErrorType::System, true),
-/* LED_CARB_FILL_TIME */	ErrorData(0x96, ErrorType::Red, true), // 3?
+/* LED_CARB_FILL_TIME */	ErrorData(0x96, ErrorType::Red, true),
 /* LED_FILT_ERROR */		ErrorData(0x15, ErrorType::Green, false),
 /* LED_LEAK_ERROR */		ErrorData(0x31, ErrorType::Green, false),
 /* LED_INIT */			ErrorData(0x1F, ErrorType::None, false),
-/* LED_HOT_FILL */		ErrorData(0x7B, ErrorType::Red, true), // 3?
+/* LED_HOT_FILL */		ErrorData(0x7B, ErrorType::Red, true), // What's this?
 /* LED_ICE_FILL */		ErrorData(0x7A, ErrorType::None, false),
 /* LED_NORMAL */		ErrorData(0x1A, ErrorType::None, false),
 /* LED_DARK_MODE */		ErrorData(0x0A, ErrorType::None, false),
@@ -59,7 +59,7 @@ static const std::array<ErrorData, 25> ErrorTable = {{
 /* LED_CLEAN_FAN_ERROR */	ErrorData(0x33, ErrorType::Green, false),
 /* LED_CARB_FILL */		ErrorData(0x7E, ErrorType::None, false),
 /* LED_HOT_LEVEL_ERROR */ 	ErrorData(0x19, ErrorType::Red, false),
-/* LED_ICE_LEVEL_ERROR */	ErrorData(0x74, ErrorType::Red, false), // again?
+/* LED_ICE_LEVEL_ERROR */	ErrorData(0x74, ErrorType::Red, false), // What's this?
 /* LED_NO_ERRORS */ 		ErrorData(0x00, ErrorType::None, false),
 }};
 

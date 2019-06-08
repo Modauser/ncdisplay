@@ -31,10 +31,10 @@ static Screen USBUpload (
 		})());
 		GD.cmd_text(136, 300, FONT_TITLE, OPT_CENTERX, LanguageString({
 			"2. Restart ION to upload",
-			"2. Neustart ION zum Hochladen",
-			"2. Red" e_ACUTE "marrer ION pour t" e_ACUTE "l" e_ACUTE
+			"2. Neustart ION zum\nHochladen",
+			"2. Red" e_ACUTE "marrer ION pour\nt" e_ACUTE "l" e_ACUTE
 			"charger",
-			"2. Rencender el ION para subir la informaci" o_ACUTE
+			"2. Rencender el ION para\nsubir la informaci" o_ACUTE
 			"n"
 		})());
 	},

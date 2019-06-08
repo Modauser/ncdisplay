@@ -36,16 +36,6 @@ constexpr int GaltoL(int gallons) {
 }
 
 /**
- * Converts gallons per minute (x10) to liters per minute.
- *
- * Does a rough conversion to avoid floating-point math.
- */
-constexpr int GPMtoL(int gpm) {
-	// Flow rate readings are x10
-	return gpm * 40;
-}
-
-/**
  * Converts degrees Fahrenheit to Celsius.
  *
  * Does a rough conversion to avoid floating-point math.

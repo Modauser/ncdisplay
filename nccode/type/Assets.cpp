@@ -48,10 +48,15 @@ uint32_t fontLoad(int handle, const byte *header, const char *datafile, uint32_t
 	// 4-byte alignment necessary for header
 	address = (address + 3) & ~(3);
 
+	// Update header to have proper address of font data
+	//*((uint32_t *)(header + 144)) = address + 148;
+
+	// Prepare bitmap of font data
 	GD.BitmapHandle(handle);
 	uint32_t fileSize = GD.loadMem(datafile, address + 148);
 	GD.cmd_setbitmap(address + 148, header[128], header[136], header[140]);
 
+	// Write header to video RAM and enable the font
 	GD.wr_n(address, (byte *)header, 148);
 	GD.cmd_setfont(handle, address);
 	return address + 148 + fileSize;

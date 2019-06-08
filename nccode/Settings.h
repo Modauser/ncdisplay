@@ -10,6 +10,38 @@
 
 #include <array>
 
+enum class Label : unsigned int {
+	Model = 0,
+	Serial,
+	Software,
+	Type,
+	Remaining,
+	FlowRate,
+	CurrentType,
+	ReOrder,
+	GallonsRem,
+	MonthsRem,
+	LastChange,
+	Contaminants11,
+	Contaminants12,
+	Contaminants21,
+	Contaminants22,
+	Contaminants23,
+	Contaminants31,
+	Contaminants32,
+	MonFri,
+	SatSun,
+	Cold,
+	Ambient,
+	Hot,
+	IceTemp,
+	HotTemp,
+	ErrorLog,
+	ServiceLastChange,
+
+	Count // Used to count labels
+};
+
 /**
  * @class Settings
  * @brief Provides text labels and passcode loaded from SD card files.
@@ -24,7 +56,8 @@ private:
 	/**
 	 * An array storing all labels.
 	 */
-	static std::array<char[LabelSize], 23> Labels;
+	static std::array<char[LabelSize],
+		static_cast<unsigned int>(Label::Count)> Labels;
 
 	/**
 	 * The current password/passcode.
@@ -32,19 +65,6 @@ private:
 	static char Password[4];
 
 public:
-	/**
-	 * Defines which label contains the 1st line of contaminants.
-	 */
-	constexpr static unsigned int Contaminants1 = 11;
-	/**
-	 * Defines which label contains the 2st line of contaminants.
-	 */
-	constexpr static unsigned int Contaminants2 = 12;
-	/**
-	 * Defines which label contains the 3st line of contaminants.
-	 */
-	constexpr static unsigned int Contaminants3 = 13;
-
 	/**
 	 * Loads labels for the current language.
 	 * These are from the "*Set00.txt" files
@@ -56,8 +76,11 @@ public:
 	 * @param index Index of the label
 	 * @return Label text
 	 */
-	inline static const char *getLabel(unsigned int index) {
-		return Labels[index];
+	inline static const char *getLabel(Label label) {
+		if (label < Label::Count)
+			return Labels[static_cast<unsigned int>(label)];
+
+		return "";
 	}
 
 	/**

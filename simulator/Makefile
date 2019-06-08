@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -ggdb -g3
+CXXFLAGS = -O0 -ggdb -g3
 
 all:
 	@echo "Building..."

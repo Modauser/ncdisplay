@@ -4,8 +4,8 @@
 #include <fatfs/ff.h>
 #include <cstring>
 
-std::array<char[Settings::LabelSize], 23> Settings::Labels = {
-};
+std::array<char[Settings::LabelSize],
+	static_cast<unsigned int>(Label::Count)> Settings::Labels = {};
 char Settings::Password[4] = { '1', '2', '3', '4' };
 
 static const char *PasswordFile = DRV_SD "Password.txt";
@@ -37,8 +37,10 @@ void Settings::loadLabels(void)
 		return;
 
 	// Read in a line per label
-	for (unsigned int i = 0; i < Labels.size(); i++)
+	for (unsigned int i = 0; i < Labels.size(); i++) {
 		f_gets(Labels[i], LabelSize, &fd);
+		LanguageString::convertFileText(Labels[i]);
+	}
 
 	f_close(&fd);
 }

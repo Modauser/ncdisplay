@@ -47,6 +47,7 @@ char *LanguageString::convertFileText(char *buffer)
 		case 0xB0: buffer[i] = *DEGREE; break;
 		case 0xC9: buffer[i] = *E_ACUTE; break;
 		case 0xE9: buffer[i] = *e_ACUTE; break;
+		case 0xCC: buffer[i] = *I_GRAVE; break;
 		case 0xCD: buffer[i] = *I_ACUTE; break;
 		case 0xED: buffer[i] = *i_ACUTE; break;
 		case 0xD3: buffer[i] = *O_ACUTE; break;
@@ -55,6 +56,7 @@ char *LanguageString::convertFileText(char *buffer)
 		case 0xFA: buffer[i] = *u_ACUTE; break;
 		case 0xC0: buffer[i] = *A_GRAVE; break;
 		case 0xE0: buffer[i] = *a_GRAVE; break;
+		case 0xE1: buffer[i] = *a_ACUTE; break;
 		case 0xC8: buffer[i] = *E_GRAVE; break;
 		case 0xE8: buffer[i] = *e_GRAVE; break;
 		case 0xC4: buffer[i] = *A_UMLAUT; break;
@@ -72,8 +74,6 @@ char *LanguageString::convertFileText(char *buffer)
 		case 0xC7: buffer[i] = *CEDILLA; break;
 		case 0xE7: buffer[i] = *cEDILLA; break;
 		case 0xDF: buffer[i] = *ESZETT; break;
-		case 0xA9: buffer[i] = *COPYRIGHT; break;
-		case 0xAE: buffer[i] = *REGCOPYR; break;
 		default: break;
 		}
 	}
