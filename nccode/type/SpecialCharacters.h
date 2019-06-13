@@ -5,6 +5,10 @@
  * Custom font files had to be made due to the design of the FT81x graphics
  * chip. So, non-English symbols had to be moved to different locations. All
  * relocated symbols are defined in this file.
+ *
+ * LanguageString.cpp contains a function that converts file text to renderable
+ * text using these macros. If a change is made here, that function must be
+ * updated as well.
  */
 #ifndef SPECIALCHARACTERS_H_
 #define SPECIALCHARACTERS_H_

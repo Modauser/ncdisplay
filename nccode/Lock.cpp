@@ -39,6 +39,7 @@ static Screen Lock (
 			"C" o_ACUTE "digo de acceso"
 		})());
 
+		// Draws lock image
 		GD.ColorRGB(WHITE);
 		GD.Begin(BITMAPS);
 		GD.Vertex2ii(104, 197, FREE_HANDLE);
@@ -58,6 +59,7 @@ static Screen Lock (
 	Button({0, 420}, Button::drawFullWidth, lStringSave,
 	[](bool press) {
 		if (!press) {
+			// Save lock state
 			MainBoard::setLocked(lockEnabled);
 			ScreenManager::setCurrent(ScreenID::Advanced);
 		}

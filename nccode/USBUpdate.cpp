@@ -11,9 +11,8 @@
 #include <stdint.h>
 #include <string.h>
 
-// Should RAM space become an issue, some form of streamable decompression will
-// be implemented. The current candidate is QuickLZ, which allows for streamed
-// decompression; this could save ~50KB of memory.
+// Should RAM space become an issue, streamable decompression may be
+// implemented. QuickLZ may be useful for this, and could save ~50KB of memory.
 
 /**
  * Linker variable who's address is after all program data in memory.

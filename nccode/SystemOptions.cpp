@@ -22,7 +22,8 @@ static Screen SystemOptions (
 	// Parent screen
 	ScreenID::Advanced,
 	// Initialization function
-	[](void)  {
+	[](void) {
+		// Load current values
 		serialPrintf("@S");
 		sysOptionToggles[0] = serialGet();
 		serialPrintf("@U");
@@ -120,6 +121,7 @@ static Screen SystemOptions (
 	}),
 	Button({0, 420}, Button::drawFullWidth, lStringSave, [](bool press) {
 		if (!press) {
+			// Save values
 			serialPrintf("@Y%1u@Z%1u@A%1u@B%1u@g%1u@C%1u",
 				sysOptionToggles[0], sysOptionToggles[1],
 				sysOptionToggles[2], sysOptionToggles[3],

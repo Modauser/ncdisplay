@@ -25,6 +25,7 @@ static Screen Filter (
 	[](void) {
 		clearScreenWithIonHeader();
 
+		// Header
 		GD.ColorRGB(NC_FRGND_COLOR);
 		GD.cmd_text(8, 80, FONT_LARGE, 0, LanguageString({
 			"FILTER INFO",
@@ -33,12 +34,14 @@ static Screen Filter (
 			"INFOMACI" O_ACUTE "N DEL FILTRO"
 		})());
 
+		// Print text labels
 		GD.cmd_text(8,  110, FONT_SMALL, 0, Settings::getLabel(Label::CurrentType));
 		GD.cmd_text(8,  130, FONT_SMALL, 0, Settings::getLabel(Label::ReOrder));
 		GD.cmd_text(8,  150, FONT_SMALL, 0, Settings::getLabel(Label::GallonsRem));
 		GD.cmd_text(8,  170, FONT_SMALL, 0, Settings::getLabel(Label::MonthsRem));
 		GD.cmd_text(8,  190, FONT_SMALL, 0, Settings::getLabel(Label::LastChange));
 
+		// Print corresponding values
 		GD.cmd_text(180, 110, FONT_SMALL, 0, MainBoard::getFilterName());
 		GD.cmd_text(180, 130, FONT_SMALL, 0, MainBoard::getFilterReorder());
 	      GD.cmd_number(180, 150, FONT_SMALL, 0, MainBoard::getFilterRemaining());
@@ -52,6 +55,7 @@ static Screen Filter (
 			"CONTAMINANTES\nELIMINADOS"
 		})());
 
+		// Show proper contaminant text based on filter's type
 		auto filterType = MainBoard::getFilterType();
 		switch (filterType) {
 		case FilterType::CarbonPro:

@@ -41,7 +41,9 @@ static const LanguageString tdYear ({
 	"YYYY", "JJJJ", "AAAA", "AAAA"
 });
 
+// Returns days in given month of given year
 static int daysInMonth(int month, int year);
+
 static void set24Hour(bool is24);
 static void setTimeView(void);
 static void setDateView(void);
@@ -78,6 +80,7 @@ static Screen TimeDate (
 			tdSetTime() : tdSetDate());
 
 		if (!timeSetting) {
+			// Print MM / DD / YYYY text if setting date
 			GD.cmd_text(49, 164, FONT_SMALL, OPT_CENTER, tdMonth());
 			GD.cmd_text(92, 164, FONT_SMALL, OPT_CENTER, "/");
 			GD.cmd_text(135, 164, FONT_SMALL, OPT_CENTER, tdDay());
@@ -85,6 +88,7 @@ static Screen TimeDate (
 			GD.cmd_text(221, 164, FONT_SMALL, OPT_CENTER, tdYear());
 		}
 
+		// Draw white boxes between up/down arrows
 		unsigned int spot1 = (timeSetting && !ampm) ? 62 : 14;
 		unsigned int spot2 = (timeSetting && !ampm) ? 140 : 100;
 		GD.ColorRGB(WHITE);
@@ -96,6 +100,7 @@ static Screen TimeDate (
 			GD.Vertex2ii(256, 258);
 		}
 
+		// Print time/date values
 		int idx = timeSetting ? 0 : 3;
 		GD.ColorRGB(BLACK);
 		GD.cmd_number(spot1 + 35, 244, FONT_SMALL, OPT_CENTER,
@@ -108,6 +113,7 @@ static Screen TimeDate (
 					(timeDate[idx + 2] > 0) ? "PM" : "AM");
 			}
 		} else {
+			// Century 2000 appended here
 			GD.cmd_number(221, 244, FONT_SMALL, OPT_CENTER,
 				2000 + timeDate[idx + 2]);
 		}
@@ -126,6 +132,7 @@ static Screen TimeDate (
 			return;
 
 		if (timeSetting) {
+			// Increment hour
 			++timeDate[0];
 			if (ampm) {
 				if (timeDate[0] > 12)
@@ -134,6 +141,7 @@ static Screen TimeDate (
 				timeDate[0] = 0;
 			}
 		} else {
+			// Increment month
 	       		if (++timeDate[3] > 12)
 				timeDate[3] = 1;
 			timeDate[4] = std::min(timeDate[4], daysInMonth(
@@ -145,6 +153,7 @@ static Screen TimeDate (
 			return;
 
 		if (timeSetting) {
+			// Decrement hour
 			--timeDate[0];
 			if (ampm) {
 				if (timeDate[0] < 1)
@@ -153,6 +162,7 @@ static Screen TimeDate (
 				timeDate[0] = 23;
 			}
 		} else {
+			// Decrement month
 			if (--timeDate[3] < 1)
 				timeDate[3] = 12;
 			timeDate[4] = std::min(timeDate[4], daysInMonth(
@@ -163,6 +173,7 @@ static Screen TimeDate (
 		if (press)
 			return;
 
+		// Increment minute/day
 		if (timeSetting && ++timeDate[1] > 59) {
 			timeDate[1] = 0;
 		} else {
@@ -175,6 +186,7 @@ static Screen TimeDate (
 		if (press)
 			return;
 
+		// Decrement minute/day
 		if (timeSetting && --timeDate[1] < 0) {
 			timeDate[1] = 59;
 		} else {
@@ -188,6 +200,7 @@ static Screen TimeDate (
 		if (press)
 			return;
 
+		// Toggle 24-hour or increment year
 		if (timeSetting) {
 			timeDate[2] ^= 1;
 		} else {
@@ -201,6 +214,7 @@ static Screen TimeDate (
 		if (press)
 			return;
 
+		// Toggle 24-hour or decrement year
 		if (timeSetting) {
 			timeDate[2] ^= 1;
 		} else {
@@ -224,6 +238,7 @@ static Screen TimeDate (
 			if (timeSetting) {
 				setDateView();
 			} else {
+				// Set time/date on main board
 				serialPrintf("@.%02u%02u%02u",
 					timeDate[3], timeDate[4], timeDate[5]);
 				if (ampm) {

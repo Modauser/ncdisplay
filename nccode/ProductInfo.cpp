@@ -11,6 +11,7 @@
 #include <gameduino2/GD2.h>
 #include <cstdio>
 
+// Format string, %1u replaced with model number + 1
 constexpr const char *piModelStringFormat = "ION TS%1u00";
 static char piModelString[10];
 

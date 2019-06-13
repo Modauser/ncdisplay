@@ -36,8 +36,11 @@ static const LanguageString smWeekend ({
 	"Sabado - Domingo:"
 });
 
+// Sets visibilities of all buttons/text as they should currently be
 static void sleepSetVisibilities(void);
+// Updates bottom button text ("SAVE"/"NEXT")
 static void updateSaveButtonText(void);
+// Updates text for sleep hours based on current values
 static void updateSleepHourText(void);
 
 static Screen SleepMode (
@@ -52,10 +55,12 @@ static Screen SleepMode (
 		sleepSettingHours = false;
 		sleepSetVisibilities();
 
+		// Force OFF if one in pair is OFF
 		if (sleepHours[0] == 25)
 			sleepHours[1] = 25;
 		else if (sleepHours[1] == 25)
 			sleepHours[0] = 25;
+
 		if (sleepHours[2] == 25)
 			sleepHours[3] = 25;
 		else if (sleepHours[3] == 25)
@@ -75,6 +80,8 @@ static Screen SleepMode (
 		GD.cmd_text(20, 90, FONT_TITLE, OPT_CENTERY, "SleepMode");
 
 		if (!sleepSettingHours) {
+			// Not setting hours, just showing the info
+
 			GD.cmd_text(8, 185, FONT_LARGE, 0, LanguageString({
 				"OPERATING HOURS",
 				"BETRIEBSSTUNDEN",
@@ -84,6 +91,7 @@ static Screen SleepMode (
 			GD.cmd_text(8, 240, FONT_LIGHT, 0, smWeekdays());
 			GD.cmd_text(8, 260, FONT_LIGHT, 0, smWeekend());
 
+			// Show hours
 			GD.cmd_text(160, 240, FONT_SMALL, 0, sleepHourStrings[0]);
 			if (isdigit(sleepHourStrings[0][0])) {
 				GD.cmd_text(210, 240, FONT_SMALL, 0, "-");
@@ -95,6 +103,8 @@ static Screen SleepMode (
 				GD.cmd_text(220, 260, FONT_SMALL, 0, sleepHourStrings[3]);
 			}
 		} else {
+			// Setting/customizing hours
+
 			GD.cmd_text(136, 150, FONT_TITLE, OPT_CENTER, LanguageString({
 				"Set Operating Hours",
 				"Set Betriebsstunden",
@@ -106,6 +116,7 @@ static Screen SleepMode (
 			GD.cmd_text(136, 210, FONT_TITLE, OPT_CENTER,
 				sleepSettingWeekday ? smWeekdays() : smWeekend());
 
+			// White box between up/down arrows
 			GD.ColorRGB(WHITE);
 			GD.Begin(RECTS);
 			GD.Vertex2ii(34, 274); GD.Vertex2ii(104, 312);
@@ -123,6 +134,8 @@ static Screen SleepMode (
 	Button({0, 0}, Button::drawBackArrow, [](bool press) {
 		if (!press) {
 			if (sleepSettingHours) {
+				// If on weekend go back to weekday, otherwise
+				// back out of customization
 				if (!sleepSettingWeekday)
 					sleepSettingWeekday = true;
 				else
@@ -130,6 +143,7 @@ static Screen SleepMode (
 
 				sleepSetVisibilities();
 			} else {
+				// Back out of screen
 				ScreenManager::setCurrent(ScreenID::Settings);
 			}
 		}
@@ -160,9 +174,11 @@ static Screen SleepMode (
 			return;
 
 		if (sleepSettingHours & sleepSettingWeekday) {
+			// This is a NEXT button here, advance to weekend
 			sleepSettingWeekday = false;
 			updateSaveButtonText();
 		} else {
+			// SAVE button
 			MainBoard::setSleepmodeHours(sleepHours);
 			MainBoard::setSleepmodeEnabled(sleepModeOn);
 			ScreenManager::setCurrent(ScreenID::Settings);
@@ -172,6 +188,7 @@ static Screen SleepMode (
 		if (press)
 			return;
 
+		// Increment start hour
 		int index = sleepSettingWeekday ? 0 : 2;
 		auto& h = sleepHours[index];
 		h++;
@@ -187,6 +204,7 @@ static Screen SleepMode (
 		if (press)
 			return;
 
+		// Decrement start hour
 		int index = sleepSettingWeekday ? 0 : 2;
 		auto& h = sleepHours[index];
 		if (h == 24) {
@@ -203,6 +221,7 @@ static Screen SleepMode (
 		if (press)
 			return;
 
+		// Increment end hour
 		int index = sleepSettingWeekday ? 1 : 3;
 		auto& h = sleepHours[index];
 		h++;
@@ -218,6 +237,7 @@ static Screen SleepMode (
 		if (press)
 			return;
 
+		// Decrement end hour
 		int index = sleepSettingWeekday ? 1 : 3;
 		auto& h = sleepHours[index];
 		if (h == 24) {

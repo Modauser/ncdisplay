@@ -36,6 +36,7 @@ static Screen WelcomeLanguage (
 		GD.ClearColorRGB(NC_BKGND_COLOR);
 		GD.Clear();
 		
+		// Show hello/language text
 		GD.ColorRGB(NC_FRGND_COLOR);
 		for (int i = 0; i < 4; i++) {
 			GD.cmd_text(20, 120 * i + 40, FONT_LIGHT, 0,
@@ -44,6 +45,7 @@ static Screen WelcomeLanguage (
 				welcomeLanguages[i]);
 		}
 
+		// Draw lines dividing each language
 		GD.ColorRGB(WHITE);
 		GD.Begin(RECTS);
 		for (int i = 120; i < 480; i += 120) {
@@ -74,6 +76,8 @@ void setLanguage(Language lang)
 {
 	LanguageString::setCurrentLanguage(lang);
 	MainBoard::setLanguage(static_cast<int>(lang));
+
+	// Advance to time/date screen with forced parent of Setup
 	ScreenManager::setCurrent(ScreenID::TimeDate, ScreenID::Setup);
 }
 

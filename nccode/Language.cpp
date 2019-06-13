@@ -9,6 +9,7 @@
 
 #include <gameduino2/GD2.h>
 
+// Sets current language, loads lang's label text, then exits Language screen
 void languageSet(const Language& l)
 {
 	LanguageString::setCurrentLanguage(l);
@@ -24,6 +25,7 @@ static const LanguageString lSelectLang ({
 	"Seleccionar idioma"
 });
 
+// Show top or bottom of language list
 void languageShowPage(bool top);
 
 static Screen Language (
@@ -39,6 +41,7 @@ static Screen Language (
 	[](void) {
 		clearScreenWithIonHeader();
 
+		// Header text
 		GD.ColorRGB(NC_FRGND_COLOR);
 		GD.cmd_text(136, 90, FONT_TITLE, OPT_CENTER, lSelectLang());
 	},
@@ -70,11 +73,12 @@ static Screen Language (
 		if (!press)
 			languageSet(Language::Dutch);
 	}),
+	// -1 makes down arrow
 	Button({-1, 420}, Button::drawScrollButton, [](bool press) {
 		if (!press)
 			languageShowPage(false);
 	}),
-
+	// 1 makes up arrow
 	Button({1, 120}, Button::drawScrollButton, [](bool press) {
 		if (!press)
 			languageShowPage(true);

@@ -1,3 +1,12 @@
+// See SystemCalls.h for descriptions of what these functions do (with the
+// exception of the FatFS functions)
+//
+// The SVC calls these functions make jumps to code in main.cpp
+// See SVCall_Handler() in main.cpp for more info on SVC calls
+//
+// NOOPTIMIZE tags are required on these functions to prevent the compiler from
+// messing up what we want.
+
 #include "type/Assets.h"
 
 #include <fatfs/ff.h>
@@ -164,6 +173,7 @@ FRESULT f_readdir(DIR *dir, FILINFO *fileinfo)
 	return result;
 }
 
+// This is necessary, maybe because delay_ms header definition is also extern C'd
 extern "C" {
 
 NOOPTIMIZE

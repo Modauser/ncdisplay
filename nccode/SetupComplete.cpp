@@ -40,12 +40,13 @@ static Screen SetupComplete (
 		GD.Begin(BITMAPS);
 		GD.Vertex2ii(0, 130, HOMEWTR_HANDLE);
 
+		// Show text
 		GD.ColorRGB(NC_FDGND_COLOR);
 		GD.cmd_text(136, 80, FONT_LARGE, OPT_CENTER, setupComplete());
 		GD.ColorRGB(NC_FRGND_COLOR);
 		GD.cmd_text(136, 400, FONT_TITLE, OPT_CENTER, allowHours());
 
-		// 5 second timeout to dispense screen
+		// ~5 second timeout to dispense screen
 		if (++holdCounter >= 500)
 			ScreenManager::setCurrent(ScreenID::Dispense);
 	}

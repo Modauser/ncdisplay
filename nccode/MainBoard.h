@@ -91,12 +91,14 @@ private:
 	static const std::array<const char *, 5> filterReorders;
 
 public:
+	// Metric
 	static inline bool isMetric(void) {
 		updateMetric();
 		return inMetric;
 	}
 	static void updateMetric(void);
 
+	// Time/Date
 	static inline const char *getTime(void) {
 		return time;
 	}
@@ -108,93 +110,115 @@ public:
 	}
 	static void updateDateTime(void);
 
+	// Model number
 	static inline int getModelNumber(void) {
 		return modelNumber;
 	}
 	static int updateModelNumber(void);
 
+	// Serial number
 	static inline const char *getSerialNumber(void) {
 		return serialNumber;
 	}
 	static const char *updateSerialNumber(void);
 
+	// Software version
 	static inline const char *getSoftwareVersion(void) {
 		return softwareVersion;
 	}
 	static const char *updateSoftwareVersion(void);
 
+	// Filter type
 	static inline FilterType getFilterType(void) {
 		return static_cast<FilterType>(filterType);
 	}
 	static int updateFilterType(void);
 
+	// Filter name
 	static inline const char *getFilterName(void) {
 		return filterTypes[filterType];
 	}
+	// Filter Re-order number text
 	static inline const char *getFilterReorder(void) {
 		return filterReorders[filterType];
 	}
 
+	// Filter gallons/liters remaining
 	static inline int getFilterRemaining(void) {
 		return inMetric ? GaltoL(filterRemaining) : filterRemaining;
 	}
 	static int updateFilterRemaining(void);
 
+	// Filter months remaining
 	static inline int getFilterMonthsRemaining(void) {
 		return filterMonthsRemaining;
 	}
 	static int updateFilterMonthsRemaining(void);
 
+	// Filter last changed date
 	static inline const char *getFilterLastChanged(void) {
 		return filterLastChanged;
 	}
 	static const char *updateFilterLastChanged(void);
 
+	// Flow rate
 	static inline const char *getFlowRate(void) {
 		return flowRate;
 	}
 	static const char *updateFlowRate(void);
 
+	// Service contact text
 	static inline const char *getServiceContact(void) {
 		return serviceContact;
 	}
 	static const char *updateServiceContact(void);
 
+	// Returns true if hot water can be dispensed
 	static inline bool canDispenseHot(void) {
 		updateModelNumber();
 		return modelNumber & (1 << 0);
 	}
+	// Returns true if sparkling water can be dispensed
 	static inline bool canDispenseSparkling(void) {
 		updateModelNumber();
 		return modelNumber & (1 << 1);
 	}
 
+	// SleepMode
 	static void getSleepmodeHours(unsigned int *buf);
 	static void setSleepmodeHours(const unsigned int *hours);
 	static bool getSleepmodeEnabled(void);
 	static void setSleepmodeEnabled(bool en);
 
+	// Language
 	static int getLanguage(void);
 	static void setLanguage(int);
 
+	// Tank temperatures
 	static const unsigned int *getTankTemperatures(void);
 	static void setTankTemperatures(const unsigned int *temps);
 
+	// Tank full-ness
 	static bool isColdTankFull(void);
 	static bool isHotTankFull(void);
 	static bool isSparklingTankFull(void);
 
+	// Passcode
 	static bool isLocked(void);
 	static void setLocked(bool locked);
 
+	// Dispense error
 	static void allowDispenseError(bool yes = true);
 	static void clearDispenseError(void);
 
+	// Autofill routine
 	[[noreturn]]
 	static void autofill(void);
 
+	// Factory reset request
 	static void factoryReset(void);
 
+	// Fills given buffer with bottles saved count text
 	static void getBottlesSaved(char *buf);
 };
 

@@ -43,6 +43,7 @@ char *LanguageString::convertFileText(char *buffer)
 			continue;
 		}
 
+		// Cases are Unicode values for their respective characters
 		switch (buffer[i]) {
 		case 0xB0: buffer[i] = *DEGREE; break;
 		case 0xC9: buffer[i] = *E_ACUTE; break;

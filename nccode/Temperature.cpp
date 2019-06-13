@@ -61,6 +61,7 @@ static Screen Temperature (
 	ScreenID::Settings,
 	// Initialization function
 	[](void) {
+		// Get current values from board
 		auto levels = MainBoard::getTankTemperatures();
 		for (int i = 0; i < 3; i++)
 			tempLevels[i] = levels[i];
@@ -69,6 +70,7 @@ static Screen Temperature (
 	[](void) {
 		clearScreenWithIonHeader();
 
+		// Put text
 		GD.ColorRGB(NC_FRGND_COLOR);
 		GD.cmd_text(136, 70,  FONT_TITLE, OPT_CENTERX, tHotTemp());
 		GD.cmd_text(136, 170, FONT_TITLE, OPT_CENTERX, tColdTempOn());
@@ -76,6 +78,7 @@ static Screen Temperature (
 		GD.cmd_text(252, 70, FONT_TITLE, OPT_CENTERX, MainBoard::isMetric()
 			? "(C)" : "(F)");
 
+		// Render slider and points for Hot/ColdON/ColdOFF
 		for (int y = 100; y < 400; y += 100) {
 			// Main box
 			GD.ColorRGB(WHITE);
@@ -104,6 +107,7 @@ static Screen Temperature (
 			GD.Vertex2ii(px, y + 19);
 		}
 
+		// Render temperature values
 		const char **tempNumbers = MainBoard::isMetric() ? tempNumbersC
 			: tempNumbersF;
 		GD.ColorRGB(NC_FRGND_COLOR);

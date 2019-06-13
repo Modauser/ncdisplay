@@ -29,11 +29,13 @@ static Screen Sleep (
 	// Pre-draw function
 	[](void) {
 		if (inSleepMode) {
+			// If in sleep mode, only show sleep mode image
 			if (sleepImageLast != 0x1234) {
 				sleepImageLast = 0x1234;
 				loadImage(SLEEP_HANDLE, "sleepmode.jpg", 0);
 			}
 		} else {
+			// Load current sleep image
 			if (sleepImageCurrent != sleepImageLast) {
 				sleepImageLast = sleepImageCurrent;
 
@@ -53,6 +55,7 @@ static Screen Sleep (
 
 		if (!inSleepMode) {
 
+			// Show TOUCH TO BEGIN
 			GD.ColorRGB(NC_BKGND_COLOR);
 			GD.Begin(RECTS);
 			GD.Vertex2ii(0, 420);
@@ -63,12 +66,14 @@ static Screen Sleep (
 				"TOUCH TO BEGIN"
 			})());
 
+			// Show bottles save on proper image
 			if (sleepImageCurrent == 2) {
 				GD.ColorRGB(NC_FDGND_COLOR);
 				GD.cmd_text(136, 130, FONT_SMALL, OPT_CENTER,
 					sleepBottlesUsed);
 			}
 			
+			// Switch images after timeout
 			sleepImageCounter += 10;
 			if (sleepImageCounter >= SLEEP_IMGSWITCH) {
 				sleepImageCounter = 0;
@@ -79,6 +84,7 @@ static Screen Sleep (
 			}
 		}
 
+		// Check for touch
 		GD.get_inputs();
 		if (GD.inputs.x != -32768 && GD.inputs.y != -32768) {
 			// Wait for release

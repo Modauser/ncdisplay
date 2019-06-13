@@ -38,6 +38,7 @@ static Screen Lockscreen (
 	},
 	// Pre-draw function
 	[](void) {
+		// Check entered passcode if all 4 digits were given
 		if (lockscreenIndex > 4) {
 			delay_ms(500);
 			if (Settings::isCorrectPassword(lockscreenInput)) {
@@ -54,12 +55,14 @@ static Screen Lockscreen (
 		GD.ColorRGB(NC_FRGND_COLOR);
 		GD.cmd_text(136, 90, FONT_TITLE, OPT_CENTER, "Enter Passcode");
 
+		// Draw '*' for each entered digit
 		GD.ColorRGB(NC_FDGND_COLOR);
 		for (int i = 0; i < lockscreenIndex; i++) {
 			GD.cmd_text(54 + 54 * i, 120, FONT_LARGE, OPT_CENTER,
 				"*");
 		}
 
+		// Draw keypad
 		GD.ColorRGB(WHITE);
 		GD.cmd_fgcolor(NC_FRGND_COLOR);
 		GD.cmd_keys(0, 140, 272, 78, FONT_LARGE, OPT_FLAT, "123");

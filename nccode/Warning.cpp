@@ -8,21 +8,27 @@
 
 #include <gameduino2/GD2.h>
 
-/**
- * The warning message to be displayed.
- * If left as nullptr, no message is shown.
- */
+// These variables are set in Advanced.cpp before this screen is switched to
+// Warning message
 const LanguageString *warningMessage = nullptr;
+// Text for the yes/accept button
 const LanguageString *warningYes = nullptr;
+// Screen to load if yes/accept is pressed
 ScreenID warningProceedScreen = ScreenID::Advanced;
+// Function to call if yes/accept is pressed (called before screen switch)
 void (*warningProceedFunc)(void) = nullptr;
+
+// Sets the yes/accept button text to what is currently given
+static void setYesText(void);
 
 static Screen Warning (
 	ScreenID::Warning,
 	// Parent screen
 	ScreenID::Advanced,
 	// Initialization function
-	nullptr,
+	[](void) {
+		setYesText();
+	},
 	// Pre-draw function
 	[](void) {
 		GD.ClearColorRGB(TINT_RED);
@@ -32,6 +38,7 @@ static Screen Warning (
 		GD.ColorRGB(TINT_RED);
 		GD.Vertex2ii(0, 40, HOMEWTR_HANDLE);
 
+		// Warning title box
 		GD.ColorRGB(0xFF0000);
 		GD.Begin(RECTS);
 		GD.Vertex2ii(30, 150);
@@ -45,6 +52,9 @@ static Screen Warning (
 				(*warningMessage)(), 30);
 		}
 
+		// Text inside warning title box
+		// Placed after warning message's cmd_text to save a ColorRGB
+		// call
 		GD.ColorRGB(0xFF0000);
 		GD.cmd_text(136, 165, FONT_SMALL, OPT_CENTER, LanguageString({
 			"WARNING",
@@ -54,7 +64,7 @@ static Screen Warning (
 		})());
 	},
 	// Buttons
-	Button({0xF, 360}, Button::drawRedFullWidth, *warningYes,
+	Button({0xF, 360}, Button::drawRedFullWidth, "YES",
 	[](bool pressed) {
 		if (!pressed) {
 			if (warningProceedFunc != nullptr)
@@ -72,4 +82,9 @@ static Screen Warning (
 			ScreenManager::setCurrent(ScreenID::Advanced);
 	})
 );
+
+void setYesText(void)
+{
+	Warning.getButton(0).setText(*warningYes);
+}
 

@@ -27,38 +27,8 @@ struct ServiceLogEntry {
 
 static ServiceLogEntry serviceLog[3];
 
-static void getServiceLog(ServiceLogEntry& e)
-{
-	e.date[0] = '\0';
-	e.description[0] = '\0';
-
-	unsigned int i = 0;
-
-	serialPrintf("@f");
-	if (serialGetchar() == '$') {
-
-		// Pull date
-		int c = serialGetchar();
-		while (c != ',') {
-			e.date[i++] = c;
-			c = serialGetchar();
-		}
-
-		e.date[i] = '\0';
-		if (serialGetchar() == '$')
-			return;
-
-		// Pull description
-		c = serialGetchar();
-		i = 0;
-		while (c != '$') {
-			e.description[i++] = c;
-			c = serialGetchar();
-		}
-
-		e.description[i] = '\0';
-	}
-}
+// Does an "@f" request and reads a log entry into the given object
+static void getServiceLog(ServiceLogEntry& e);
 
 static Screen ServiceDetails (
 	ScreenID::ServiceDetails,
@@ -66,6 +36,7 @@ static Screen ServiceDetails (
 	ScreenID::Advanced,
 	// Initialization function
 	[](void) {
+		// Show spinner because service log requests take time
 		clearScreenWithIonHeader();
 		GD.ColorRGB(NC_FRGND_COLOR);
 		GD.cmd_spinner(GD.h / 2, (GD.w / 2), 0, 0);
@@ -91,6 +62,7 @@ static Screen ServiceDetails (
 		val |= serialGet();
 		Format::date(serviceLastChanged, val);
 
+		// Get last three log entries
 		for (int i = 0; i < 3; i++)
 			getServiceLog(serviceLog[i]);
 	},
@@ -132,6 +104,7 @@ static Screen ServiceDetails (
 		GD.cmd_text(20, 260, FONT_SMALL, 0, serviceTempHot);
 		GD.cmd_text(20, 305, FONT_SMALL, 0, serviceLastChanged);
 
+		// Show each service log entry
 		for (int i = 0; i < 3; i++) {
 			if (*serviceLog[i].date == '\0')
 				break;
@@ -147,4 +120,38 @@ static Screen ServiceDetails (
 			ScreenManager::setCurrent(ScreenID::Advanced);
 	})
 );
+
+void getServiceLog(ServiceLogEntry& e)
+{
+	e.date[0] = '\0';
+	e.description[0] = '\0';
+
+	unsigned int i = 0;
+
+	serialPrintf("@f");
+	if (serialGetchar() == '$') {
+
+		// Pull date
+		int c = serialGetchar();
+		while (c != ',') {
+			e.date[i++] = c;
+			c = serialGetchar();
+		}
+
+		e.date[i] = '\0';
+		if (serialGetchar() == '$')
+			return;
+
+		// Pull description
+		c = serialGetchar();
+		i = 0;
+		while (c != '$') {
+			e.description[i++] = c;
+			c = serialGetchar();
+		}
+
+		e.description[i] = '\0';
+	}
+}
+
 

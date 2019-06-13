@@ -63,7 +63,7 @@ void setup()
 
 	handshakeTest();
 
-	// Set backlight brightness
+	// Set backlight brightness (value between 0-128)
 	GD.wr32(REG_PWM_DUTY, 64);
 
 	// Load fonts and images from SD card
@@ -74,6 +74,7 @@ void setup()
 	LanguageString::setCurrentLanguage(static_cast<Language>(lang));
 	MainBoard::allowDispenseError();
 
+	// Load language text
 	Settings::loadLabels();
 	Settings::loadPassword();
 
@@ -88,7 +89,7 @@ void setup()
  */
 void loop()
 {
-	// Renders the screen and handles potential input
+	// Renders the current screen and handles potential input
 	ScreenManager::showCurrent();
 
 	delay_ms(10);

@@ -34,6 +34,7 @@ static const LanguageString systemErrorFile ({
 /**
  * Known error codes.
  * Order is important and should not be changed.
+ * ErrorData is code, type, then bool for if error is shown during startup
  */
 static const std::array<ErrorData, 25> ErrorTable = {{
 /* LED_ICE_ERROR */	   	ErrorData(0x55, ErrorType::System, true),
@@ -67,6 +68,7 @@ char Error::message[128] = "";
 ErrorData Error::lastError = ErrorTable.back();
 bool Error::dispenseFlag = false;
 
+// Error's line number in error text files matches its index in the table above
 static unsigned int GetErrorCodeIndex(ErrorCode code)
 {
 	for (unsigned int i = 0; i < ErrorTable.size(); i++) {
@@ -77,6 +79,7 @@ static unsigned int GetErrorCodeIndex(ErrorCode code)
 	return ErrorTable.size() - 1;
 }
 
+// Loads text of error at given index
 void Error::loadMessage(unsigned int index)
 {
 	FIL fil;
@@ -154,6 +157,7 @@ void Error::showSystemError(void)
 	GD.ClearColorRGB(NC_BKGND_COLOR);
 	GD.Clear();
 
+	// Red background header
 	GD.Begin(RECTS);
 	GD.ColorRGB(0xFF0000);
 	GD.Vertex2ii(0, 0);
@@ -163,6 +167,7 @@ void Error::showSystemError(void)
 	GD.cmd_text(136, 30, FONT_LARGE, OPT_CENTER, "SYSTEM ERROR");
 	GD.cmd_text(136, 60, FONT_MESG, OPT_CENTERX, message);
 
+	// Open system error text file and print error's message
 	FIL fil;
 	auto result = f_open(&fil, systemErrorFile(), FA_READ);
 	if (result != FR_OK) {
@@ -178,6 +183,7 @@ void Error::showSystemError(void)
 			while (1);
 		} else {
 			GD.ColorRGB(NC_FDGND_COLOR);
+			// Read 10 lines of error's text
 			for (unsigned int i = 0; i < 10; i++) {
 				f_gets(message, sizeof(message) / sizeof(char), &fil);
 				LanguageString::convertFileText(message);
