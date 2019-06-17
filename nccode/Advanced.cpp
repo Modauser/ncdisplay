@@ -24,7 +24,8 @@ static const LanguageString warningReset ({
 		"toutes les donn" e_ACUTE "es sauvegard" e_ACUTE "es.\n\n"
 		"Continuer?",
 	"Al restablecer la\nconfiguraci" o_ACUTE "n de f" a_ACUTE "brica\n"
-		"se borrar" a_ACUTE "n todos los\najustes guardados\nContinuar?"
+		"se borrar" a_ACUTE "n todos los\najustes guardados\n"
+		SPQUESTION "Continuar?"
 });
 
 static const LanguageString warningAutofill ({

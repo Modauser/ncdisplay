@@ -81,23 +81,23 @@ static Screen SystemOptions (
 		if (!press)
 			ScreenManager::setCurrent(ScreenID::Advanced);
 	}),
-	Button({215, 80}, Button::drawToggle, [](bool press) {
+	Button({205, 90}, Button::drawToggle, [](bool press) {
 		if (!press)
 			toggleOption(0);
 	}),
-	Button({215, 140}, Button::drawToggle, [](bool press) {
+	Button({205, 150}, Button::drawToggle, [](bool press) {
 		if (!press)
 			toggleOption(1);
 	}),
-	Button({215, 200}, Button::drawToggle, [](bool press) {
+	Button({205, 210}, Button::drawToggle, [](bool press) {
 		if (!press)
 			toggleOption(2);
 	}),
-	Button({215, 260}, Button::drawToggle, [](bool press) {
+	Button({205, 270}, Button::drawToggle, [](bool press) {
 		if (!press)
 			toggleOption(3);
 	}),
-	Button({215, 315}, Button::drawToggle, [](bool press) {
+	Button({205, 325}, Button::drawToggle, [](bool press) {
 		if (!press)
 			toggleOption(4);
 	}),

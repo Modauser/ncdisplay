@@ -42,23 +42,7 @@ void bigDispenseButton(const vec2& xy, bool pressed, const LanguageString& text)
  * @param letter Letter associated with button (e.g. 'C' for cold)
  * @param pressed Button pressed/released state
  */
-static void doPress(char letter, bool pressed)
-{
-	// Begin dispensing on press
-	if (pressed) {
-		if (Error::shouldDispense() && !mainDispensing) {
-			mainDispensing = true;
-			mainAniImage = ANI1_HANDLE;
-			mainAniCounter = 0;
-			mainAniCounterMax = hotDispensing ? 4 : 2;
-			serialPrintf("$%c", letter);
-		}
-	} else {
-		// Send release code
-		mainDispensing = false;
-		serialPrintf("$R$R");
-	}
-}
+static void doPress(char letter, bool pressed);
 
 static const LanguageString mainDispense1 ({
 	"PRESS AND HOLD",
@@ -119,6 +103,7 @@ static Screen Dispense (
 
 		// Trigger time/date update on first render
 		timeDateCounter = 2000 - 1;
+		Error::check();
 
 		showHotDispense(false);
 		setVisibilities();
@@ -189,7 +174,7 @@ static Screen Dispense (
 
 		++timeDateCounter;
 		// Check for errors
-		if ((timeDateCounter % 500) == 0)
+		if ((timeDateCounter % 250) == 0)
 			Error::check();
 
 		// Update date/time
@@ -222,7 +207,7 @@ static Screen Dispense (
 		"VARMT"
 	}, [](bool pressed) {
 		// Show hot dispense button/warning
-		if (!pressed)
+		if (pressed)
 			showHotDispense(true);
 	}),
 	Button({138, 298}, Button::drawDispenserItem, {
@@ -310,6 +295,26 @@ void setVisibilities(void)
 		}
 	}
 }
+
+void doPress(char letter, bool pressed)
+{
+	// Begin dispensing on press
+	Dispense.getButton(5).setVisibility(!pressed);
+	if (pressed) {
+		if (Error::shouldDispense() && !mainDispensing) {
+			mainDispensing = true;
+			mainAniImage = ANI1_HANDLE;
+			mainAniCounter = 0;
+			mainAniCounterMax = hotDispensing ? 4 : 2;
+			serialPrintf("$%c", letter);
+		}
+	} else {
+		// Send release code
+		mainDispensing = false;
+		serialPrintf("$R$R");
+	}
+}
+
 
 void bigDispenseButton(const vec2& xy, bool pressed, const LanguageString& text)
 {

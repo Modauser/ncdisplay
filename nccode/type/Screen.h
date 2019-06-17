@@ -100,7 +100,7 @@ public:
 		GD.get_inputs();
 
 
-		if (GD.inputs.tag == 0 || GD.inputs.tag > 30) {
+		if (GD.inputs.x == -32768 && GD.inputs.y == -32768) {
 			if (pressedButton != 0) {
 				buttons[pressedButton - 1].setPressed(false);
 				buttons[pressedButton - 1].doAction();
@@ -114,7 +114,7 @@ public:
 					ScreenManager::setCurrent(parent);
 				}
 			}
-		} else {
+		} else if (GD.inputs.tag > 0 && GD.inputs.tag <= buttons.size()) {
 			// Button press, keep screen on
 			sleepCounter = 0;
 

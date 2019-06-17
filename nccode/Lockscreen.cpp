@@ -52,6 +52,10 @@ static Screen Lockscreen (
 
 		clearScreenWithIonHeader();
 
+		GD.Tag(1);
+		Button::drawBackArrow({0, 0}, false);
+		GD.Tag(0);
+
 		GD.ColorRGB(NC_FRGND_COLOR);
 		GD.cmd_text(136, 90, FONT_TITLE, OPT_CENTER, "Enter Passcode");
 
@@ -77,7 +81,10 @@ static Screen Lockscreen (
 
 		// Get display inputs
 		GD.get_inputs();
-		if (int tag = GD.inputs.tag; isdigit(tag) || tag == '<') {
+		int tag = GD.inputs.tag;
+		if (tag == 1)
+			ScreenManager::setCurrent(ScreenID::Settings);
+		else if (isdigit(tag) || tag == '<') {
 			while (GD.inputs.tag == tag) {
 				delay_ms(10);
 				GD.get_inputs();
@@ -85,12 +92,7 @@ static Screen Lockscreen (
 			lockscreenEnterKey(tag);
 		}
 
-	},
-	// Buttons
-	Button({0, 0}, Button::drawBackArrow, [](bool press) {
-		if (!press)
-			ScreenManager::setCurrent(ScreenID::Settings);
-	})
+	}
 );
 
 void doPasscodeTest(ScreenID id)

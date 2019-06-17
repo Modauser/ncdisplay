@@ -45,5 +45,8 @@
 #define cEDILLA    "\x1C"	// 0xE7
 #define ESZETT     "\x0F"	// 0xDF
 
+#define SPQUESTION "\x1F"	// 0xBF
+#define SPEXCLAMAT "$"		// 0xA1
+
 #endif // SPECIALCHARACTERS_H_
 

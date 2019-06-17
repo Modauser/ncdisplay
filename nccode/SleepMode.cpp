@@ -148,7 +148,7 @@ static Screen SleepMode (
 			}
 		}
 	}),
-	Button({180, 85}, Button::drawToggle, [](bool press) {
+	Button({180, 90}, Button::drawToggle, [](bool press) {
 		if (!press) {
 			sleepModeOn ^= true;
 			sleepSetVisibilities();

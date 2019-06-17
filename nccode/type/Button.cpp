@@ -284,13 +284,22 @@ void Button::drawExclusiveOption(const vec2& xy, bool pressed, const LanguageStr
 
 void Button::drawToggle(const vec2& xy, bool pressed)
 {
-	//if (pressed)
-	//	extraState ^= true;
-
-	GD.cmd_fgcolor(0xdddddd);
-	GD.cmd_bgcolor(pressed ? NC_ONTOG_COLOR : NC_OFTOG_COLOR);
-	GD.cmd_toggle(xy.x, xy.y, 30, 27, OPT_FLAT, pressed ? 65535 : 0,
-		"\0\xFF\0");
+	GD.Begin(LINES);
+	GD.LineWidth(16 * 14);
+	GD.ColorRGB(NC_FDGND_COLOR);
+	GD.Vertex2ii(xy.x + 15, xy.y);
+	GD.Vertex2ii(xy.x + 45, xy.y);
+	GD.LineWidth(16 * 12 + 4);
+	GD.ColorRGB(pressed ? NC_ONTOG_COLOR : NC_OFTOG_COLOR);
+	GD.Vertex2ii(xy.x + 15, xy.y);
+	GD.Vertex2ii(xy.x + 45, xy.y);
+	GD.Begin(POINTS);
+	GD.PointSize(16 * 9 + 8);
+	GD.ColorRGB(NC_FDGND_COLOR);
+	GD.Vertex2ii(xy.x + (pressed ? 45 : 15), xy.y);
+	GD.PointSize(16 * 7 + 12);
+	GD.ColorRGB(WHITE);
+	GD.Vertex2ii(xy.x + (pressed ? 45 : 15), xy.y);
 }
 
 void Button::drawWelcomeSelect(const vec2& xy, bool pressed)

@@ -59,11 +59,11 @@ constexpr uint32_t NC_FDGND_COLOR = 0x0C3D6B;
 /**
  * Color: 'On' color for toggles (light green).
  */
-constexpr uint32_t NC_ONTOG_COLOR = 0x5EF6B8;
+constexpr uint32_t NC_ONTOG_COLOR = 0x4FE3C1;
 /**
  * Color: 'Off' color for toggles (light gray).
  */
-constexpr uint32_t NC_OFTOG_COLOR = 0xBBBBBB;
+constexpr uint32_t NC_OFTOG_COLOR = 0xCCCCCC;
 /**
  * Color: Common green color.
  */

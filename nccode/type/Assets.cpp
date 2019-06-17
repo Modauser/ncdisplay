@@ -67,10 +67,10 @@ void loadAssets(void)
 	GD.safeload("assets.gd3");
 
 	uint32_t freeAddress = ASSETS_END;
-	freeAddress = fontLoad(FONT_SMALL, Nirmala14Header, "nirmala14.dat", freeAddress);
-	freeAddress = fontLoad(FONT_LARGE, Nirmala18Header, "nirmala18.dat", freeAddress);
-	freeAddress = fontLoad(FONT_LIGHT, Roboto14Header, "roboto14.dat", freeAddress);
-	freeAddress = fontLoad(FONT_TITLE, Roboto20Header, "roboto20.dat", freeAddress);
+	freeAddress = fontLoad(FONT_SMALL, NirmalaBold14Header, "nirmab14.dat", freeAddress);
+	freeAddress = fontLoad(FONT_LARGE, NirmalaBold18Header, "nirmab18.dat", freeAddress);
+	freeAddress = fontLoad(FONT_LIGHT, Nirmala14Header, "nirma14.dat", freeAddress);
+	freeAddress = fontLoad(FONT_TITLE, Nirmala20Header, "nirma20.dat", freeAddress);
 
 	FREE_MEM = freeAddress;
 	GD.loadptr = freeAddress;

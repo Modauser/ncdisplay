@@ -93,6 +93,10 @@ static Screen Sleep (
 				delay_ms(10);
 			}
 
+			// Force reload of image next time
+			// (other images may be loaded into sleep's space)
+			sleepImageLast = -1;
+
 			// Wake up, go to main dispense screen
 			ScreenManager::setCurrent(ScreenID::Dispense);
 		}
