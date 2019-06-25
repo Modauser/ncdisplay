@@ -4,6 +4,7 @@
  */
 #include "type/Assets.h"
 #include "type/Screen.h"
+#include "MainBoard.h"
 
 #include <gameduino2/GD2.h>
 
@@ -29,15 +30,15 @@ static void goTimerShort(int type)
 {
 	filterType = type;
 	filterTimerMonths = 6;
-	filterTimerGallons = 750;
+	filterTimerGallons = MainBoard::isMetric() ? 2850 : 750;
 	ScreenManager::setCurrent(ScreenID::FilterChangeTimer);
 }
-// Liters: 2850 5700
+
 static void goTimerLong(int type)
 {
 	filterType = type;
 	filterTimerMonths = 12;
-	filterTimerGallons = 1500;
+	filterTimerGallons = MainBoard::isMetric() ? 5700 : 1500;
 	ScreenManager::setCurrent(ScreenID::FilterChangeTimer);
 }
 

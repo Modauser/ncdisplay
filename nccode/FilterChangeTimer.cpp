@@ -12,6 +12,20 @@ unsigned int filterType = 0;
 unsigned int filterTimerMonths = 3;
 unsigned int filterTimerGallons = 750;
 
+static const LanguageString gallons ({
+	"GALLONS",
+	"GALLONEN",
+	"GALLONS",
+	"GALONES"
+});
+
+static const LanguageString liters ({
+	"LITERS",
+	"LITERS",
+	"LITRES",
+	"LITROS"
+});
+
 static Screen FilterChangeTimer (
 	ScreenID::FilterChangeTimer,
 	// Parent screen
@@ -42,12 +56,8 @@ static Screen FilterChangeTimer (
 			"OU",
 			"O"
 		})());
-		GD.cmd_text(203, 300, FONT_SMALL, OPT_CENTERX, LanguageString({
-			"GALLONS",
-			"GALLONEN",
-			"GALLONS",
-			"GALONES"
-		})());
+		GD.cmd_text(203, 300, FONT_SMALL, OPT_CENTERX,
+			MainBoard::isMetric() ? liters() : gallons());
 
 		GD.ColorRGB(WHITE);
 		GD.Begin(RECTS);
