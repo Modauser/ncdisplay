@@ -10,7 +10,7 @@
 #include <gameduino2/GD2.h>
 
 static bool inSleepMode = false;
-static char sleepImagePath[] = "sleep0.jpg";
+static char sleepImagePath[] = "screensaver1.jpg";
 static int sleepImageCurrent = 1;
 static int sleepImageLast = -1;
 static unsigned int sleepImageCounter;
@@ -39,7 +39,7 @@ static Screen Sleep (
 			if (sleepImageCurrent != sleepImageLast) {
 				sleepImageLast = sleepImageCurrent;
 
-				sleepImagePath[5] = sleepImageCurrent + '0';
+				sleepImagePath[11] = sleepImageCurrent + '0';
 				GD.BitmapHandle(SLEEP_HANDLE);
 				GD.cmd_loadimage(0, 0);
 				GD.load(sleepImagePath);
@@ -56,15 +56,15 @@ static Screen Sleep (
 		if (!inSleepMode) {
 
 			// Show TOUCH TO BEGIN
-			GD.ColorRGB(NC_BKGND_COLOR);
-			GD.Begin(RECTS);
-			GD.Vertex2ii(0, 420);
-			GD.Vertex2ii(272, 480);
+			//GD.ColorRGB(NC_BKGND_COLOR);
+			//GD.Begin(RECTS);
+			//GD.Vertex2ii(0, 420);
+			//GD.Vertex2ii(272, 480);
 
-			GD.ColorRGB(NC_FRGND_COLOR);
-			GD.cmd_text(136, 450, FONT_SMALL, OPT_CENTER, LanguageString({
-				"TOUCH TO BEGIN"
-			})());
+			//GD.ColorRGB(NC_FRGND_COLOR);
+			//GD.cmd_text(136, 450, FONT_SMALL, OPT_CENTER, LanguageString({
+			//	"TOUCH TO BEGIN"
+			//})());
 
 			// Show bottles save on proper image
 			if (sleepImageCurrent == 2) {

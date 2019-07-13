@@ -12,13 +12,53 @@
 #include <fatfs/ff.h>
 #include <gameduino2/GD2.h>
 
+#include <array>
 #include <cstring>
+
+static const std::array<const char *, 35> allowedFiles = {
+	"assets.gd3",
+	"EngCarb0.txt",
+	"EngErr00.txt",
+	"English0.txt",
+	"EngSet00.txt",
+	"EngSetL0.txt",
+	"FraCarb0.txt",
+	"FreErr00.txt",
+	"French00.txt",
+	"FreSet00.txt",
+	"FreSetL0.txt",
+	"GerCarb0.txt",
+	"GerErr00.txt",
+	"German00.txt",
+	"GerSet00.txt",
+	"GerSetL0.txt",
+	"lock.jpg",
+	"nirma14.dat",
+	"nirma20.dat",
+	"nirmab14.dat",
+	"nirmab18.dat",
+	"Password.txt",
+	"Service0.txt",
+	"screensaver1.jpg",
+	"screensaver2.jpg",
+	"screensaver3.jpg",
+	"sleepmode.jpg",
+	"SpaCarb0.txt",
+	"SpaErr00.txt",
+	"Spanish0.txt",
+	"SpaSet00.txt",
+	"SpaSetL0.txt",
+	"startup.jpg",
+	"unlock.jpg",
+	"usb.jpg"
+};
 
 static DIR rootDirectory;
 static FILINFO fileInfo;
 static char *fileName;
 static char srcFile[68];
 
+static bool isAllowedFile(const char *file);
 static void failedFileCopy(const char *msg);
 
 /**
@@ -67,8 +107,11 @@ void USBUpdateFiles(void)
 		// If error or none found, leave the loop
 		if (res != FR_OK || fileInfo.fname[0] == '\0')
 			break;
-		// Skip directorys
-		if (fileInfo.fname[0] == '.' || (fileInfo.fattrib & AM_DIR))
+
+		// Skip directorys, and only take files we want
+		if ((fileInfo.fattrib & AM_DIR) ||
+			fileInfo.fname[0] == '.' ||
+			!isAllowedFile(fileInfo.fname))
 			continue;
 
 		// Load the file's name and show the prompt
@@ -158,6 +201,16 @@ void USBUpdateFiles(void)
 		GD.swap();
 		delay_ms(3000);
 	}
+}
+
+bool isAllowedFile(const char *file)
+{
+	for (auto f : allowedFiles) {
+		if (strcmp(f, file) == 0)
+			return true;
+	}
+
+	return false;
 }
 
 void failedFileCopy(const char *msg)
