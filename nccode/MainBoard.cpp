@@ -194,11 +194,17 @@ bool MainBoard::isColdTankFull(void) {
 }
 
 bool MainBoard::isHotTankFull(void) {
+	if (!canDispenseHot())
+		return true;
+
 	serialPrintf("#:");
 	return serialGet() == 1;
 }
 
 bool MainBoard::isSparklingTankFull(void) {
+	if (!canDispenseSparkling())
+		return true;
+
 	serialPrintf("#;");
 	return serialGet() == 1;
 }

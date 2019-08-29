@@ -105,6 +105,7 @@ hpl/dmac/hpl_dmac.o \
 gcc/system_samd51.o \
 atmel_start.o \
 hpl/cmcc/hpl_cmcc.o \
+gameduino2/GD2.o \
 fatfs/diskio.o \
 fatfs/ff.o \
 fatfs/ffsystem.o \
@@ -197,6 +198,7 @@ OBJS_AS_ARGS +=  \
 "gcc/system_samd51.o" \
 "atmel_start.o" \
 "hpl/cmcc/hpl_cmcc.o" \
+"gameduino2/GD2.o" \
 "fatfs/diskio.o" \
 "fatfs/ff.o" \
 "fatfs/ffsystem.o" \
@@ -295,6 +297,7 @@ DEPS_AS_ARGS +=  \
 "hpl/oscctrl/hpl_oscctrl.d" \
 "gcc/system_samd51.d" \
 "atmel_start.d" \
+"gameduino2/GD2.d" \
 "fatfs/ff.d" \
 "fatfs/ffsystem.d" \
 "fatfs/ffunicode.d" \

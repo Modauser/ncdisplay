@@ -53,7 +53,7 @@ bool USBUpdateCheck(void)
 	// Update found: get it's size
 	FSIZE_t size = f_size(&fd);
 	if (size > UPDATE_MAX_SIZE)
-		return false;
+		return true;
 
 	GD.ClearColorRGB(NC_BKGND_COLOR);
 	GD.ColorRGB(NC_FRGND_COLOR);
@@ -65,7 +65,7 @@ bool USBUpdateCheck(void)
 	// Load the update into memory
 	result = f_read(&fd, UPDATE_LOAD_ADDR, size, &bytesRead);
 	if (result != FR_OK || bytesRead != size)
-		return false;
+		return true;
 
 	GD.ClearColorRGB(NC_BKGND_COLOR);
 	GD.ColorRGB(NC_FRGND_COLOR);
@@ -74,8 +74,6 @@ bool USBUpdateCheck(void)
 	GD.cmd_text(10, 140, 18, 0, "Loading update...");
 	GD.cmd_text(10, 170, 18, 0, "Update loaded.");
 	GD.cmd_text(10, 200, 18, 0, "Applying update...");
-	GD.cmd_text(10, 230, 18, 0, "Display resets when finished.");
-	GD.cmd_text(10, 260, 18, 0, "Remove USB after setup complete.");
 	GD.swap();
 
 	// Close the update file and delete it from the USB drive
@@ -83,7 +81,7 @@ bool USBUpdateCheck(void)
 	f_unlink(USBUpdatePath);
 
 	// Begin the firmware update
-	firmwareUpdate((uint32_t)UPDATE_LOAD_ADDR, size);
+	firmwareUpdate((uint32_t)UPDATE_LOAD_ADDR, size, &GD);
 
 	// Display will reset; this will not be reached
 	return true;

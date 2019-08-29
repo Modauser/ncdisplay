@@ -9,6 +9,9 @@
 
 #include <gameduino2/GD2.h>
 
+constexpr unsigned int ANICOUNT_LONG = 4;
+constexpr unsigned int ANICOUNT_SHORT = 2;
+
 // True if dispensing water
 static bool mainDispensing = false;
 // True if showing dispense hot button
@@ -17,7 +20,7 @@ static bool hotDispensing = false;
 static unsigned int hotTimeout = 0;
 static unsigned int mainAniImage = 0;
 static unsigned int mainAniCounter = 0;
-static unsigned int mainAniCounterMax = 2;
+static unsigned int mainAniCounterMax = ANICOUNT_SHORT;
 static unsigned int timeDateCounter = 0;
 
 /**
@@ -305,7 +308,10 @@ void doPress(char letter, bool pressed)
 			mainDispensing = true;
 			mainAniImage = ANI1_HANDLE;
 			mainAniCounter = 0;
-			mainAniCounterMax = hotDispensing ? 4 : 2;
+			mainAniCounterMax = (hotDispensing ||
+				!MainBoard::canDispenseHot() ||
+				!MainBoard::canDispenseSparkling()) ?
+				ANICOUNT_LONG : ANICOUNT_SHORT;
 			serialPrintf("$%c", letter);
 		}
 	} else {

@@ -6,6 +6,7 @@
 #ifndef SYSTEMCALLS_H_
 #define SYSTEMCALLS_H_
 
+#include <fatfs/ff.h>
 #include <cstdint>
 
 /**
@@ -40,7 +41,9 @@ uint8_t spi_xfer_byte(uint8_t send);
  * @param addr Address of the firmware update in memory
  * @param count The size in byte of the update
  */
-void firmwareUpdate(uint32_t addr, uint32_t count);
+void firmwareUpdate(uint32_t addr, uint32_t count, void	*gd);
+
+FRESULT unmount(const TCHAR *drv);
 
 #endif // SYSTEMCALLS_H_
 

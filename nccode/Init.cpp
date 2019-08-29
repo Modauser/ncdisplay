@@ -14,6 +14,7 @@
 /**
  * Checks USB for a firmware update.
  * @see USBUpdate.cpp
+ * @return True if USB is mounted, false if not
  */
 extern bool USBUpdateCheck(void);
 
@@ -53,6 +54,7 @@ void setup()
 
 	USBUpdateCheck();
 	USBUpdateFiles();
+	unmount(DRV_USB);
 
 	// Show the loading spinner
 	GD.ClearColorRGB(NC_BKGND_COLOR);

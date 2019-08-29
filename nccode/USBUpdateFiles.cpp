@@ -197,9 +197,10 @@ void USBUpdateFiles(void)
 		GD.Clear();
 		GD.cmd_text(136, 30, 23, OPT_CENTER, "Copying USB Files");
 		GD.cmd_text(136, 140, 18, OPT_CENTER, "Done.");
-		GD.cmd_text(136, 170, 18, OPT_CENTER, "Remove USB after setup complete.");
+		GD.cmd_text(136, 170, 18, OPT_CENTER,
+			"USB drive may now be removed.");
 		GD.swap();
-		delay_ms(3000);
+		delay_ms(3500);
 	}
 }
 

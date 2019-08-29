@@ -4,9 +4,12 @@
  */
 
 #include <atmel_start.h>
-#include <gameduino2/GD2.h>
 #include <config/hpl_sercom_config.h>
 #include <spi_lite.h>
+
+#include <gameduino2/GD2.h>
+constexpr uint32_t NC_BKGND_COLOR = 0xD6ECF9;
+constexpr uint32_t NC_FRGND_COLOR = 0x026FB6;
 
 // Enables USB drive detection and access.
 // Comment to disable.
@@ -62,7 +65,7 @@ int main(void)
 // Function documentation below
 uint8_t spi_xfer_byte(uint8_t send);
 int serialTest(void);
-void firmware_update(uint32_t addr, uint32_t count);
+void firmware_update(uint32_t addr, uint32_t count, GDClass *gd);
 uint32_t fatfs_svc_handler(uint32_t *fatfs_args);
 
 /**
@@ -102,7 +105,7 @@ void SVCall_Handler(void)
 	// "svc 3"
 	// Does a firmware update.
 	case 3:
-		firmware_update(args[0], args[1]);
+		firmware_update(args[0], args[1], (GDClass *)args[2]);
 		break;
 	// "svc 4"
 	// Returns location of our printf function, which is connected to UART.
@@ -143,7 +146,7 @@ int serialTest(void)
 	return getchar();
 }
 
-void firmware_update(uint32_t addr, uint32_t count)
+void firmware_update(uint32_t addr, uint32_t count, GDClass *gd)
 {
 	if (*((uint32_t *)addr) != NCIdentifier)
 		return;
@@ -165,7 +168,37 @@ void firmware_update(uint32_t addr, uint32_t count)
 		count -= writeCount;
 	}
 
-	NVIC_SystemReset();
+	GD.begin();
+	
+	// Prepare display
+	GD.wr32(REG_HSIZE, 480);
+	GD.wr32(REG_VSIZE, 272);
+	GD.wr32(REG_HCYCLE, 548);
+	GD.wr32(REG_HOFFSET, 43);
+	GD.wr32(REG_HSYNC0, 0);
+	GD.wr32(REG_HSYNC1, 41);
+	GD.wr32(REG_VCYCLE, 292);
+	GD.wr32(REG_VOFFSET, 12);
+	GD.wr32(REG_VSYNC0, 0);
+	GD.wr32(REG_VSYNC1, 10);
+	GD.wr32(REG_PCLK, 5);
+	GD.wr32(REG_PCLK_POL, 1);
+	GD.wr32(REG_CSPREAD, 1);
+	GD.wr32(REG_DITHER, 1);
+	GD.wr32(REG_ROTATE, 2);
+	GD.wr(REG_SWIZZLE, 0);
+
+	GD.ClearColorRGB(NC_BKGND_COLOR);
+	GD.ColorRGB(NC_FRGND_COLOR);
+	GD.Clear();
+	GD.cmd_text(136, 30, 23, OPT_CENTER, "USB Firmware Update");
+	GD.cmd_text(10, 140, 18, 0, "Update applied.");
+	GD.cmd_text(10, 170, 18, 0, "Please restart the machine.");
+	GD.cmd_text(10, 230, 18, 0, "The power button is located");
+	GD.cmd_text(10, 260, 18, 0, "on the back of the unit.");
+	GD.swap();
+
+	//NVIC_SystemReset();
 	while (1);
 }
 
@@ -205,13 +238,18 @@ uint32_t fatfs_svc_handler(uint32_t *fatfs_args)
 	case 6:
 		// Opens a directory (for looking at directory entries)
 		// Note: Opened directories do not need to be closed
-		ret = (uint32_t)f_opendir((DIR *)fatfs_args[1], (const TCHAR *)
-			fatfs_args[2]);
+		ret = (uint32_t)f_opendir((DIR *)fatfs_args[1],
+			(const TCHAR *)	fatfs_args[2]);
 		break;
 	case 7:
 		// Gets the next entry in the opened directory
-		ret = (uint32_t)f_readdir((DIR *)fatfs_args[1], (FILINFO *)
-			fatfs_args[2]);
+		ret = (uint32_t)f_readdir((DIR *)fatfs_args[1],
+			(FILINFO *)fatfs_args[2]);
+		break;
+	case 8:
+		// Unmount a drive
+		ret = (uint32_t)f_mount(nullptr, (const TCHAR *)fatfs_args[1],
+			0);
 		break;
 	default:
 		break;
@@ -263,6 +301,9 @@ int initDisks(void)
 		// No USB found
 		ret = 1;
 	} else {
+		// Fix: delay needed for serial to handshake properly...
+		delay_ms(2000);
+
 		// USB drive found; mount it
 		result = f_mount(&msc_fatfs, DRV_USB, 1);
 		//if (result != FR_OK)

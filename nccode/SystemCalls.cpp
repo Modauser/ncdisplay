@@ -60,13 +60,14 @@ uint8_t spi_xfer_byte(uint8_t send)
 }
 
 NOOPTIMIZE
-void firmwareUpdate(uint32_t addr, uint32_t count)
+void firmwareUpdate(uint32_t addr, uint32_t count, void *gd)
 {
 	asm("\
 		mov r0, %0; \
 		mov r1, %1; \
+		mov r2, %2; \
 		svc 3; \
-	" :: "r" (addr), "r" (count));
+	" :: "r" (addr), "r" (count), "r" ((uint32_t)gd));
 }
 
 NOOPTIMIZE
@@ -165,6 +166,19 @@ FRESULT f_readdir(DIR *dir, FILINFO *fileinfo)
 {
 	volatile FRESULT result = FR_OK;
 	uint32_t args[3] = { 7, (uint32_t)dir, (uint32_t)fileinfo };
+	asm("\
+		mov r0, %0; \
+		mov r1, %1; \
+		svc 2; \
+	" :: "r" (result), "r" (args));
+	return result;
+}
+
+NOOPTIMIZE
+FRESULT unmount(const TCHAR *drv)
+{
+	volatile FRESULT result = FR_OK;
+	uint32_t args[3] = { 8, (uint32_t)drv };
 	asm("\
 		mov r0, %0; \
 		mov r1, %1; \

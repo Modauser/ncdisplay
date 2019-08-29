@@ -82,28 +82,25 @@ static Screen Fill (
 			std::get<0>(*fillScreen)(), 30);
 
 		// Check tank status every second
-		if (++checkCounter == 4) {
+		if (++checkCounter >= 4) {
 			checkCounter = 0;
-			if (std::get<2>(*fillScreen)()) {
+
+			while (std::get<2>(*fillScreen)()) {
 				// Tank full, go to next
 				fillScreen++;
-				// Try skipping hot
-				if (std::get<1>(*fillScreen) == 0xFF0000 &&
-					!MainBoard::canDispenseHot())
-					fillScreen++;
-				// Try skipping sparkling
-				if (std::get<1>(*fillScreen) == 0x00FF00 &&
-					!MainBoard::canDispenseSparkling())
-					fillScreen++;
+
 				// If all are full, continue to setup complete
-				if (fillScreen == fillScreens.end())
-					ScreenManager::setCurrent(ScreenID::SetupComplete);
+				if (fillScreen == fillScreens.end()) {
+					ScreenManager::setCurrent(
+						ScreenID::SetupComplete);
+					break;
+				}
 			}
 
 			// Check for error
 			if (Error::check())
 				Error::showStartup();
-		}
+		} 
 
 		delay_ms(200);
 	}
