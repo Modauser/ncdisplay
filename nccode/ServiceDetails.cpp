@@ -20,15 +20,10 @@ static bool serviceMetric;
 
 static char serviceLastChanged[Format::size::date];
 
-struct ServiceLogEntry {
-	char date[32];
-	char description[64];
-};
-
-static ServiceLogEntry serviceLog[3];
+static char serviceLog[3][100];
 
 // Does an "@f" request and reads a log entry into the given object
-static void getServiceLog(ServiceLogEntry& e);
+static void getServiceLog(char *buffer);
 
 static Screen ServiceDetails (
 	ScreenID::ServiceDetails,
@@ -106,12 +101,8 @@ static Screen ServiceDetails (
 
 		// Show each service log entry
 		for (int i = 0; i < 3; i++) {
-			if (*serviceLog[i].date == '\0')
-				break;
-			GD.cmd_text(20, 350 + i * 40, FONT_SMALL, 0,
-				serviceLog[i].date);
-			GD.cmd_text(30, 350 + i * 40 + 20, FONT_SMALL, 0,
-				serviceLog[i].description);
+			if (*serviceLog[i] != '\0')
+			    GD.cmd_text(20, 350 + i * 40, FONT_SMALL, 0, serviceLog[i], 20);
 		}
 	},
 	// Buttons
@@ -121,36 +112,17 @@ static Screen ServiceDetails (
 	})
 );
 
-void getServiceLog(ServiceLogEntry& e)
+void getServiceLog(char *buffer)
 {
-	e.date[0] = '\0';
-	e.description[0] = '\0';
-
-	unsigned int i = 0;
+    buffer[0] = '\0';
 
 	serialPrintf("@f");
 	if (serialGetchar() == '$') {
+        int i = 0;
+        for (int c = serialGetchar(); c != '$'; c = serialGetchar())
+            buffer[i++] = c != ',' ? c : '\n';
 
-		// Pull date
-		int c = serialGetchar();
-		while (c != ',') {
-			e.date[i++] = c;
-			c = serialGetchar();
-		}
-
-		e.date[i] = '\0';
-		if (serialGetchar() == '$')
-			return;
-
-		// Pull description
-		c = serialGetchar();
-		i = 0;
-		while (c != '$') {
-			e.description[i++] = c;
-			c = serialGetchar();
-		}
-
-		e.description[i] = '\0';
+		buffer[i] = '\0';
 	}
 }
 
