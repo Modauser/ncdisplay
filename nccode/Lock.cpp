@@ -49,7 +49,7 @@ static Screen Lock (
 		if (!press)
 			ScreenManager::setCurrent(ScreenID::Advanced);
 	}),
-	Button({180, 80}, Button::drawToggle, [](bool press) {
+	Button({180, 90}, Button::drawToggle, [](bool press) {
 		if (!press) {
 			lockEnabled ^= true;
 			loadLockImage();
