@@ -37,6 +37,7 @@ hal/src \
 stdio_redirect/gcc \
 hal/utils/src \
 diskio \
+hpl/eic \
 hpl/usb \
 hpl/pm \
 hpl/cmcc \
@@ -78,6 +79,7 @@ hal/src/hal_delay.o \
 hpl/pm/hpl_pm.o \
 hpl/core/hpl_init.o \
 hpl/gclk/hpl_gclk.o \
+hpl/eic/hpl_eic.o \
 hal/utils/src/utils_list.o \
 hal/utils/src/utils_assert.o \
 usb_start.o \
@@ -99,6 +101,7 @@ driver_init.o \
 hpl/sercom/hpl_sercom.o \
 hal/src/hal_atomic.o \
 hal/src/hal_gpio.o \
+hal/src/hal_ext_irq.o \
 hal/utils/src/utils_event.o \
 hal/src/hal_sleep.o \
 hpl/dmac/hpl_dmac.o \
@@ -172,6 +175,7 @@ OBJS_AS_ARGS +=  \
 "hpl/pm/hpl_pm.o" \
 "hpl/core/hpl_init.o" \
 "hpl/gclk/hpl_gclk.o" \
+"hpl/eic/hpl_eic.o" \
 "hal/utils/src/utils_list.o" \
 "hal/utils/src/utils_assert.o" \
 "usb_start.o" \
@@ -192,6 +196,7 @@ OBJS_AS_ARGS +=  \
 "hpl/sercom/hpl_sercom.o" \
 "hal/src/hal_atomic.o" \
 "hal/src/hal_gpio.o" \
+"hal/src/hal_ext_irq.o" \
 "hal/utils/src/utils_event.o" \
 "hal/src/hal_sleep.o" \
 "hpl/dmac/hpl_dmac.o" \
@@ -279,6 +284,7 @@ DEPS_AS_ARGS +=  \
 "usb/usb_protocol.d" \
 "stdio_start.d" \
 "hpl/gclk/hpl_gclk.d" \
+"hpl/eic/hpl_eic.d" \
 "hpl/dmac/hpl_dmac.d" \
 "diskio_start.d" \
 "hal/src/hal_init.d" \
@@ -293,6 +299,7 @@ DEPS_AS_ARGS +=  \
 "hal/src/hal_sleep.d" \
 "hpl/sercom/hpl_sercom.d" \
 "hal/src/hal_gpio.d" \
+"hal/src/hal_ext_irq.d" \
 "hal/src/hal_atomic.d" \
 "hpl/oscctrl/hpl_oscctrl.d" \
 "gcc/system_samd51.d" \

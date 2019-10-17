@@ -12,6 +12,17 @@
 #define CONF_CPU_FREQUENCY 48000000
 #endif
 
+// <y> EIC Clock Source
+// <id> eic_gclk_selection
+#ifndef CONF_GCLK_EIC_SRC
+#define CONF_GCLK_EIC_SRC GCLK_PCHCTRL_GEN_GCLK0_Val
+#endif
+
+// CONF_GCLK_EIC_FREQUENCY
+#ifndef CONF_GCLK_EIC_FREQUENCY
+#define CONF_GCLK_EIC_FREQUENCY 48000000
+#endif
+
 // <y> Core Clock Source
 // <id> core_gclk_selection
 

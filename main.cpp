@@ -4,6 +4,7 @@
  */
 
 #include <atmel_start.h>
+#include <hal_ext_irq.h>
 #include <config/hpl_sercom_config.h>
 #include <spi_lite.h>
 
@@ -36,6 +37,8 @@ int initDisks(void);
 // Include FatFS code; workaround to avoid compiling/linking issues.
 #include "fatfs/diskio.c"
 
+void esp32Request(void);
+
 //
 // Main entry point
 //
@@ -49,6 +52,9 @@ int main(void)
 
 	// Enable SPI
 	SPI_0_enable();
+
+    // Set up ESP32 listener
+    ext_irq_register(PIN_PA14, esp32Request);
 
 	// Initialize storage devices
 	initDisks();
@@ -313,6 +319,11 @@ int initDisks(void)
 
 	(void)result;
 	return ret;
+}
+
+void esp32Request(void)
+{
+
 }
 
 void UsageFault_Handler(void)

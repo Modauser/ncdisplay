@@ -518,6 +518,27 @@ void FLASH_0_init(void)
 	flash_init(&FLASH_0, NVMCTRL);
 }
 
+void EXTERNAL_IRQ_0_init(void)
+{
+	hri_gclk_write_PCHCTRL_reg(GCLK, EIC_GCLK_ID, CONF_GCLK_EIC_SRC | (1 << GCLK_PCHCTRL_CHEN_Pos));
+	hri_mclk_set_APBAMASK_EIC_bit(MCLK);
+
+	// Set pin direction to input
+	gpio_set_pin_direction(ESP32_HS, GPIO_DIRECTION_IN);
+
+	gpio_set_pin_pull_mode(ESP32_HS,
+	                       // <y> Pull configuration
+	                       // <id> pad_pull_config
+	                       // <GPIO_PULL_OFF"> Off
+	                       // <GPIO_PULL_UP"> Pull-up
+	                       // <GPIO_PULL_DOWN"> Pull-down
+	                       GPIO_PULL_OFF);
+
+	gpio_set_pin_function(ESP32_HS, PINMUX_PA14A_EIC_EXTINT14);
+
+	ext_irq_init();
+}
+
 void system_init(void)
 {
 	init_mcu();
@@ -572,6 +593,8 @@ void system_init(void)
 	                       GPIO_PULL_UP);
 
 	gpio_set_pin_function(SPI_INT_N, GPIO_PIN_FUNCTION_OFF);
+
+    EXTERNAL_IRQ_0_init();
 
 	USART_0_init();
 
