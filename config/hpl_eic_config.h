@@ -749,7 +749,7 @@
 // <e> Interrupt 14 Settings
 // <id> eic_arch_enable_irq_setting14
 #ifndef CONF_EIC_ENABLE_IRQ_SETTING14
-#define CONF_EIC_ENABLE_IRQ_SETTING14 0
+#define CONF_EIC_ENABLE_IRQ_SETTING14 1
 #endif
 
 // <q> External Interrupt 14 Filter Enable
@@ -783,7 +783,7 @@
 // <i> This defines input sense trigger
 // <id> eic_arch_sense14
 #ifndef CONF_EIC_SENSE14
-#define CONF_EIC_SENSE14 EIC_NMICTRL_NMISENSE_NONE_Val
+#define CONF_EIC_SENSE14 EIC_NMICTRL_NMISENSE_FALL_Val
 #endif
 
 // <q> External Interrupt 14 Asynchronous Edge Detection Mode

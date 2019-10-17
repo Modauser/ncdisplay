@@ -323,7 +323,7 @@ int initDisks(void)
 
 void esp32Request(void)
 {
-
+    delay_ms(1000);
 }
 
 void UsageFault_Handler(void)
