@@ -543,6 +543,28 @@ void system_init(void)
 {
 	init_mcu();
 
+	// ESP32 CS
+
+	gpio_set_pin_level(ESP32_CS,
+	                   // <y> Initial level
+	                   // <id> pad_initial_level
+	                   // <false"> Low
+	                   // <true"> High
+	                   true);
+
+	gpio_set_pin_pull_mode(ESP32_CS,
+	                       // <y> Pull configuration
+	                       // <id> pad_pull_config
+	                       // <GPIO_PULL_OFF"> Off
+	                       // <GPIO_PULL_UP"> Pull-up
+	                       // <GPIO_PULL_DOWN"> Pull-down
+	                       GPIO_PULL_UP);
+
+	// Set pin direction to output
+	gpio_set_pin_direction(ESP32_CS, GPIO_DIRECTION_OUT);
+
+	gpio_set_pin_function(ESP32_CS, GPIO_PIN_FUNCTION_OFF);
+
 	// GPIO on PB07
 
 	gpio_set_pin_level(SPI_CS_N,

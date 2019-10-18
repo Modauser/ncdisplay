@@ -323,7 +323,11 @@ int initDisks(void)
 
 void esp32Request(void)
 {
-    delay_ms(1000);
+    gpio_set_pin_level(ESP32_CS, false);
+
+    while (spi_xfer_byte('Q'));
+
+    gpio_set_pin_level(ESP32_CS, true);
 }
 
 void UsageFault_Handler(void)
