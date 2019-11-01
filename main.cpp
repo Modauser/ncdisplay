@@ -37,7 +37,7 @@ int initDisks(void);
 // Include FatFS code; workaround to avoid compiling/linking issues.
 #include "fatfs/diskio.c"
 
-void esp32Request(void);
+//void esp32Request(void);
 
 //
 // Main entry point
@@ -54,7 +54,7 @@ int main(void)
 	SPI_0_enable();
 
     // Set up ESP32 listener
-    ext_irq_register(PIN_PA14, esp32Request);
+    //ext_irq_register(PIN_PA14, esp32Request);
 
 	// Initialize storage devices
 	initDisks();
@@ -321,14 +321,14 @@ int initDisks(void)
 	return ret;
 }
 
-void esp32Request(void)
-{
-    gpio_set_pin_level(ESP32_CS, false);
-
-    while (spi_xfer_byte('Q'));
-
-    gpio_set_pin_level(ESP32_CS, true);
-}
+//void esp32Request(void)
+//{
+//    gpio_set_pin_level(ESP32_CS, false);
+//
+//    while (spi_xfer_byte('Q'));
+//
+//    gpio_set_pin_level(ESP32_CS, true);
+//}
 
 void UsageFault_Handler(void)
 {

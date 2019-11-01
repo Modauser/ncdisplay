@@ -82,6 +82,8 @@ public:
 	 * rendered. Input is handled after entire screen is rendered.
 	 */
 	void show(void) final {
+        GD.resume();
+
 		// Call the pre-render function
 		if (showFunc)
 			showFunc();
@@ -124,6 +126,8 @@ public:
 				buttons[pressedButton - 1].doAction();
 			}
 		}
+
+        GD.__end();
 	}
 
 	/**

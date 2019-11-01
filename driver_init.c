@@ -543,6 +543,11 @@ void system_init(void)
 {
 	init_mcu();
 
+	gpio_set_pin_level(ESP32_HS, true);
+	gpio_set_pin_pull_mode(ESP32_HS, GPIO_PULL_OFF);
+	gpio_set_pin_direction(ESP32_HS, GPIO_DIRECTION_OUT);
+	gpio_set_pin_function(ESP32_HS, GPIO_PIN_FUNCTION_OFF);
+
 	// ESP32 CS
 
 	gpio_set_pin_level(ESP32_CS,
@@ -616,7 +621,7 @@ void system_init(void)
 
 	gpio_set_pin_function(SPI_INT_N, GPIO_PIN_FUNCTION_OFF);
 
-    EXTERNAL_IRQ_0_init();
+    //EXTERNAL_IRQ_0_init();
 
 	USART_0_init();
 

@@ -10,6 +10,9 @@
 #include "SystemCalls.h"
 
 #include <gameduino2/GD2.h>
+#include "../atmel_start_pins.h"
+
+#include <cstring>
 
 /**
  * Checks USB for a firmware update.
@@ -86,6 +89,17 @@ void setup()
 		ScreenID::WelcomeLanguage);
 }
 
+struct WifiInfo
+{
+  char modelNumber;
+  char serialNumber[16];
+  char softwareVersion[6];
+  char filterType;
+  char flowRate[9];
+
+  char unused[3];
+} __attribute__ ((packed));
+
 /**
  * Main display loop.
  */
@@ -95,6 +109,32 @@ void loop()
 	ScreenManager::showCurrent();
 
 	delay_ms(10);
+
+    static unsigned int counter = 0;
+    static unsigned int transferCounter = 0;
+    if (++counter == 1000) {
+        counter = 0;
+
+        WifiInfo info;
+        info.modelNumber = MainBoard::updateModelNumber();
+        strncpy(info.serialNumber, MainBoard::updateSerialNumber(), 16);
+        strncpy(info.softwareVersion, MainBoard::updateSoftwareVersion(), 6);
+        info.filterType = MainBoard::updateFilterType();
+        strncpy(info.flowRate, MainBoard::updateFlowRate(), 9);
+        info.unused[0] = 0x12;
+        info.unused[1] = 0x34;
+        info.unused[2] = 0x56;
+
+        gpio_set_pin_level(ESP32_HS, false);
+        delay_ms(5);
+        gpio_set_pin_level(ESP32_CS, false);
+
+        for (unsigned int i = 0; i < sizeof(WifiInfo); i++)
+            spi_xfer_byte(((char *)&info)[i]);
+
+        gpio_set_pin_level(ESP32_CS, true);
+        gpio_set_pin_level(ESP32_HS, true);
+    }
 }
 
 int handshakeTest(void)

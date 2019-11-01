@@ -1676,3 +1676,9 @@ void GDClass::dumpscreen(void)
   }
 }
 #endif
+
+void GDClass::stop(void)
+{
+    GDTR.stop();
+}
+

@@ -262,6 +262,8 @@ public:
   //void bitmapML(const char* filename, uint8_t handle);
   //void load6bitmapsML(const char* filename1, uint8_t handle1, const char* filename2, uint8_t handle2, const char* filename3, uint8_t handle3, const char* filename4, uint8_t handle4, const char* filename5, uint8_t handle5, const char* filename6, uint8_t handle6);
 
+  void stop(void);
+
 private:
   static void cFFFFFF(byte v);
   static void cI(uint32_t);
