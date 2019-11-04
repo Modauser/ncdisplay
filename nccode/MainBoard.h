@@ -32,7 +32,7 @@ int serialGet(void);
  * Does a rough conversion to avoid floating-point math.
  */
 constexpr int GaltoL(int gallons) {
-	return gallons * 4;
+	return gallons * 38 / 10;
 }
 
 /**
@@ -78,7 +78,8 @@ private:
 	static char softwareVersion[6];
 
 	static int filterType;
-	static int filterRemaining;
+	static char filterRemaining[5];
+    static int filterRemainingCount;
 	static int filterMonthsRemaining;
 	static char filterLastChanged[Format::size::date];
 	static char flowRate[Format::size::flowRate];
@@ -144,10 +145,13 @@ public:
 	}
 
 	// Filter gallons/liters remaining
-	static inline int getFilterRemaining(void) {
-		return inMetric ? GaltoL(filterRemaining) : filterRemaining;
+    static inline int getFilterRemainingCount(void) {
+        return filterRemainingCount;
+    }
+	static inline const char *getFilterRemaining(void) {
+		return filterRemaining;
 	}
-	static int updateFilterRemaining(void);
+	static const char *updateFilterRemaining(void);
 
 	// Filter months remaining
 	static inline int getFilterMonthsRemaining(void) {
