@@ -5,6 +5,7 @@
 #include <fatfs/ff.h>
 #include <gameduino2/GD2.h>
 #include <hal_delay.h>
+#include <cstring>
 
 constexpr const char *piServiceFile = DRV_SD "Service0.txt";
 
@@ -35,7 +36,8 @@ char MainBoard::serialNumber[16] = "";
 char MainBoard::softwareVersion[6];
 
 int MainBoard::filterType = 0;
-int MainBoard::filterRemaining = 0;
+char MainBoard::filterRemaining[5] = "";
+int MainBoard::filterRemainingCount = 0;
 int MainBoard::filterMonthsRemaining = 0;
 char MainBoard::filterLastChanged[Format::size::date];
 char MainBoard::flowRate[Format::size::flowRate];
@@ -113,11 +115,33 @@ int MainBoard::updateFilterType(void) {
 	return filterType;
 }
 
-int MainBoard::updateFilterRemaining(void) {
+const char *MainBoard::updateFilterRemaining(void) {
+    // Get number of remaining
 	serialPrintf("@&");
-	filterRemaining = serialGet() << 8;
-	filterRemaining |= serialGet();
-	return filterRemaining;
+	filterRemainingCount = serialGet() << 8;
+	filterRemainingCount |= serialGet();
+    if (isMetric())
+        filterRemainingCount = GaltoL(filterRemainingCount);
+
+    // Convert to percentage
+    int div;
+    if (int type = updateFilterType(); type == 0 || type == 2)
+        div = inMetric ? 5700 : 1500;
+    else
+        div = inMetric ? 2850 : 750;
+
+    if (filterRemainingCount < div) {
+        div /= 10;
+        int n = filterRemainingCount / div;
+        filterRemaining[0] = n + '0';
+        filterRemaining[1] = filterRemainingCount / (div / 10) - n * 10 + '0';
+        filterRemaining[2] = '%';
+        filterRemaining[3] = '\0';
+    } else {
+        strcpy(filterRemaining, "100%");
+    }
+
+    return filterRemaining;
 }
 
 int MainBoard::updateFilterMonthsRemaining(void)

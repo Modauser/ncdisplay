@@ -44,8 +44,8 @@ static Screen Filter (
 		// Print corresponding values
 		GD.cmd_text(180, 110, FONT_SMALL, 0, MainBoard::getFilterName());
 		GD.cmd_text(180, 130, FONT_SMALL, 0, MainBoard::getFilterReorder());
-	      GD.cmd_number(180, 150, FONT_SMALL, 0, MainBoard::getFilterRemaining());
-	      GD.cmd_number(180, 170, FONT_SMALL, 0, MainBoard::getFilterMonthsRemaining());
+        GD.cmd_number(180, 150, FONT_SMALL, 0, MainBoard::getFilterRemainingCount());
+	    GD.cmd_number(180, 170, FONT_SMALL, 0, MainBoard::getFilterMonthsRemaining());
 		GD.cmd_text(180, 190, FONT_SMALL, 0, MainBoard::getFilterLastChanged());
 
 		GD.cmd_text(8, 230, FONT_LARGE, 0, LanguageString({

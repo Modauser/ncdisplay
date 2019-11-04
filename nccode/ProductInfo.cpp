@@ -64,8 +64,8 @@ static Screen ProductInfo (
 		GD.cmd_text(20,  240, FONT_SMALL, 0, Settings::getLabel(Label::Remaining));
 		GD.cmd_text(20,  260, FONT_SMALL, 0, Settings::getLabel(Label::FlowRate));
 
-	        GD.cmd_text(140, 220, FONT_SMALL, 0, MainBoard::getFilterName());
-	      GD.cmd_number(140, 240, FONT_SMALL, 0, MainBoard::getFilterRemaining());
+	    GD.cmd_text(140, 220, FONT_SMALL, 0, MainBoard::getFilterName());
+	    GD.cmd_text(140, 240, FONT_SMALL, 0, MainBoard::getFilterRemaining());
 		GD.cmd_text(140, 260, FONT_SMALL, 0, MainBoard::getFlowRate());
 
 		GD.cmd_text(20, 380, FONT_SMALL, 0, MainBoard::getServiceContact(), 20);

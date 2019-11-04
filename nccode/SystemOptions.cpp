@@ -25,15 +25,15 @@ static Screen SystemOptions (
 	[](void) {
 		// Load current values
 		serialPrintf("@S");
-		sysOptionToggles[0] = serialGet();
+		sysOptionToggles[0] = !serialGet();
 		serialPrintf("@U");
-		sysOptionToggles[1] = serialGet();
+		sysOptionToggles[1] = !serialGet();
 		serialPrintf("@V");
-		sysOptionToggles[2] = serialGet();
+		sysOptionToggles[2] = !serialGet();
 		serialPrintf("@W");
-		sysOptionToggles[3] = serialGet();
+		sysOptionToggles[3] = !serialGet();
 		serialPrintf("@h");
-		sysOptionToggles[4] = serialGet();
+		sysOptionToggles[4] = !serialGet();
 		serialPrintf("@X");
 		sysOptionMetric = serialGet();
 		setMetric(sysOptionMetric);
@@ -123,9 +123,9 @@ static Screen SystemOptions (
 		if (!press) {
 			// Save values
 			serialPrintf("@Y%1u@Z%1u@A%1u@B%1u@g%1u@C%1u",
-				sysOptionToggles[0], sysOptionToggles[1],
-				sysOptionToggles[2], sysOptionToggles[3],
-				sysOptionToggles[4], sysOptionMetric);
+				!sysOptionToggles[0], !sysOptionToggles[1],
+				!sysOptionToggles[2], !sysOptionToggles[3],
+				!sysOptionToggles[4], sysOptionMetric);
 			ScreenManager::setCurrent(ScreenID::Advanced);
 		}
 	})
