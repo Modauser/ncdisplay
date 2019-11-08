@@ -129,8 +129,9 @@ void loop()
         delay_ms(5);
         gpio_set_pin_level(ESP32_CS, false);
 
+        char *bytes = (char *)&info;
         for (unsigned int i = 0; i < sizeof(WifiInfo); i++)
-            spi_xfer_byte(((char *)&info)[i]);
+            spi_xfer_byte(bytes[i] != 0x00 ? bytes[i] : 0xFF);
 
         gpio_set_pin_level(ESP32_CS, true);
         gpio_set_pin_level(ESP32_HS, true);
