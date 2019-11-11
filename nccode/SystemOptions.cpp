@@ -24,6 +24,9 @@ static Screen SystemOptions (
 	// Initialization function
 	[](void) {
 		// Load current values
+        // 11/11/19 - Apparently some settings are stored opposite of their
+        //            intended value, so !'s were added to those settings when
+        //            accessed/modified.
 		serialPrintf("@S");
 		sysOptionToggles[0] = !serialGet();
 		serialPrintf("@U");
@@ -31,9 +34,9 @@ static Screen SystemOptions (
 		serialPrintf("@V");
 		sysOptionToggles[2] = !serialGet();
 		serialPrintf("@W");
-		sysOptionToggles[3] = !serialGet();
+		sysOptionToggles[3] = serialGet();
 		serialPrintf("@h");
-		sysOptionToggles[4] = !serialGet();
+		sysOptionToggles[4] = serialGet();
 		serialPrintf("@X");
 		sysOptionMetric = serialGet();
 		setMetric(sysOptionMetric);
@@ -124,8 +127,8 @@ static Screen SystemOptions (
 			// Save values
 			serialPrintf("@Y%1u@Z%1u@A%1u@B%1u@g%1u@C%1u",
 				!sysOptionToggles[0], !sysOptionToggles[1],
-				!sysOptionToggles[2], !sysOptionToggles[3],
-				!sysOptionToggles[4], sysOptionMetric);
+				!sysOptionToggles[2], sysOptionToggles[3],
+				sysOptionToggles[4], sysOptionMetric);
 			ScreenManager::setCurrent(ScreenID::Advanced);
 		}
 	})
