@@ -2,9 +2,12 @@
 *.swo
 gcc/**/*.d
 gcc/**/*.o
-*.elf
-*.hex
-*.bin
+gcc/*.elf
+gcc/*.hex
+gcc/*.bin
+esp32/*.elf
+esp32/*.hex
+esp32/*.bin
 simulator/simulator
 nccode/doc
 
