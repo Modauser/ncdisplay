@@ -5,9 +5,13 @@ gcc/**/*.o
 gcc/*.elf
 gcc/*.hex
 gcc/*.bin
+esp32/**/*.o
 esp32/*.elf
 esp32/*.hex
 esp32/*.bin
 simulator/simulator
 nccode/doc
-
+esp32/esp32/tools/dist
+esp32/esp32/tools/esptool
+esp32/esp32/tools/mkspiffs
+esp32/esp32/tools/xtensa-esp32-elf

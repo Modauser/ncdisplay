@@ -1,8 +1,8 @@
-CROSS = xtensa-esp32-elf-
+CROSS = esp32/tools/xtensa-esp32-elf/bin/xtensa-esp32-elf-
 CXX = $(CROSS)g++
 CC = $(CROSS)gcc
 
-PORT = /dev/ttyUSB0
+PORT = COM3
 
 ARDUINO_LIB_WIFI = esp32/libraries/WiFi/src
 ARDUINO_LIB_WIFI_SRC = $(ARDUINO_LIB_WIFI)/ETH.cpp \
@@ -94,7 +94,7 @@ LINK = -Lesp32/tools/sdk/ld \
 	   -u __cxa_guard_dummy -u __cxx_fatal_exception \
 	   -Wl,--gc-sections -Wl,-static -Wl,--undefined=uxTopUsedPriority
 
-all: $(ELF)
+all: $(ELF) $(BIN)
 
 clean:
 	@echo "  CLEAN"
@@ -102,7 +102,7 @@ clean:
 
 upload:
 	@echo "  UPLOAD"
-	@esp32/tools/esptool/esptool.py --port $(PORT) --baud 115200 \
+	@python esp32/tools/esptool/esptool.py --port $(PORT) --baud 115200 \
 		--before default_reset --after hard_reset \
 		write_flash --flash_freq 80m --flash_mode dio --flash_size detect \
 		--compress \
@@ -116,6 +116,8 @@ $(ELF): $(OBJ)
 	@$(CC) -nostdlib $(LINK) \
 		-Wl,--start-group $(OBJ) $(LIB) -lgcc -lstdc++ -Wl,--end-group \
 		-Wl,-EL -o $(ELF)
+
+$(BIN): $(ELF)
 	@python esp32/tools/gen_esp32part.py -q esp32/tools/partitions/default.csv \
 		esp32.partitions.bin
 	@python esp32/tools/esptool/esptool.py --chip esp32 elf2image \
