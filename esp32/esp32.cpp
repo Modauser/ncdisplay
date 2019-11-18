@@ -26,10 +26,6 @@ public:
     auto error = spi_slave_initialize(HSPI_HOST, &config, &slvcfg, 2);
     if (error != ESP_OK)
       while (1);
-    //gpio_set_pull_mode((gpio_num_t)SPI_CS, GPIO_FLOATING);
-    //gpio_set_pull_mode((gpio_num_t)SPI_MOSI, GPIO_FLOATING);
-    //gpio_set_pull_mode((gpio_num_t)SPI_MISO, GPIO_FLOATING);
-    //gpio_set_pull_mode((gpio_num_t)SPI_SCK, GPIO_FLOATING);
   }
 
   void end(void)
@@ -107,7 +103,7 @@ void setup() {
   pinMode(SPI_HS, INPUT_PULLUP);
   Serial.begin(115200);
 
-  WiFi.softAP(ssid, password);
+  WiFi.softAP(ssid, password, 1, 1); // channel, ssid_hidden
   Serial.println("IP address: ");
   Serial.println(WiFi.softAPIP());
   server.begin();

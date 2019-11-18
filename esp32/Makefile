@@ -99,7 +99,7 @@ all: $(ELF) $(BIN)
 
 clean:
 	@echo "  CLEAN"
-	@rm -f $(OBJ) $(ELF) $(BIN)
+	@rm -f $(OBJ) $(ELF) $(BIN) esp32.partitions.bin
 
 upload:
 	@echo "  UPLOAD"
