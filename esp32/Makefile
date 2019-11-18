@@ -2,7 +2,8 @@ CROSS = esp32/tools/xtensa-esp32-elf/bin/xtensa-esp32-elf-
 CXX = $(CROSS)g++
 CC = $(CROSS)gcc
 
-PORT = COM3
+# config file defines port
+include config.txt
 
 ARDUINO_LIB_WIFI = esp32/libraries/WiFi/src
 ARDUINO_LIB_WIFI_SRC = $(ARDUINO_LIB_WIFI)/ETH.cpp \
