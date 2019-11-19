@@ -178,7 +178,7 @@ void handleClient(WiFiClient& client)
           if (header.indexOf("GET / ") >= 0) {
             // Display the HTML web page
             client.println("<!DOCTYPE html><html>");
-            client.println("<body><h1>ESP32 Web Server!!</h1>");
+            client.println("<body><h1>ESP32 Web Server</h1>");
             buildInfoHTML(client);
             client.println("</body></html>");
           }

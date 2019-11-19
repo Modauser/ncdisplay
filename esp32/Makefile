@@ -103,7 +103,7 @@ clean:
 
 upload:
 	@echo "  UPLOAD"
-	@python esp32/tools/esptool/esptool.py --port $(PORT) --baud 115200 \
+	@python esp32/tools/esptool.py --port $(PORT) --baud 115200 \
 		--before default_reset --after hard_reset \
 		write_flash --flash_freq 80m --flash_mode dio --flash_size detect \
 		--compress \
@@ -121,7 +121,7 @@ $(ELF): $(OBJ)
 $(BIN): $(ELF)
 	@python esp32/tools/gen_esp32part.py -q esp32/tools/partitions/default.csv \
 		esp32.partitions.bin
-	@python esp32/tools/esptool/esptool.py --chip esp32 elf2image \
+	@python esp32/tools/esptool.py --chip esp32 elf2image \
 		--flash_mode "dio" --flash_freq "80m" --flash_size "4MB" -o $(BIN) $(ELF)
 
 %.cpp.o: %.cpp
