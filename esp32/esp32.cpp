@@ -1,88 +1,16 @@
-// Load Wi-Fi library
 #include <WiFi.h>
-#include <driver/spi_slave.h>
+#include "spi.hpp"
 
-#define SPI_MOSI 13
-#define SPI_MISO 12
-#define SPI_SCK  14
-#define SPI_CS   15
-#define SPI_HS   2
+// WiFi server credentials
+const char* ssid     = "ION";
+const char* password = "naturalchoice";
 
-class SPIClass
-{
-private:
-  static void postSetupCallback(spi_slave_transaction_t *trans);
-  static void postTransferCallback(spi_slave_transaction_t *trans);
-  
-  static const spi_bus_config_t config;
-  static const spi_slave_interface_config_t slvcfg;
-
-  static char txBuffer[128];
-  static char rxBuffer[128];
-  
-public:
-  void begin(void)
-  {
-    auto error = spi_slave_initialize(HSPI_HOST, &config, &slvcfg, 2);
-    if (error != ESP_OK)
-      while (1);
-  }
-
-  void end(void)
-  {
-    spi_slave_free(HSPI_HOST);
-  }
-
-  const char *receive(size_t size)
-  {
-    if (size > 128)
-      size = 128;
-    spi_slave_transaction_t trans;
-    memset(&trans, 0, sizeof(trans));
-    memset(rxBuffer, 0, 128);
-    memset(txBuffer, 0x2A, 128);
-    trans.length = size * 8;
-    trans.tx_buffer = txBuffer;
-    trans.rx_buffer = rxBuffer;
-
-    spi_slave_transmit(HSPI_HOST, &trans, portMAX_DELAY);
-    return rxBuffer;
-  }
-};
-
-const spi_bus_config_t SPIClass::config = {
-  .mosi_io_num = SPI_MOSI,
-  .miso_io_num = SPI_MISO,
-  .sclk_io_num = SPI_SCK
-};
-const spi_slave_interface_config_t SPIClass::slvcfg = {
-  .spics_io_num = SPI_CS,
-  .flags = 0,
-  .queue_size = 1,
-  .mode = SPI_MODE0,
-  .post_setup_cb = postSetupCallback,
-  .post_trans_cb = postTransferCallback
-};
-char SPIClass::txBuffer[128];
-char SPIClass::rxBuffer[128];
-void SPIClass::postSetupCallback(spi_slave_transaction_t *trans)
-{
-  //digitalWrite(SPI_HS, LOW);
-}
-void SPIClass::postTransferCallback(spi_slave_transaction_t *trans)
-{
-  //digitalWrite(SPI_HS, HIGH);
-}
-
-static SPIClass SPI;
-
-// Replace with your network credentials
-const char* ssid     = "esp32";
-const char* password = "esp32moda";
-
-// Set web server port number to 80
+// Wifi web server, bound to HTTP port 80
 WiFiServer server (80);
 
+/**
+ * A packed structure that fits to the data received from the display.
+ */
 struct Info
 {
   char modelNumber;
@@ -91,83 +19,132 @@ struct Info
   char filterType;
   char flowRate[9];
 
-  char unused[3];
+  char unused[3]; // Must round to a multiple of four bytes
 } __attribute__ ((packed));
 
+// An array to map Info::filterType to an identifying string
+const std::array<const char *, 5> filterTypes = {
+	"CarbonPlus",
+	"CarbonPro",
+	"FiberTek",
+	"CarbonPhos",
+	"CarbonSilv"
+};
+// String to contain model number based on Info::modelNumber
+char productString[10] = "ION TS000";
+
+
+/**
+ * Updates the info structure with new data from the display.
+ * Should only be called when we're aware of incoming data.
+ */
 static Info info;
 void updateInfo(void);
-void buildInfoHTML(WiFiClient& client);
+
+/**
+ * Handles an incoming client, most likely by displaying a webpage.
+ * The client's connection is closed after handling is complete.
+ * @param client The client to handle
+ */
 void handleClient(WiFiClient& client);
 
-void setup() {
+/**
+ * Creates webpage content based on the data received from the display,
+ * appending it to the given client's stream.
+ * @param client The client to provide webpage content to
+ */
+void buildInfoHTML(WiFiClient& client);
+
+/**
+ * Initializes the WiFi access point and web server.
+ */
+void setup()
+{
   pinMode(SPI_HS, INPUT_PULLUP);
   Serial.begin(115200);
 
-  WiFi.softAP(ssid, password, 1, 1); // channel, ssid_hidden
+  WiFi.softAP(ssid, password);//, 1, 1); // channel, ssid_hidden
   Serial.println("IP address: ");
   Serial.println(WiFi.softAPIP());
   server.begin();
 }
 
-void loop(){
-  WiFiClient client = server.available();   // Listen for incoming clients
-  if (client)                               // If a new client connects,
+/**
+ * Main loop: handles incoming clients, and checks for incoming data from the
+ * display.
+ */
+void loop()
+{
+  // Handle a client of our web server if they're there
+  WiFiClient client = server.available();
+  if (client)
     handleClient(client);
 
+  // Check for display signal of incoming update
   if (!digitalRead(SPI_HS))
     updateInfo();
   
-  delay(1);
+  delay(1); // ms
 }
 
 void updateInfo(void)
 {
+  // Conduct the SPI transfer, storing it in the info structure.
+  // TODO could probably receive directly into the info structure.
   SPI.begin();
   strncpy((char *)&info, SPI.receive(sizeof(Info)), sizeof(Info));
   SPI.end();
 
+  // Scan the received data for high bytes (0xFF) and convert them to zeroes.
+  // There's an SPI slave driver bug on the ESP32 that ends a transfer on a
+  // received zero byte, so zero bytes are made into 0xFF during transit.
   char *bytes = (char *)&info;
   for (int i = 0; i < sizeof(Info); i++) {
     if (bytes[i] == 0xFF)
       bytes[i] = 0;
   }
   
+  // Wait for release of handshake pin by display, to confirm the display is
+  // finished transmitting data.
+  // TODO may not be necessary.
   while (!digitalRead(SPI_HS))
     delay(1);
 }
 
 void buildInfoHTML(WiFiClient& client)
 {
-  client.printf(R"(
-    <h3>Product Info</h3>
-    <p><b>Model number:</b> %d</p>
-    <p><b>Serial number:</b> %s</p>
-    <p><b>Software version:</b> %s</p>
-    <br>
-    <h3>Filter Info</h3>
-    <p><b>Type:</b> %d</p>
-    <p><b>Flow Rate:</b> %s</p>
-  )", info.modelNumber,
-      info.serialNumber,
-      info.softwareVersion,
-      info.filterType,
-      info.flowRate);
+  // Update product info string
+  productString[6] = '1' + info.modelNumber;
+
+  // Output the webpage with the latest data from the display
+  client.printf("<h3>Product Info</h3>"
+                "<p><b>Model number:</b> %s</p>"
+                "<p><b>Serial number:</b> %s</p>"
+                "<p><b>Software version:</b> %s</p>"
+                "<br>"
+                "<h3>Filter Info</h3>"
+                "<p><b>Type:</b> %s</p>"
+                "<p><b>Flow Rate:</b> %s</p>",
+                productString,
+                info.serialNumber,
+                info.softwareVersion,
+                filterTypes[info.filterType],
+                info.flowRate);
 }
 
 void handleClient(WiFiClient& client)
 {
-  Serial.println("New Client.");          // print a message out in the serial port
-  String currentLine = "";                // make a String to hold incoming data from the client
+  Serial.println("New client.");
   String header = "";
-  while (client.connected()) {            // loop while the client's connected
-    if (client.available()) {             // if there's bytes to read from the client,
-      char c = client.read();             // read a byte, then
-      Serial.write(c);                    // print it out the serial monitor
+  bool previousNewline = false;
+
+  while (client.connected()) {
+    if (client.available()) {
+      char c = client.read();
       header += c;
-      if (c == '\n') {                    // if the byte is a newline character
-        // if the current line is blank, you got two newline characters in a row.
-        // that's the end of the client HTTP request, so send a response:
-        if (currentLine.length() == 0) {
+      if (c == '\n') {
+        // The HTTP request ends with two newline characters in a row.
+        if (previousNewline) {
           // HTTP headers always start with a response code (e.g. HTTP/1.1 200 OK)
           // and a content-type so the client knows what's coming, then a blank line:
           client.println("HTTP/1.1 200 OK");
@@ -175,37 +152,37 @@ void handleClient(WiFiClient& client)
           client.println("Connection: close");
           client.println();
           
+          // Getting root/main page
           if (header.indexOf("GET / ") >= 0) {
             // Display the HTML web page
             client.println("<!DOCTYPE html><html>");
-            client.println("<body><h1>ESP32 Web Server</h1>");
+            client.println("<body><h1>ION Web Server</h1>");
             buildInfoHTML(client);
             client.println("</body></html>");
           }
-          /* turns the GPIOs on and off
-          if (header.indexOf("GET /26/on") >= 0) {
-            Serial.println("GPIO 26 on");
-            output26State = "on";
-            digitalWrite(output26, HIGH);
-          }*/
+
+          // Potentially getting other pages?
+          // e.g. could modify GPIOs
+          //if (header.indexOf("GET /26/on") >= 0) {
+          //  Serial.println("GPIO 26 on");
+          //  output26State = "on";
+          //  digitalWrite(output26, HIGH);
+          //}
             
           // The HTTP response ends with another blank line
           client.println();
-          // Break out of the while loop
           break;
-        } else { // if you got a newline, then clear currentLine
-          currentLine = "";
+        } else {
+            previousNewline = true;
         }
-      } else if (c != '\r') {  // if you got anything else but a carriage return character,
-        currentLine += c;      // add it to the end of the currentLine
+      } else if (c != '\r') {
+        previousNewline = false;
       }
     }
   }
-  // Clear the header variable
-  header = "";
-  // Close the connection
+
+  // Done, close the connection.
   client.stop();
   Serial.println("Client disconnected.");
-  Serial.println("");
 }
 

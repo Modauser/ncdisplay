@@ -71,7 +71,7 @@ CDEF = -DESP32 -DESP_PLATFORM -DARDUINO_ESP32_DEV -DARDUINO_ARCH_ESP32 \
 	   -DHAVE_CONFIG_H -DGCC_NOT_5_2_0=0 -DWITH_POSIX -DCORE_DEBUG_LEVEL=0 \
 	   -DMBEDTLS_CONFIG_FILE="mbedtls/esp_config.h"
 
-CXXFLAGS = -std=gnu++11 -Os -g3 -c \
+CXXFLAGS = -std=c++14 -Os -g3 -c \
 		   $(CDEF) $(CINC) \
 		   -fexceptions -fno-rtti -fstack-protector -fstrict-volatile-bitfields \
 		   -ffunction-sections -fdata-sections \
