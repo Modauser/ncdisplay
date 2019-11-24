@@ -245,6 +245,7 @@ public:
   void wr_n(uint32_t addr, byte *src, uint32_t n);
 
   void cmd32(uint32_t b);
+  void cmd_n(byte *s, uint16_t n);
 
   void bulkrd(uint32_t a);
   void resume(void);

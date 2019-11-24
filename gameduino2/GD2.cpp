@@ -1400,6 +1400,9 @@ void GDClass::cmdbyte(uint8_t b) {
 void GDClass::cmd32(uint32_t b) {
   GDTR.cmd32(b);
 }
+void GDClass::cmd_n(byte *s, uint16_t n) {
+  GDTR.cmd_n(s, n);
+}
 void GDClass::finish(void) {
   GDTR.finish();
 }

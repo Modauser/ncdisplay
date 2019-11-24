@@ -41,6 +41,25 @@ void showFatalError(const char *msg);
  */
 //static int handshakeTest(void);
 
+void playVideo(const char *fileName)
+{
+    FIL fd;
+    if (FRESULT r = f_open(&fd, fileName, FA_READ); r != FR_OK)
+      return;
+
+    UINT br = 0;
+    GD.cmd_playvideo(OPT_FULLSCREEN);
+    for (FSIZE_t fileSize = f_size(&fd); fileSize > 0; fileSize -= br) {
+        uint8_t buffer[512];
+        if (FRESULT r = f_read(&fd, buffer, 512, &br); r != FR_OK)
+            break;
+        GD.cmd_n(buffer, 512);
+    }
+
+    GD.finish();
+    f_close(&fd);
+}
+
 /**
  * Basic display setup, run before entering the main loop.
  */
@@ -50,7 +69,13 @@ void setup()
 	displayInit();
 	GD.ClearColorRGB(NC_BKGND_COLOR);
 	GD.Clear();
+	GD.wr32(REG_ROTATE, 1);//2);
 	GD.swap();
+
+    while (1) {
+        playVideo("fish.avi");
+        delay_ms(2000);
+    }
 
 	//USBUpdateCheck();
 	//USBUpdateFiles();
