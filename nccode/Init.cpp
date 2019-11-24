@@ -39,7 +39,7 @@ void showFatalError(const char *msg);
  * for.
  * @return Zero on success
  */
-static int handshakeTest(void);
+//static int handshakeTest(void);
 
 /**
  * Basic display setup, run before entering the main loop.
@@ -52,38 +52,38 @@ void setup()
 	GD.Clear();
 	GD.swap();
 
-	USBUpdateCheck();
-	USBUpdateFiles();
-	unmount(DRV_USB);
+	//USBUpdateCheck();
+	//USBUpdateFiles();
+	//unmount(DRV_USB);
 
-	// Show the loading spinner
-	GD.ClearColorRGB(NC_BKGND_COLOR);
-	GD.Clear();
-	GD.ColorRGB(NC_FRGND_COLOR);
-	GD.cmd_spinner(GD.h / 2, (GD.w / 2), 0, 0);
-	GD.swap();
+	//// Show the loading spinner
+	//GD.ClearColorRGB(NC_BKGND_COLOR);
+	//GD.Clear();
+	//GD.ColorRGB(NC_FRGND_COLOR);
+	//GD.cmd_spinner(GD.h / 2, (GD.w / 2), 0, 0);
+	//GD.swap();
 
-	handshakeTest();
+	//handshakeTest();
 
-	// Set backlight brightness (value between 0-128)
-	GD.wr32(REG_PWM_DUTY, 64);
+	//// Set backlight brightness (value between 0-128)
+	//GD.wr32(REG_PWM_DUTY, 64);
 
-	// Load fonts and images from SD card
-	loadAssets();
+	//// Load fonts and images from SD card
+	//loadAssets();
 
-	// Get the current language
-	auto lang = MainBoard::getLanguage();
-	LanguageString::setCurrentLanguage(static_cast<Language>(lang));
-	MainBoard::allowDispenseError();
+	//// Get the current language
+	//auto lang = MainBoard::getLanguage();
+	//LanguageString::setCurrentLanguage(static_cast<Language>(lang));
+	//MainBoard::allowDispenseError();
 
-	// Load language text
-	Settings::loadLabels();
-	Settings::loadPassword();
+	//// Load language text
+	//Settings::loadLabels();
+	//Settings::loadPassword();
 
-	// Show WelcomeLanguage if just had factory reset
-	// Do normal setup otherwise
-	ScreenManager::setCurrent(lang != 9 ? ScreenID::Setup :
-		ScreenID::WelcomeLanguage);
+	//// Show WelcomeLanguage if just had factory reset
+	//// Do normal setup otherwise
+	//ScreenManager::setCurrent(lang != 9 ? ScreenID::Setup :
+	//	ScreenID::WelcomeLanguage);
 }
 
 /**
@@ -92,41 +92,41 @@ void setup()
 void loop()
 {
 	// Renders the current screen and handles potential input
-	ScreenManager::showCurrent();
+	//ScreenManager::showCurrent();
 
 	delay_ms(10);
 }
 
-int handshakeTest(void)
-{
-	// Try to get "$0" given by main board on boot
-	int answer = serialTest();
-	if (answer == -1) {
-		// Maybe board is already on? Try querying language
-		delay_ms(2000);
-		serialPrintf("#6");
-		answer = serialTest();
-		// Valid language?
-		if (answer != -1)
-			return 0;
-
-		showFatalError("COM error check display cable");
-	}
-
-	return 0;
-}
-
-void showFatalError(const char *msg)
-{
-	// Put message on screen then halt.
-	GD.ClearColorRGB(NC_BKGND_COLOR);
-	GD.Clear();
-	GD.ColorRGB(NC_FRGND_COLOR);
-	GD.cmd_text(0, 0, 18, 0, msg);
-	GD.swap();
-	while (1)
-		delay_ms(1000);
-}
+//int handshakeTest(void)
+//{
+//	// Try to get "$0" given by main board on boot
+//	int answer = serialTest();
+//	if (answer == -1) {
+//		// Maybe board is already on? Try querying language
+//		delay_ms(2000);
+//		serialPrintf("#6");
+//		answer = serialTest();
+//		// Valid language?
+//		if (answer != -1)
+//			return 0;
+//
+//		showFatalError("COM error check display cable");
+//	}
+//
+//	return 0;
+//}
+//
+//void showFatalError(const char *msg)
+//{
+//	// Put message on screen then halt.
+//	GD.ClearColorRGB(NC_BKGND_COLOR);
+//	GD.Clear();
+//	GD.ColorRGB(NC_FRGND_COLOR);
+//	GD.cmd_text(0, 0, 18, 0, msg);
+//	GD.swap();
+//	while (1)
+//		delay_ms(1000);
+//}
 
 namespace std {
 	// Needed because we use std::function within the program
