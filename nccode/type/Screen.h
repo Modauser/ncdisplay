@@ -40,7 +40,7 @@ private:
 	 */
 	unsigned int sleepCounter;
 
-	unsigned int pressedButton;
+	int pressedButton;
 
 	/**
 	 * The array of buttons shown on this screen.
@@ -99,8 +99,10 @@ public:
 		// Get display inputs
 		GD.get_inputs();
 
-
-		if (GD.inputs.x == -32768 && GD.inputs.y == -32768) {
+        static int tag = -1;
+		if (!GD.inputs.touching) {
+            if (tag != -1)
+                tag = -1;
 			if (pressedButton != 0) {
 				buttons[pressedButton - 1].setPressed(false);
 				buttons[pressedButton - 1].doAction();
@@ -114,15 +116,20 @@ public:
 					ScreenManager::setCurrent(parent);
 				}
 			}
-		} else if (GD.inputs.tag > 0 && GD.inputs.tag <= buttons.size()) {
-			// Button press, keep screen on
-			sleepCounter = 0;
+		} else {
+            if (tag == -1 && GD.inputs.tag != 0 && GD.inputs.tag != 255)
+                tag = GD.inputs.tag;
+            
+            if (tag > 0 && tag <= static_cast<int>(buttons.size())) {
+			    // Button press, keep screen on
+			    sleepCounter = 0;
 
-			if (pressedButton == 0) {
-				pressedButton = GD.inputs.tag;
-				buttons[pressedButton - 1].setPressed(true);
-				buttons[pressedButton - 1].doAction();
-			}
+			    if (pressedButton == 0) {
+			    	pressedButton = tag;
+			    	buttons[pressedButton - 1].setPressed(true);
+			    	buttons[pressedButton - 1].doAction();
+			    }
+            }
 		}
 	}
 
