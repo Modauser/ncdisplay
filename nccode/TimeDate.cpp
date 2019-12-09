@@ -234,24 +234,42 @@ void setDateView(void)
 
 void handleSlide(void)
 {
-    static int startY = -1;
+    static int startY = -1, dY = 0, lastY = -1;
 
+    // Handle interactions if user is touching screen
     if (GD.inputs.touching) {
+        // If new press and within slider area, begin slide interaction
         if (startY == -1 && GD.inputs.y >= 204 && GD.inputs.y <= 304) {
 		    int spot1 = (timeSetting && !ampm) ? 62 : 14;
 		    int spot2 = (timeSetting && !ampm) ? 140 : 100;
+            // First column?
             if (GD.inputs.x > spot1 && GD.inputs.x < spot1 + 70)
                 slideIndex = timeSetting ? 0 : 3;
+            // Second column?
             else if (GD.inputs.x > spot2 && GD.inputs.x < spot2 + 70)
                 slideIndex = timeSetting ? 1 : 4;
-            else if ((!timeSetting || ampm) && GD.inputs.x > 186 && GD.inputs.x < 256)
+            // Third column?
+            else if ((!timeSetting || ampm) && GD.inputs.x > 186 &&
+                     GD.inputs.x < 256)
                 slideIndex = timeSetting ? 2 : 5;
             else 
                 slideIndex = -1;
 
             startY = GD.inputs.y;
-        } else if (slideIndex != -1) {
+        }
+        // If mid-slide, handle the gesture
+        else if (slideIndex != -1) {
             slideDiff = GD.inputs.y - startY;
+
+            // Record velocity for inertia
+            if (lastY == -1) {
+                lastY = GD.inputs.y;
+            } else {
+                dY = GD.inputs.y - lastY;
+                lastY = GD.inputs.y;
+            }
+
+            // Shift to new value if touch has moved far enough
             if (slideDiff > 20) {
                 decrement(slideIndex);
                 startY = GD.inputs.y;
@@ -262,12 +280,34 @@ void handleSlide(void)
                 slideDiff = 0;
             }
         }
-    } else if (startY != -1) {
+    }
+    else if (dY != 0) {
+        slideDiff += dY / 4 * 3;
+        if (dY > 0)
+            dY--;
+        else
+            dY++;
+
+        // Shift to new value if touch has moved far enough
+        if (slideDiff > 20) {
+            decrement(slideIndex);
+            startY = GD.inputs.y;
+            slideDiff = 0;
+        } else if (slideDiff < -20) {
+            increment(slideIndex);
+            startY = GD.inputs.y;
+            slideDiff = 0;
+        }
+    }
+    // If end of interaction, snap to nearest value and reset variables
+    else if (startY != -1) {
         if (slideDiff > 10)
             decrement(slideIndex);
         else if (slideDiff < -10)
             increment(slideIndex);
         startY = -1;
+        dY = 0;
+        lastY = -1;
         slideIndex = -1;
         slideDiff = 0;
     }
