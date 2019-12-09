@@ -48,7 +48,7 @@ void playVideo(const char *fileName)
       return;
 
     UINT br = 0;
-    GD.cmd_playvideo(OPT_FULLSCREEN);
+    GD.cmd_playvideo(0);
     for (FSIZE_t fileSize = f_size(&fd); fileSize > 0; fileSize -= br) {
         uint8_t buffer[512];
         if (FRESULT r = f_read(&fd, buffer, 512, &br); r != FR_OK)
