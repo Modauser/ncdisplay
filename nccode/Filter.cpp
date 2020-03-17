@@ -9,6 +9,9 @@
 
 #include <gameduino2/GD2.h>
 
+static void setC02(bool isC02);
+static bool isFilter = true;
+
 static Screen Filter (
 	ScreenID::Filter,
 	// Parent screen
@@ -20,6 +23,7 @@ static Screen Filter (
 		MainBoard::updateFilterRemaining();
 		MainBoard::updateFilterMonthsRemaining();
 		MainBoard::updateFilterLastChanged();
+		setC02(false);  //setup button  
 	},
 	// Pre-draw function
 	[](void) {
@@ -27,7 +31,7 @@ static Screen Filter (
 
 		// Header
 		GD.ColorRGB(NC_FRGND_COLOR);
-		GD.cmd_text(8, 80, FONT_LARGE, 0, LanguageString({
+		GD.cmd_text(8, 110, FONT_LARGE, 0, LanguageString({
 			"FILTER INFO",
 			"FILTERINFO",
 			"INFORMATIONS SUR LE FILTRE",
@@ -35,20 +39,20 @@ static Screen Filter (
 		})());
 
 		// Print text labels
-		GD.cmd_text(8,  110, FONT_SMALL, 0, Settings::getLabel(Label::CurrentType));
-		GD.cmd_text(8,  130, FONT_SMALL, 0, Settings::getLabel(Label::ReOrder));
-		GD.cmd_text(8,  150, FONT_SMALL, 0, Settings::getLabel(Label::GallonsRem));
-		GD.cmd_text(8,  170, FONT_SMALL, 0, Settings::getLabel(Label::MonthsRem));
-		GD.cmd_text(8,  190, FONT_SMALL, 0, Settings::getLabel(Label::LastChange));
+		GD.cmd_text(8,  140, FONT_SMALL, 0, Settings::getLabel(Label::CurrentType));  //dpm 3_17_2020 moved labels for sodaapro update
+		GD.cmd_text(8,  160, FONT_SMALL, 0, Settings::getLabel(Label::ReOrder));
+		GD.cmd_text(8,  180, FONT_SMALL, 0, Settings::getLabel(Label::GallonsRem));
+		GD.cmd_text(8,  200, FONT_SMALL, 0, Settings::getLabel(Label::MonthsRem));
+		GD.cmd_text(8,  220, FONT_SMALL, 0, Settings::getLabel(Label::LastChange));
 
 		// Print corresponding values
-		GD.cmd_text(180, 110, FONT_SMALL, 0, MainBoard::getFilterName());
-		GD.cmd_text(180, 130, FONT_SMALL, 0, MainBoard::getFilterReorder());
-        GD.cmd_number(180, 150, FONT_SMALL, 0, MainBoard::getFilterRemainingCount());
-	    GD.cmd_number(180, 170, FONT_SMALL, 0, MainBoard::getFilterMonthsRemaining());
-		GD.cmd_text(180, 190, FONT_SMALL, 0, MainBoard::getFilterLastChanged());
+		GD.cmd_text(180, 140, FONT_SMALL, 0, MainBoard::getFilterName());
+		GD.cmd_text(180, 160, FONT_SMALL, 0, MainBoard::getFilterReorder());
+        GD.cmd_number(180, 180, FONT_SMALL, 0, MainBoard::getFilterRemainingCount());
+	    GD.cmd_number(180, 200, FONT_SMALL, 0, MainBoard::getFilterMonthsRemaining());
+		GD.cmd_text(180, 220, FONT_SMALL, 0, MainBoard::getFilterLastChanged());
 
-		GD.cmd_text(8, 230, FONT_LARGE, 0, LanguageString({
+		GD.cmd_text(8, 250, FONT_LARGE, 0, LanguageString({
 			"CONTAMINANTS REMOVED",
 			"ENTFERNTE",
 			"CONTAMINANTS " E_ACUTE "LIMIN" E_ACUTE "S",
@@ -93,6 +97,27 @@ static Screen Filter (
 	}, [](bool press) {
 		if (!press)
 			ScreenManager::setCurrent(ScreenID::FilterChange);
-	})
+	}),
+	Button({15, 70}, Button::drawExclusiveOption, {  //dpm 3_17_2020 added for sodapro update
+		"FILTER", 
+		"FILTER",
+		"FILTRE",
+		"FILTRO"
+	}, [](bool press) {
+		if (!press)
+		setC02(false);  
+	}),
+	Button({136, 70}, Button::drawExclusiveOption, "C02", [](bool press) {
+		if (!press)
+		setC02(true);
+	})	
 );
 
+
+void setC02(bool isC02)  //toggle the button
+{
+	isFilter = !isC02;
+
+	Filter.getButton(2).setForcePressed(isFilter);
+	Filter.getButton(3).setForcePressed(!isFilter);
+}

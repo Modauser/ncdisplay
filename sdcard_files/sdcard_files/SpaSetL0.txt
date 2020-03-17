@@ -1,0 +1,29 @@
+Modelo:
+Serie:
+Software:
+Tipo:
+Restante:
+Tasa de flujo:
+Tipo:
+Numero para pedido:
+Litros quedantes:
+Meses quedantes:
+Ultimo cambio:
+Clorina, Sabor, Olor, Plomo, Quistes
+
+Clorina, Sabor, Olor, Plomo, Quistes
+Pesticidios, Farmaceuticos, VOCs
+
+Clorina, Sabor, Olor, Plomo, Quistes
+Corrosion
+Lunes-Viernes:
+Sabado-Domingo:
+Frio:
+Ambiente:
+Caliente:
+Temperatura del contenedor de hielo:
+Temperatura del contenedor caliente:
+Registro errores recientes:
+Ultimo cambio de filtro:
+:
+ 

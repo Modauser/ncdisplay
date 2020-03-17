@@ -103,7 +103,7 @@ static Screen Dispense (
 	// Initialization function
 	[](void) {
 		MainBoard::updateModelNumber();
-
+        // GD.cmd_calibrate();
 		// Trigger time/date update on first render
 		timeDateCounter = 2000 - 1;
 		Error::check();
@@ -127,7 +127,7 @@ static Screen Dispense (
 			}
 		} else {
 			// Show dispense text
-			GD.Vertex2ii(0, 130, HOMEWTR_HANDLE);
+			GD.Vertex2ii(0, 130, HOMEWTR_HANDLE);  //paints image based on handle
 			GD.ColorRGB(NC_FDGND_COLOR);
 			GD.cmd_text(136, 80, FONT_LARGE, OPT_CENTER,
 				mainDispense1());

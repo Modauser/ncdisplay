@@ -1,0 +1,29 @@
+Modèle: 
+Série: 
+Logiciel:
+Type actuel:
+Restant:
+Débit:
+Type:
+Numéro:
+Litres restants:
+Mois restants:
+Dernier changement:
+Chlore, Goût, Odeur, Plomb, Kystes
+
+Chlore, Goût, Odeur, Plomb, Kystes,
+Pesticides, Pharmaceutiques, COV
+
+Chlore, Goût, Odeur, Plomb, Kystes,
+Tartre et Corrosion
+Lundi-Vendredi:
+Samedi-Dimanche:
+Froid:
+Ambient:
+Chaud:
+Température du bac à glace:
+Température du bac chaud:
+Registre erreurs récentes:
+Dernier changement de filtre:
+:  
+ 

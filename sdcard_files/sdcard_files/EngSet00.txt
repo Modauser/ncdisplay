@@ -1,0 +1,28 @@
+Model:
+Serial:
+Software:
+Type:
+Remaining:
+Flow Rate:
+Current Type:
+Re-Order Number:
+Gallons Remaining:
+Months Remaining:
+Last Filter Change:
+Chlorine, Taste, Odor, Lead, Cysts
+
+Chlorine, Taste, Odor, Lead, Cysts
+Pesticides, Pharmaceuticals, VOCs
+
+Chlorine, Taste, Odor, Lead, Cysts
+Scale & Corrosion
+Mon-Fri:
+Sat-Sun:
+Cold:
+Ambient:
+Hot:
+Ice Tank Temp:
+Hot Tank Temp:
+Recent Error Log:
+Last Filter Change:
+:  

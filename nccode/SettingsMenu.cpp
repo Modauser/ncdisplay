@@ -33,11 +33,11 @@ static Screen Settings (
 		if (!press)
 			ScreenManager::setCurrent(ScreenID::ProductInfo);
 	}),
-	Button({2, 120}, Button::drawMenuItem, {
-		"FILTER",
-		"FILTER",
-		"FILTRE",
-		"FILTRO"
+	Button({2, 120}, Button::drawMenuItem, {  //dpm 3_17_2020 added C02 to filter for sodapro update
+		"FILTER + C02", 
+		"FILTER+ C02",
+		"FILTRE+ C02",
+		"FILTRO+ C02"
 	}, [](bool press) {
 		if (!press)
 			doPasscodeTest(ScreenID::Filter);

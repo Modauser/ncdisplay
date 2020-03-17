@@ -6,17 +6,7 @@
 
 MAKEARGS = -j4
 
-# Check for code updates
-echo
-echo "Updating code: 'git pull'..."
-echo
-git pull
-if [ $? -ne 0 ]
-then
-	echo
-	echo "Updating code failed."
-	exit 1
-fi
+
 
 # Build program
 echo
@@ -30,30 +20,21 @@ then
 	exit 1
 fi
 
+pause
 # Start OpenOCD
 echo
 echo "Starting OpenOCD: 'openocd -f openocd.cfg &'..."
-echo
-openocd -f openocd.cfg &
+@echo off
+"start cmd.exe /k C:\Program Files\OpenOCD\bin\openocd.exe" -f "openocd.cfg"
 sleep 1
 
-# Run GDB
-echo
-echo "Running GDB to upload code..."
-echo
-gdb-multiarch --batch --command=upload.gdb
-if [ $? -ne 0 ]
-then
-	echo
-	echo "GDB failed."
-fi
+echo "Loading program"
+@echo off
+set TL_PATH="C:\Program Files (x86)\GNU Tools ARM Embedded\8 2019-q3-update\bin"
+set PATH=%TL_PATH%;%PATH%
 
-# End OpenOCD
-echo
-echo "Stopping OpenOCD..."
-pkill openocd
-sleep 1
-
-echo
-echo "Finished."
+arm-none-eabi-gdb --batch --command=upload.gdb
+echo.
+echo Finished programming.
+echo.
 

@@ -74,7 +74,7 @@ public:
 	 * @param _handle The bitmap handle of the button's icon
 	 * @param _action The button's press/release action
 	 */
-	constexpr Button(vec2 _xy, int _handle, void (*_action)(bool)
+	 Button(vec2 _xy, int _handle, void (*_action)(bool)
 		= nullptr)
 		: xy(_xy),
 		  handle(_handle),
@@ -92,7 +92,7 @@ public:
 	 * @param _text The button's text
 	 * @param _action The button's press/release action
 	 */
-	constexpr Button(vec2 _xy, void (*_render)(const vec2&, bool,
+	 Button(vec2 _xy, void (*_render)(const vec2&, bool,
 		const LanguageString&), const LanguageString& _text,
 		void (*_action)(bool) =	nullptr)
 		: xy(_xy),
@@ -110,7 +110,7 @@ public:
 	 * @param _render The button's custom render function
 	 * @param _action The button's press/release action
 	 */
-	constexpr Button(vec2 _xy, void (*_render)(const vec2&, bool),
+	 Button(vec2 _xy, void (*_render)(const vec2&, bool),
 		void (*_action)(bool) = nullptr)
 		: xy(_xy),
 		  handle(-1),

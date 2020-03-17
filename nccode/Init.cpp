@@ -46,6 +46,10 @@ static int handshakeTest(void);
  */
 void setup()
 {
+	unsigned int temp;
+
+	
+	
 	// Do basic display preparation
 	displayInit();
 	GD.ClearColorRGB(NC_BKGND_COLOR);
@@ -55,6 +59,24 @@ void setup()
 	USBUpdateCheck();
 	USBUpdateFiles();
 	unmount(DRV_USB);
+/*  	//dpm 3_16_2020  added this code to run a cal and print the values out the UART.
+	for (int i = 0; i < 24; i++) {
+	temp = 	GD.rd(REG_TOUCH_TRANSFORM_A + i);
+    serialPrintf("%x",temp);
+    serialPrintf("  ");
+	}
+    serialPrintf("  ");
+	serialPrintf("  ");
+
+   GD.self_calibrate();
+
+
+for (int i = 0; i < 24; i++) {
+	temp = 	GD.rd(REG_TOUCH_TRANSFORM_A + i);
+    serialPrintf("%x",temp);
+    serialPrintf("  ");
+	}
+*/
 
 	// Show the loading spinner
 	GD.ClearColorRGB(NC_BKGND_COLOR);

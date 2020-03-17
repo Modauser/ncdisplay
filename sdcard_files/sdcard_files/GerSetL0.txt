@@ -1,0 +1,28 @@
+Modell:
+Serien NR:
+Software:
+Modell:
+Verbleibend:
+Flussrate:
+Jetziger Typ:
+Nummer:
+Verbleibende Liter:
+Verbleibende Monate:
+Letzter Filterwechsel:
+Chlor, Geschmack, Geruch, Blei,
+Zysten
+Chlor, Geschmack, Geruch, Blei,
+Zysten, Pestizide, Pharmazeutika,
+VOCs
+Chlor, Geschmack, Geruch, Blei,
+Zysten, Skala und Korrision
+Montag-Freitag:
+Samstag-Sonntag:
+Kalt:
+Ambient:
+Heiß:
+Eis-Tanktemperatur:
+Heiss-Tanktemperatur:
+Kürzliches Fehlerprotokoll:
+Letzter Filterwechsel:
+:

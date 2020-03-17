@@ -358,7 +358,7 @@ CINCLUDES = \
        	-I"../CMSIS/Include" -I"../include"
 
 MCUFLAGS = -D__SAMD51G19A__ -mcpu=cortex-m4 -mthumb -mfloat-abi=softfp -mfpu=fpv4-sp-d16 -mlong-calls
-CXXFLAGS = -std=c++17 -fno-rtti -fno-exceptions -ffunction-sections -Werror -Os
+CXXFLAGS = -std=c++17 -fno-rtti -fno-exceptions -ffunction-sections -Os
 CFLAGS = -std=gnu99 -ffunction-sections
 DFLAGS = -DDEBUG -ggdb -g3 -Wall -Wextra -pedantic
 
