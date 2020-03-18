@@ -1,5 +1,5 @@
 #include "ScreenInterface.h"
-
+ 
 ScreenInterface *ScreenManager::current;
 ScreenInterface *ScreenManager::forcedParent = nullptr;
 
@@ -22,7 +22,7 @@ void ScreenManager::setCurrent(ScreenID id) {
 		current = screen;
 		current->prepare();
 	}
-}
+}  
 
 void ScreenManager::setCurrent(ScreenID id, ScreenID fpid)
 {

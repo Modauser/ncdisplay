@@ -104,12 +104,17 @@ static Screen Filter (
 		"FILTRE",
 		"FILTRO"
 	}, [](bool press) {
-		if (!press)
-		setC02(false);  
+		if (!press){
+		setC02(false);
+		ScreenManager::setCurrent(ScreenID::Filter);
+		setC02(true);
+		}	
 	}),
 	Button({136, 70}, Button::drawExclusiveOption, "C02", [](bool press) {
-		if (!press)
+		if (!press){
+		ScreenManager::setCurrent(ScreenID::C02Level);
 		setC02(true);
+		}
 	})	
 );
 

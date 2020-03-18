@@ -134,6 +134,7 @@ nccode/Lockscreen.o \
 nccode/SystemOptions.o \
 nccode/Sleep.o \
 nccode/FilterChange.o \
+nccode/C02Level.o \
 nccode/FilterChangeTimer.o \
 nccode/USBUpdate.o \
 nccode/USBUpdateFiles.o \
@@ -228,6 +229,7 @@ OBJS_AS_ARGS_USER += \
 "nccode/SystemOptions.o" \
 "nccode/Sleep.o" \
 "nccode/FilterChange.o" \
+"nccode/C02Level.o" \
 "nccode/FilterChangeTimer.o" \
 "nccode/USBUpdate.o" \
 "nccode/USBUpdateFiles.o" \
@@ -326,6 +328,7 @@ DEPS_AS_ARGS_USER += \
 "nccode/SystemOptions.d" \
 "nccode/Sleep.d" \
 "nccode/FilterChange.d" \
+"nccode/C02Level.d" \
 "nccode/FilterChangeTimer.d" \
 "nccode/USBUpdate.d" \
 "nccode/USBUpdateFiles.d" \

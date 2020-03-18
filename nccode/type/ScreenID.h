@@ -7,7 +7,7 @@
 
 /**
  * @enum ScreenID
- * Gives a ID/handle to each screen.
+ * Gives a ID/handle to each screen.   
  * 
  * To switch screens, the desired screen's ID must be known.
  * Count is used to size the array of known screens.
@@ -20,6 +20,7 @@ enum class ScreenID {
 	ProductInfo,       /**< Product info */
 	Filter,            /**< Filter */
 	FilterChange,      /**< Filter change */
+	C02Level,	 	   /**< Shows the level of the C02 tank */	
 	FilterChangeTimer, /**< Filter change, timer screen */
 	TimeDate,          /**< Time + Date */
 	Language,          /**< Language (set language) */
