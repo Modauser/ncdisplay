@@ -13,7 +13,7 @@ extern unsigned int filterTimerMonths;
 extern unsigned int filterTimerGallons;
 
 static void setC02(bool isC02);
-static bool isFilter = true;
+static bool isFilter = true;  
 
 
 static Screen C02Level (  
