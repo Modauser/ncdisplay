@@ -21,6 +21,7 @@ enum class ScreenID {
 	Filter,            /**< Filter */
 	FilterChange,      /**< Filter change */
 	C02Level,	 	   /**< Shows the level of the C02 tank */	
+	C02Tank,		   /**< Selects the C02 tank */		
 	FilterChangeTimer, /**< Filter change, timer screen */
 	TimeDate,          /**< Time + Date */
 	Language,          /**< Language (set language) */

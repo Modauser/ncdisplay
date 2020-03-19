@@ -41,6 +41,7 @@
 #define a_ORING    "\x12"	// 0xE5
 #define N_TILDE    "\x0D"	// 0xD1
 #define n_TILDE    "\x1B"	// 0xF1
+//#define U_TILDE    "\x168"	// 0x168  //DPM 3_19_2020 
 #define CEDILLA    "\x0E"	// 0xC7
 #define cEDILLA    "\x1C"	// 0xE7
 #define ESZETT     "\x0F"	// 0xDF

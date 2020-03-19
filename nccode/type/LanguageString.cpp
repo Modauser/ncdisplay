@@ -72,6 +72,7 @@ char *LanguageString::convertFileText(char *buffer)
 		case 0xE5: buffer[i] = *a_ORING; break;
 		case 0xD1: buffer[i] = *N_TILDE; break;
 		case 0xF1: buffer[i] = *n_TILDE; break;
+//		case 0x168: buffer[i] = *U_TILDE; break;
 		case 0xC7: buffer[i] = *CEDILLA; break;
 		case 0xE7: buffer[i] = *cEDILLA; break;
 		case 0xDF: buffer[i] = *ESZETT; break;

@@ -10,7 +10,7 @@
 #include <gameduino2/GD2.h>
 
 static void setC02(bool isC02);
-static bool isFilter = true;
+static bool isFilterPressed = true;
 
 static Screen Filter (
 	ScreenID::Filter,
@@ -53,7 +53,7 @@ static Screen Filter (
 		GD.cmd_text(180, 220, FONT_SMALL, 0, MainBoard::getFilterLastChanged());
 
 		GD.cmd_text(8, 250, FONT_LARGE, 0, LanguageString({
-			"CONTAMINANTS REMOVED",
+			"CONTAMINANTS REMOVED", 
 			"ENTFERNTE",
 			"CONTAMINANTS " E_ACUTE "LIMIN" E_ACUTE "S",
 			"CONTAMINANTES\nELIMINADOS"
@@ -105,15 +105,16 @@ static Screen Filter (
 		"FILTRO"
 	}, [](bool press) {
 		if (!press){
-		setC02(false);
-		ScreenManager::setCurrent(ScreenID::Filter);
-		setC02(true);
+		//setC02(false);
+		//ScreenManager::setCurrent(ScreenID::Filter);
+		//setC02(true);
 		}	
 	}),
 	Button({136, 70}, Button::drawExclusiveOption, "C02", [](bool press) {
 		if (!press){
-		ScreenManager::setCurrent(ScreenID::C02Level);
 		setC02(true);
+		ScreenManager::setCurrent(ScreenID::C02Level);
+
 		}
 	})	
 );
@@ -121,8 +122,8 @@ static Screen Filter (
 
 void setC02(bool isC02)  //toggle the button
 {
-	isFilter = !isC02;
+	isFilterPressed = !isC02;
 
-	Filter.getButton(2).setForcePressed(isFilter);
-	Filter.getButton(3).setForcePressed(!isFilter);
+	Filter.getButton(2).setForcePressed(isFilterPressed);
+	Filter.getButton(3).setForcePressed(!isFilterPressed);
 }

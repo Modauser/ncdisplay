@@ -135,7 +135,6 @@ nccode/SystemOptions.o \
 nccode/Sleep.o \
 nccode/FilterChange.o \
 nccode/C02Level.o \
-nccode/C02Tank.o \
 nccode/FilterChangeTimer.o \
 nccode/USBUpdate.o \
 nccode/USBUpdateFiles.o \
@@ -231,7 +230,6 @@ OBJS_AS_ARGS_USER += \
 "nccode/Sleep.o" \
 "nccode/FilterChange.o" \
 "nccode/C02Level.o" \
-"nccode/C02Tank.o" \
 "nccode/FilterChangeTimer.o" \
 "nccode/USBUpdate.o" \
 "nccode/USBUpdateFiles.o" \
@@ -331,7 +329,6 @@ DEPS_AS_ARGS_USER += \
 "nccode/Sleep.d" \
 "nccode/FilterChange.d" \
 "nccode/C02Level.d" \
-"nccode/C02Tank.d" \
 "nccode/FilterChangeTimer.d" \
 "nccode/USBUpdate.d" \
 "nccode/USBUpdateFiles.d" \
@@ -445,10 +442,26 @@ ifneq ($(strip $(DEPS)),)
 endif
 endif
 
+$(SUB_DIRS):
+	$(MK_DIR) "$@"
 
+$(SUB_DIRS_USER):
+	$(MK_DIR) "$@"
 
+user-clean:
+	@echo "Cleaning user..."
+	@rm -f $(OBJS_AS_ARGS_USER)
+	@rm -f $(DEPS_AS_ARGS_USER)
+	@rm -f $(OUTPUT_FILE_PATH_USER)
+	@rm -f $(OUTPUT_FILE_NAME_USER).bin $(OUTPUT_FILE_NAME_USER).hex \
+		$(OUTPUT_FILE_NAME_USER).elf
 
-clean:
-	@echo "Cleaning..."
-	@del /S *.o *.d *.elf *.hex *.bin
+system-clean:
+	@echo "Cleaning system..."
+	@rm -f $(OBJS_AS_ARGS) 
+	@rm -f $(OUTPUT_FILE_PATH) 
+	@rm -f $(DEPS_AS_ARGS) 
+	@rm -f $(OUTPUT_FILE_NAME).hex $(OUTPUT_FILE_NAME).elf
+
+clean: user-clean system-clean
 

@@ -49,7 +49,7 @@ unsigned int MainBoard::tankTemperatures[3] = { 0, 0, 0 };
 NOOPTIMIZE
 int serialGet(void)
 {
-	if (serialGetchar() != '$')
+	if (serialGetchar() != '$') // dpm 3/6/2020
 		return 0;
 	return serialGetchar();
 }
@@ -160,7 +160,17 @@ const char *MainBoard::updateFilterLastChanged(void)
 	Format::date(filterLastChanged, val);
 	return filterLastChanged;
 }
-
+/*
+const char *MainBoard::updateC02LastReset(void)
+{
+	serialPrintf("@m");
+	int val = serialGet() << 16; // Month
+	val |= serialGet() << 8; // Day
+	val |= serialGet(); // Year
+	Format::date(C02LastReset, val);
+	return C02LastReset;
+}
+*/
 const char *MainBoard::updateFlowRate(void) {
 	serialPrintf("@F");
 	Format::flowRate(flowRate, serialGet());
