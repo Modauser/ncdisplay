@@ -12,10 +12,10 @@ extern unsigned int filterTimerMonths;
 extern unsigned int filterTimerGallons;
 
 static const LanguageString lSelect ({
-	"Select CO2 Tank Size",
-	"Größe CO2 Behälter Selektieren",
-	"Sélectionner la Taille du Réservoir de CO2",
-	"Selectionnar el Tamaño del Tanque de CO2"
+	"SELECT SIZE",
+	"UMFANG SELEKTIEREN",
+	"S" E_ACUTE "LECTIONNER LA TAILLE",
+	"SELECTIONNAR TAMA" N_TILDE "O"
 });
 
 

@@ -57,11 +57,11 @@ static Screen C02Level (
 		})()); */
 		
 		GD.cmd_text(8, 376, FONT_SMALL, 0, LanguageString({
-			"Last Reset Date",
-			"Letzer Resetten Datum",
-			"Derni" e_ACUTE "re Date de R" e_ACUTE "initialisation",
+			"LAST RESET",
+			"LETZER RESETTEN",
+			"DERNI" E_ACUTE "RE R" E_ACUTE" INITIALISATION",
 			// "" U_TILDE "ltima Fecha de Reinicio"
-			"Ultima Fecha de Reinicio"
+			"ULTIMA REINICIO"   //Need a U_TILDE
 		})());
 
 			// Print text labels
