@@ -40,6 +40,7 @@ char MainBoard::filterRemaining[5] = "";
 int MainBoard::filterRemainingCount = 0;
 int MainBoard::filterMonthsRemaining = 0;
 char MainBoard::filterLastChanged[Format::size::date];
+char MainBoard::C02LastReset[Format::size::date];
 char MainBoard::flowRate[Format::size::flowRate];
 
 char MainBoard::serviceContact[200] = "";
@@ -160,7 +161,7 @@ const char *MainBoard::updateFilterLastChanged(void)
 	Format::date(filterLastChanged, val);
 	return filterLastChanged;
 }
-/*
+
 const char *MainBoard::updateC02LastReset(void)
 {
 	serialPrintf("@m");
@@ -170,7 +171,8 @@ const char *MainBoard::updateC02LastReset(void)
 	Format::date(C02LastReset, val);
 	return C02LastReset;
 }
-*/
+
+
 const char *MainBoard::updateFlowRate(void) {
 	serialPrintf("@F");
 	Format::flowRate(flowRate, serialGet());

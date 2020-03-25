@@ -166,11 +166,13 @@ public:
 	}
 	static const char *updateFilterLastChanged(void);
 
-	// C02 last reset date
+
 	static inline const char *getC02LastReset(void) {
 		return C02LastReset;
 	}
+	// C02 last reset date
 	static const char *updateC02LastReset(void);
+
 
 	// Flow rate
 	static inline const char *getFlowRate(void) {

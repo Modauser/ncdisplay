@@ -18,19 +18,23 @@ static const LanguageString lSelect ({
 	"Selectionnar el Tamaño del Tanque de CO2"
 });
 
-static void goTimerShort(int type) 
+
+static void goSodaProC02(int type) 
 {
-	//filterType = type;
-	//filterTimerMonths = 6;
-	//filterTimerGallons = MainBoard::isMetric() ? 2850 : 750;
+	
+	serialPrintf("@o0");   //set c02 tank type
 	ScreenManager::setCurrent(ScreenID::C02Level);
 }
 
-static void goTimerLong(int type)
+static void go5lb(int type)
 {
-	//filterType = type;
-	//filterTimerMonths = 12;
-	//filterTimerGallons = MainBoard::isMetric() ? 5700 : 1500;
+	serialPrintf("@o1");   //set c02 tank type
+	ScreenManager::setCurrent(ScreenID::C02Level);
+}
+
+static void go10lb(int type)
+{
+	serialPrintf("@o2");   //set c02 tank type
 	ScreenManager::setCurrent(ScreenID::C02Level);
 }
 
@@ -53,11 +57,11 @@ static Screen C02Tank (
 			ScreenManager::setCurrent(ScreenID::C02Level);
 	}),
 	Button({0, 120}, Button::drawMenuItem, "SodaProC02",
-	[](bool press) { if (!press) goTimerLong(0); } ),
+	[](bool press) { if (!press) goSodaProC02(0); } ),
 	Button({0, 180}, Button::drawMenuItem, "5lb",
-	[](bool press) { if (!press) goTimerShort(1); } ),
+	[](bool press) { if (!press) go5lb(1); } ),
 		Button({0, 240}, Button::drawMenuItem, "10lb",
-	[](bool press) { if (!press) goTimerShort(2); } )
+	[](bool press) { if (!press) go10lb(2); } )
 );
 
 
