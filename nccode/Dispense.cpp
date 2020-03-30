@@ -252,8 +252,10 @@ static Screen Dispense (
 				// Clear dispense error if necessary
 				if (!Error::shouldDispense())
 					Error::clearDispenseFlag();
-
-				ScreenManager::setCurrent(ScreenID::Settings);
+				
+				if (MainBoard::canDispenseSparkling() )
+						ScreenManager::setCurrent(ScreenID::Settings);  //Allow CO2 menu if sparkling exists
+					else ScreenManager::setCurrent(ScreenID::Settings100);  //don't allow C02 menu because it's a model 100 or 200
 			}
 		}
 	})

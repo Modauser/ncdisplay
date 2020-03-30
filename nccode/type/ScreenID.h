@@ -17,12 +17,16 @@ enum class ScreenID {
 	Sleep = 0,         /**< The sleep image screen */
 	Dispense,          /**< Dispense screen */
 	Settings,          /**< %Settings menu */
+	Settings100,		/**< %Settings menu without CO2 */
 	ProductInfo,       /**< Product info */
-	Filter,            /**< Filter */
-	FilterChange,      /**< Filter change */
+	Filter,            /**< Filter no CO2 */
+	FilterChange,      /**< Filter change  */
+	Filter100,            /**< Filter */
+	FilterChange100,      /**< Filter change no CO2*/
 	CO2Level,	 	   /**< Shows the level of the CO2 tank */	
 	CO2Tank,		   /**< Selects the CO2 tank */		
 	FilterChangeTimer, /**< Filter change, timer screen */
+	FilterChangeTimer100, /**< Filter change, timer screen no CO2*/
 	TimeDate,          /**< Time + Date */
 	Language,          /**< Language (set language) */
 	SleepMode,         /**< SleepMode */
