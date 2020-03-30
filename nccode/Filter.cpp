@@ -9,7 +9,7 @@
 
 #include <gameduino2/GD2.h>
 
-static void setC02(bool isC02);
+static void setCO2(bool isCO2);
 static bool isFilterPressed = true;
 
 static Screen Filter (
@@ -23,7 +23,10 @@ static Screen Filter (
 		MainBoard::updateFilterRemaining();
 		MainBoard::updateFilterMonthsRemaining();
 		MainBoard::updateFilterLastChanged();
-		setC02(false);  //setup button  
+		setCO2(false);  //setup button  
+		//MainBoard::updateModelNumber();
+		auto model = MainBoard::getModelNumber();
+	if (model < 3){};
 	},
 	// Pre-draw function
 	[](void) {
@@ -56,7 +59,13 @@ static Screen Filter (
 			"CONTAMINANTS REMOVED", 
 			"ENTFERNTE",
 			"CONTAMINANTS " E_ACUTE "LIMIN" E_ACUTE "S",
-			"CONTAMINANTES\nELIMINADOS"
+			"CONTAMINANTES"
+		})());
+		GD.cmd_text(8, 270, FONT_LARGE, 0, LanguageString({
+			"", 
+			"",
+			"",
+			"ELIMINADOS"  //this needed to be on a second line
 		})());
 
 		// Show proper contaminant text based on filter's type
@@ -105,24 +114,24 @@ static Screen Filter (
 		"FILTRO"
 	}, [](bool press) {
 		if (!press){
-		//setC02(false);
+		//setCO2(false);
 		//ScreenManager::setCurrent(ScreenID::Filter);
-		//setC02(true);
+		//setCO2(true);
 		}	
 	}),
-	Button({136, 70}, Button::drawExclusiveOption, "C02", [](bool press) {
+	Button({136, 70}, Button::drawExclusiveOption, "CO2", [](bool press) {
 		if (!press){
-		setC02(true);
-		ScreenManager::setCurrent(ScreenID::C02Level);
+		setCO2(true);
+		ScreenManager::setCurrent(ScreenID::CO2Level);
 
 		}
 	})	
 );
 
 
-void setC02(bool isC02)  //toggle the button
+void setCO2(bool isCO2)  //toggle the button
 {
-	isFilterPressed = !isC02;
+	isFilterPressed = !isCO2;
 
 	Filter.getButton(2).setForcePressed(isFilterPressed);
 	Filter.getButton(3).setForcePressed(!isFilterPressed);

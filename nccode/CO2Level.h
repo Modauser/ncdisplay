@@ -3,14 +3,14 @@
  * @brief Main interface for communicating with the main board.
  */
 
-#ifndef C02LEVEL_H_
-#define C02LEVEL_H_
+#ifndef CO2LEVEL_H_
+#define CO2LEVEL_H_
 
 //#include "type/Formatters.h"
 
 #include <array>
 
-class C02Level {
+class CO2Level {
 
 public:
 static const char *TankString[];

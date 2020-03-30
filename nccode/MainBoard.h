@@ -82,7 +82,7 @@ private:
     static int filterRemainingCount;
 	static int filterMonthsRemaining;
 	static char filterLastChanged[Format::size::date];
-	static char C02LastReset[Format::size::date];
+	static char CO2LastReset[Format::size::date];
 	static char flowRate[Format::size::flowRate];
 
 	static char serviceContact[200];
@@ -166,12 +166,12 @@ public:
 	}
 	static const char *updateFilterLastChanged(void);
 
-
-	static inline const char *getC02LastReset(void) {
-		return C02LastReset;
+ 
+	static inline const char *getCO2LastReset(void) {
+		return CO2LastReset;
 	}
-	// C02 last reset date
-	static const char *updateC02LastReset(void);
+	// CO2 last reset date
+	static const char *updateCO2LastReset(void);
 
 
 	// Flow rate

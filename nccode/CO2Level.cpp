@@ -1,11 +1,11 @@
 /**
- * @file C02Level.cpp
- * @brief The screen that displays the C02 tank level.
+ * @file CO2Level.cpp
+ * @brief The screen that displays the CO2 tank level.
  */
 #include "type/Assets.h"
 #include "type/Screen.h"
 #include "MainBoard.h"
-#include "C02Level.h"
+#include "CO2Level.h"
 //#include <cstring>
 
 
@@ -14,7 +14,7 @@
 extern unsigned int filterType;
 extern unsigned int filterTimerMonths;
 extern unsigned int filterTimerGallons;
-int c02LevelValue;  //value 
+int CO2LevelValue;  //value 
 int bars; //counter for bar graph
 int tank; //tank type 0=sodapro, 1=5lb, 2=10lb
 
@@ -22,30 +22,30 @@ static void setFilter(bool isFilter);
 static void plotGraph(int level);
 static bool isFilterPressed = false;   
 
-const char *C02Level::TankString[] = {"Sodapro", "5lb","10lb"};
+const char *CO2Level::TankString[] = {"Sodapro", "5lb","10lb"};
 
 //const char *Tankstring(void) {"Sodapro", "5lb","10lb"};
 
-static Screen C02Level (  
-	ScreenID::C02Level,
+static Screen CO2Level (  
+	ScreenID::CO2Level,
 	// Parent screen
 	ScreenID::Filter,
 	// Initialization function
 	[](void) {
 		setFilter(false);  //setup button  
 		serialPrintf("@j");
-		c02LevelValue = serialGet();
-		MainBoard::updateC02LastReset();  //get c02 date
+		CO2LevelValue = serialGet();
+		MainBoard::updateCO2LastReset();  //get CO2 date
 		serialPrintf("@p");
 		tank = serialGet();		
 		
-		//  c02LevelValue=0;  //dpm debug
+		//  CO2LevelValue=0;  //dpm debug
 	},
 	// Pre-draw function
 	[](void) {
 		clearScreenWithIonHeader();
 		GD.ColorRGB(NC_FRGND_COLOR);
-		GD.cmd_text(136, 112, FONT_LARGE, OPT_CENTERX, C02Level::TankString[tank]);
+		GD.cmd_text(136, 112, FONT_LARGE, OPT_CENTERX, CO2Level::TankString[tank]);
 		//GD.cmd_text(136, 112, FONT_LARGE, OPT_CENTERX, tank);
 		
 		/*
@@ -56,17 +56,17 @@ static Screen C02Level (
 			"Nivel de CO2 SodaPro"
 		})()); */
 		
-		GD.cmd_text(8, 376, FONT_SMALL, 0, LanguageString({
-			"LAST RESET",
-			"LETZER RESETTEN",
-			"DERNI" E_ACUTE "RE R" E_ACUTE" INITIALISATION",
+		GD.cmd_text(136, 376, FONT_SMALL, OPT_CENTERX	, LanguageString({
+			"LAST RESET:",
+			"LETZER RESETTEN:",
+			"DERNI" E_ACUTE "RE R" E_ACUTE" INITIALISATION:",
 			// "" U_TILDE "ltima Fecha de Reinicio"
-			"ULTIMA REINICIO"   //Need a U_TILDE
+			"ULTIMA REINICIO:"   //Need a U_TILDE
 		})());
 
 			// Print text labels
-		//MainBoard::updateC02LastReset();	
-		GD.cmd_text(180, 376, FONT_SMALL, 0, MainBoard::getC02LastReset());
+		//MainBoard::updateCO2LastReset();	
+		GD.cmd_text(136, 390, FONT_SMALL, OPT_CENTERX, MainBoard::getCO2LastReset());
 		
 		
 		GD.ColorRGB(WHITE);
@@ -81,7 +81,7 @@ static Screen C02Level (
 		GD.Begin(RECTS);
 		GD.Vertex2ii(0, 418);
 		GD.Vertex2ii(272, 480);
-		plotGraph(c02LevelValue);  //plot the graph
+		plotGraph(CO2LevelValue);  //plot the graph
 	},
 	// Buttons
 	Button({0, 0}, Button::drawBackArrow, [](bool pressed) {
@@ -99,9 +99,9 @@ static Screen C02Level (
 		ScreenManager::setCurrent(ScreenID::Filter);
 		}	
 	}),
-	Button({136, 70}, Button::drawExclusiveOption, "C02", [](bool press) {
+	Button({136, 70}, Button::drawExclusiveOption, "CO2", [](bool press) {
 		if (!press){
-		//ScreenManager::setCurrent(ScreenID::C02Level);
+		//ScreenManager::setCurrent(ScreenID::CO2Level);
 		//setFilter(false);
 		}
 	}),
@@ -112,7 +112,7 @@ static Screen C02Level (
 		"SELECTIONNAR\n\nEL TANQUE"
 	}, [](bool pressed) {
 		if (!pressed)
-			ScreenManager::setCurrent(ScreenID::C02Tank);
+			ScreenManager::setCurrent(ScreenID::CO2Tank);
 	}),
 	Button({138, 420}, Button::drawDispenserItem, {
 		"RESET",
@@ -121,14 +121,14 @@ static Screen C02Level (
 		"REINICAR"
 	}, [](bool pressed) {
 		if (!pressed) {
-		serialPrintf("@k1");  //reset C02 counter.  Make sure the date is reset also when doing this on the main board.
+		serialPrintf("@k1");  //reset CO2 counter.  Make sure the date is reset also when doing this on the main board.
 		serialPrintf("@j");
-		c02LevelValue = serialGet();
-		MainBoard::updateC02LastReset();  //get c02 date
+		CO2LevelValue = serialGet();
+		MainBoard::updateCO2LastReset();  //get CO2 date
 		GD.Begin(RECTS);
 		GD.Vertex2ii(0, 418);
 		GD.Vertex2ii(272, 480);
-		plotGraph(c02LevelValue);  //plot the graph
+		plotGraph(CO2LevelValue);  //plot the graph
 		}
 	})	
 );
@@ -139,8 +139,8 @@ void setFilter(bool isFilter)  //toggle the button
 {
 
 	isFilterPressed = isFilter;
-	C02Level.getButton(1).setForcePressed(isFilterPressed);  //filter button we want it to be white when activated
-	C02Level.getButton(2).setForcePressed(!isFilterPressed); //c02 button
+	CO2Level.getButton(1).setForcePressed(isFilterPressed);  //filter button we want it to be white when activated
+	CO2Level.getButton(2).setForcePressed(!isFilterPressed); //CO2 button
 
 }
 

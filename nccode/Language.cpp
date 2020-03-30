@@ -9,6 +9,8 @@
 
 #include <gameduino2/GD2.h>
 
+
+
 // Sets current language, loads lang's label text, then exits Language screen
 void languageSet(const Language& l)
 {
@@ -24,6 +26,7 @@ static const LanguageString lSelectLang ({
 	"S" e_ACUTE "lectionner la Langue",
 	"Seleccionar idioma"
 });
+
 
 // Show top or bottom of language list
 void languageShowPage(bool top);

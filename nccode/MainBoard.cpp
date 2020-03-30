@@ -40,7 +40,7 @@ char MainBoard::filterRemaining[5] = "";
 int MainBoard::filterRemainingCount = 0;
 int MainBoard::filterMonthsRemaining = 0;
 char MainBoard::filterLastChanged[Format::size::date];
-char MainBoard::C02LastReset[Format::size::date];
+char MainBoard::CO2LastReset[Format::size::date];  
 char MainBoard::flowRate[Format::size::flowRate];
 
 char MainBoard::serviceContact[200] = "";
@@ -162,14 +162,14 @@ const char *MainBoard::updateFilterLastChanged(void)
 	return filterLastChanged;
 }
 
-const char *MainBoard::updateC02LastReset(void)
+const char *MainBoard::updateCO2LastReset(void)
 {
 	serialPrintf("@m");
 	int val = serialGet() << 16; // Month
 	val |= serialGet() << 8; // Day
 	val |= serialGet(); // Year
-	Format::date(C02LastReset, val);
-	return C02LastReset;
+	Format::date(CO2LastReset, val);
+	return CO2LastReset;
 }
 
 

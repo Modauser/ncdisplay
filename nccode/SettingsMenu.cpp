@@ -7,6 +7,7 @@
 #include "Lockscreen.h"
 
 #include <gameduino2/GD2.h>
+int a;
 
 static Screen Settings (
 	// This screen
@@ -32,15 +33,6 @@ static Screen Settings (
 	}, [](bool press) {
 		if (!press)
 			ScreenManager::setCurrent(ScreenID::ProductInfo);
-	}),
-	Button({2, 120}, Button::drawMenuItem, {  //dpm 3_17_2020 added C02 to filter for sodapro update
-		"FILTER + C02", 
-		"FILTER+ C02",
-		"FILTRE+ C02",
-		"FILTRO+ C02"
-	}, [](bool press) {
-		if (!press)
-			doPasscodeTest(ScreenID::Filter);
 	}),
 	Button({3, 180}, Button::drawMenuItem, {
 		"TIME + DATE",
@@ -81,6 +73,17 @@ static Screen Settings (
 	}, [](bool press) {
 		if (!press)
 			doPasscodeTest(ScreenID::Advanced);
+	}),
+	Button({2, 120}, Button::drawMenuItem, {  //dpm 3_17_2020 added CO2 to filter for sodapro update
+		"FILTER + CO2", 
+		"FILTER + CO2",
+		"FILTRE + CO2",
+		"FILTRO + CO2"
+	}, [](bool press) {
+		if (!press)
+			doPasscodeTest(ScreenID::Filter);
 	})
+	
 );
+
 
