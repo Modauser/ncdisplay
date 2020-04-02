@@ -5,6 +5,7 @@
 #include "type/Assets.h"
 #include "type/Screen.h"
 #include "MainBoard.h"
+#include "Settings.h"
 
 #include <gameduino2/GD2.h>
 
@@ -129,6 +130,7 @@ static Screen SystemOptions (
 				!sysOptionToggles[0], !sysOptionToggles[1],
 				!sysOptionToggles[2], sysOptionToggles[3],
 				sysOptionToggles[4], sysOptionMetric);
+				Settings::loadLabels();   //if metric/standard units were changed reload the appropriate text file 
 			ScreenManager::setCurrent(ScreenID::Advanced);
 		}
 	})

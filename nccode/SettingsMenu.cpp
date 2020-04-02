@@ -5,6 +5,7 @@
 #include "type/Assets.h"
 #include "type/Screen.h"
 #include "Lockscreen.h"
+#include "Mainboard.h"
 
 #include <gameduino2/GD2.h>
 int a;
@@ -33,6 +34,17 @@ static Screen Settings (
 	}, [](bool press) {
 		if (!press)
 			ScreenManager::setCurrent(ScreenID::ProductInfo);
+	}),
+	Button({2, 120}, Button::drawMenuItemCo2,  {  //dpm 3_17_2020 added CO2 to filter for sodapro update, need to fix titles, should only be "FILTER" etc.. if model 100 or model 200
+		"FILTER",
+		"FILTER",
+		"FILTRE",
+		"FILTRO"
+	}, [](bool press) {
+		if (!press) {
+			if (MainBoard::canDispenseSparkling())	doPasscodeTest(ScreenID::Filter);
+			else 	doPasscodeTest(ScreenID::Filter100);
+		}		
 	}),
 	Button({3, 180}, Button::drawMenuItem, {
 		"TIME + DATE",
@@ -73,17 +85,7 @@ static Screen Settings (
 	}, [](bool press) {
 		if (!press)
 			doPasscodeTest(ScreenID::Advanced);
-	}),
-	Button({2, 120}, Button::drawMenuItem, {  //dpm 3_17_2020 added CO2 to filter for sodapro update
-		"FILTER + CO2", 
-		"FILTER + CO2",
-		"FILTRE + CO2",
-		"FILTRO + CO2"
-	}, [](bool press) {
-		if (!press)
-			doPasscodeTest(ScreenID::Filter);
 	})
-	
 );
 
 

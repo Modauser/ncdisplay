@@ -23,7 +23,8 @@ static Screen Sleep (
 	// Initialization function
 	[](void) {
 		sleepImageCounter = 0;
-		inSleepMode = MainBoard::getSleepmodeEnabled();
+		// inSleepMode = MainBoard::getSleepmodeEnabled();  //dpm changed, was going into sleep screens when sleep mode was enabled, NOT when board was asleep 
+		inSleepMode = MainBoard::getInSleepmode();
 		MainBoard::getBottlesSaved(sleepBottlesUsed);
 	},
 	// Pre-draw function

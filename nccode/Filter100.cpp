@@ -12,9 +12,10 @@
 static Screen Filter100 (
 	ScreenID::Filter100,
 	// Parent screen
-	ScreenID::Settings100,
+	ScreenID::Settings,
 	// Initialization function
 	[](void) {
+		clearScreenWithIonHeader();
 		MainBoard::updateMetric();
 		MainBoard::updateFilterType();
 		MainBoard::updateFilterRemaining();
@@ -83,7 +84,7 @@ static Screen Filter100 (
 	// Buttons
 	Button({0, 0}, Button::drawBackArrow, [](bool pressed) {
 		if (!pressed)
-			ScreenManager::setCurrent(ScreenID::Settings100);
+			ScreenManager::setCurrent(ScreenID::Settings);
 	}),
 	Button({0, 420}, Button::drawFullWidth, {
 		"CHANGE FILTER",
@@ -92,7 +93,8 @@ static Screen Filter100 (
 		"CAMBIAR EL FILTRO"
 	}, [](bool press) {
 		if (!press)
-			ScreenManager::setCurrent(ScreenID::FilterChange100);
+			//ScreenManager::setCurrent(ScreenID::FilterChange100);
+		ScreenManager::setCurrent(ScreenID::FilterChange);
 	})
 );
 

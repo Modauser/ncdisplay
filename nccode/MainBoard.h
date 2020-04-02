@@ -201,7 +201,9 @@ public:
 	static void getSleepmodeHours(unsigned int *buf);
 	static void setSleepmodeHours(const unsigned int *hours);
 	static bool getSleepmodeEnabled(void);
+	static bool getInSleepmode(void);
 	static void setSleepmodeEnabled(bool en);
+	
 
 	// Language
 	static int getLanguage(void);

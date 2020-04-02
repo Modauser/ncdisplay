@@ -1,7 +1,12 @@
 #include "Assets.h"
 #include "Button.h"
 
+
+
 #include <gameduino2/GD2.h>
+
+#include <cctype>
+#include <cstring>
 
 void Button::draw(void)
 {
@@ -127,12 +132,49 @@ void Button::drawMenuItem(const vec2& xy, bool pressed, const LanguageString& te
 	GD.Vertex2ii(272 - 29, xy.y + 37);
 
 	// Text
-	GD.cmd_text(xy.x == 0 ? 30 : 60, xy.y + 30, FONT_SMALL, OPT_CENTERY, text());
+	GD.cmd_text(xy.x == 0 ? 30 : 60, xy.y + 30, FONT_SMALL, OPT_CENTERY,  text());
 	if (xy.x != 0) {
 		GD.Begin(BITMAPS);
 		GD.Vertex2ii(20, xy.y + 17, SETSTRIP_HANDLE, xy.x - 1);
 	}
 }
+
+void Button::drawMenuItemCo2(const vec2& xy, bool pressed, const LanguageString& text)
+{  
+
+	(void)pressed;
+
+	// Clyne, I was thinking an easy solution to this would be to detect the model type and just append " + CO2" to the text
+	
+
+	// Rectangle
+	GD.Begin(RECTS);
+	GD.ColorRGB(NC_FRGND_COLOR);
+	GD.Vertex2ii(0, xy.y + 1);
+	GD.Vertex2ii(272, xy.y + 59);
+	GD.ColorRGB(WHITE);
+	GD.Vertex2ii(0, xy.y);
+	GD.Vertex2ii(272, xy.y);
+
+	// Right arrow
+	GD.LineWidth(12 * 2);
+	GD.Begin(LINE_STRIP);
+	GD.Vertex2ii(272 - 29, xy.y + 23);
+	GD.Vertex2ii(272 - 22, xy.y + 30);
+	GD.Vertex2ii(272 - 29, xy.y + 37);
+
+	// Text
+	
+	// Clyne, I was thinking an easy solution to this would be to detect the model type and just append " + CO2" to the text here
+	//using (MainBoard::canDispenseSparkling) but was not able to get it to work
+	GD.cmd_text(xy.x == 0 ? 30 : 60, xy.y + 30, FONT_SMALL, OPT_CENTERY, text());
+
+	if (xy.x != 0) {
+		GD.Begin(BITMAPS);
+		GD.Vertex2ii(20, xy.y + 17, SETSTRIP_HANDLE, xy.x - 1);
+	}
+}
+
 
 void Button::drawScrollButton(const vec2& xy, bool pressed)
 {

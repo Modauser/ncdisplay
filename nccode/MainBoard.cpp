@@ -274,6 +274,12 @@ bool MainBoard::getSleepmodeEnabled(void)
 	return serialGet() != 0;
 }
 
+bool MainBoard::getInSleepmode(void)
+{
+	serialPrintf("@O");
+	return serialGet() != 0;
+}
+
 void MainBoard::setSleepmodeEnabled(bool en)
 {
 	serialPrintf("@G%01u", en ? 1 : 0);

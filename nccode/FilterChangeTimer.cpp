@@ -5,6 +5,7 @@
 #include "type/Assets.h"
 #include "type/Screen.h"
 #include "MainBoard.h"
+#include "Settings.h"
 
 #include <gameduino2/GD2.h>
 
@@ -86,7 +87,12 @@ static Screen FilterChangeTimer (
 				filterTimerGallons == 750 ? '1' : '3',
 				filterTimerMonths / 3 - 1,
 				filterType);
-			ScreenManager::setCurrent(ScreenID::Filter);
+				Settings::loadLabels();   //if metric/standard units were changed reload the appropriate text file 
+			{
+			if (MainBoard::canDispenseSparkling())	ScreenManager::setCurrent(ScreenID::Filter);  //return to filter if sparkling/ CO2 allowed
+			else 	ScreenManager::setCurrent(ScreenID::Filter100);  ////return to filter100 if CO2 not allowed (no sparkling)
+		}
+			//ScreenManager::setCurrent(ScreenID::Filter);
 		}
 	}),
 	Button({34, 210}, Button::drawUpButton, [](bool press) {

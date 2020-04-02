@@ -135,9 +135,6 @@ nccode/SystemOptions.o \
 nccode/Sleep.o \
 nccode/FilterChange.o \
 nccode/Filter100.o \
-nccode/FilterChange100.o \
-nccode/FilterChangeTimer100.o \
-nccode/SettingsMenu100.o \
 nccode/CO2Level.o \
 nccode/CO2Tank.o \
 nccode/FilterChangeTimer.o \
@@ -237,9 +234,6 @@ OBJS_AS_ARGS_USER += \
 "nccode/Sleep.o" \
 "nccode/FilterChange.o" \
 "nccode/Filter100.o" \
-"nccode/FilterChange100.o" \
-"nccode/FilterChangeTimer100.o" \
-"nccode/SettingsMenu100.o" \
 "nccode/CO2Level.o" \
 "nccode/CO2Tank.o" \
 "nccode/FilterChangeTimer.o" \
@@ -341,9 +335,6 @@ DEPS_AS_ARGS_USER += \
 "nccode/Sleep.d" \
 "nccode/FilterChange.d" \
 "nccode/Filter100.d" \
-"nccode/FilterChange100.d" \
-"nccode/FilterChangeTimer100.d" \
-"nccode/SettingsMenu100.d" \
 "nccode/CO2Level.d" \
 "nccode/CO2Tank.d" \
 "nccode/FilterChangeTimer.d" \

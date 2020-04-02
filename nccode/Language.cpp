@@ -36,6 +36,7 @@ static Screen Language (
 	ScreenID::Language,
 	// Parent screen
 	ScreenID::Settings,
+	
 	// Initialization function
 	[](void) {
 		languageShowPage(true);

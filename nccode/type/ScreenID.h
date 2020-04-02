@@ -39,7 +39,7 @@ enum class ScreenID {
 	Lock,              /**< Passcode */
 	Lockscreen,        /**< Enter passcode prompt */
 	Restart,           /**< Please restart */
-	Fill,              /**< FILLING ... WATER SYSTEM */
+	Fill,              /**< FILLING ... WATER SYSTEM */  
 	WelcomeLanguage,   /**< Welcome, select language */
 	SetupComplete,     /**< Setup complete */
 	Setup,             /**< Fullscreen ION logo */

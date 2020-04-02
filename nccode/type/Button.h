@@ -6,6 +6,7 @@
 #ifndef BUTTON_H_
 #define BUTTON_H_
 
+
 #include "LanguageString.h"
 
 /**
@@ -201,11 +202,19 @@ public:
 	 */
 	static void drawMenuItem(const vec2& xy, bool, const LanguageString& text);
 
+/**
+	 * Pre-defined button render function:
+	 * Draws a menu item (settings screen entries).
+	 * Appends + CO2 to the text if it is a model 300 or 400
+	 * pass true to bool if CO2 is enabled
+	 */
+	static void drawMenuItemCo2(const vec2& xy, bool, const LanguageString& text);
+
 	/**
 	 * Pre-defined button render function:
 	 * Draws a dispenser button.
 	 */
-	static void drawDispenserItem(const vec2& xy, bool, const LanguageString& text);
+	static void drawDispenserItem(const vec2& xy, bool, const LanguageString& text );
 
 	/**
 	 * Pre-defined button render function:

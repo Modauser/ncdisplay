@@ -78,7 +78,7 @@ bool USBUpdateCheck(void)
 
 	// Close the update file and delete it from the USB drive
 	f_close(&fd);
-	f_unlink(USBUpdatePath);
+	//f_unlink(USBUpdatePath);  //4/2/2020 dpm commented out per NC request, want the file to remain on the USB drive
 
 	// Begin the firmware update
 	firmwareUpdate((uint32_t)UPDATE_LOAD_ADDR, size, &GD);

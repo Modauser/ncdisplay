@@ -63,7 +63,11 @@ static Screen FilterChange (
 	// Buttons
 	Button({0, 0}, Button::drawBackArrow, [](bool pressed) {
 		if (!pressed)
-			ScreenManager::setCurrent(ScreenID::Filter);
+			{
+			if (MainBoard::canDispenseSparkling())	ScreenManager::setCurrent(ScreenID::Filter);  //return to filter if sparkling/ CO2 allowed
+			else 	ScreenManager::setCurrent(ScreenID::Filter100);  ////return to filter100 if CO2 not allowed (no sparkling)
+		}
+			//ScreenManager::setCurrent(ScreenID::Filter);  //dpm 4_2_2020 
 	}),
 	Button({0, 60}, Button::drawMenuItem, "CarbonPlus",
 	[](bool press) { if (!press) goTimerLong(0); } ),

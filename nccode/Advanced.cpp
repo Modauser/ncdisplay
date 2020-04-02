@@ -29,7 +29,10 @@ static const LanguageString warningReset ({
 });
 
 static const LanguageString warningAutofill ({
-	"Internal tanks will be refilled.\nDo not leave unit unattended.\n\nContinue?"
+	"Internal tanks will be refilled.\nDo not leave unit unattended.\n\nContinue?",
+	"Interne Tanks werden nachgef" u_UMLAUT "llt.\n Lassen Sie das Ger" a_UMLAUT "t nicht unbeaufsichtigt.\n\n Fortsetzen?",
+	"Les r" e_ACUTE "servoirs internes seront remplis.\n Ne laissez pas l'appareil sans surveillance.\n\n Continuer?",
+	"Los tanques internos ser" a_ACUTE "n rellenados.\n No deje la unidad desatendida.\n\n Continuar?"
 });
 
 static const LanguageString warningResetYes ({
