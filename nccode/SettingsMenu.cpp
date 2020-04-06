@@ -5,10 +5,11 @@
 #include "type/Assets.h"
 #include "type/Screen.h"
 #include "Lockscreen.h"
-#include "Mainboard.h"
+#include "MainBoard.h"
 
 #include <gameduino2/GD2.h>
-int a;
+
+static void settingsMenuInit(void);
 
 static Screen Settings (
 	// This screen
@@ -18,9 +19,7 @@ static Screen Settings (
 	// Initialization function
 	nullptr,
 	// Pre-draw function
-	[](void) {
-		clearScreenWithIonHeader();
-	},
+    settingsMenuInit,
 	// Buttons
 	Button({0, 0}, Button::drawBackArrow, [](bool press) {
 		if (!press)
@@ -35,15 +34,12 @@ static Screen Settings (
 		if (!press)
 			ScreenManager::setCurrent(ScreenID::ProductInfo);
 	}),
-	Button({2, 120}, Button::drawMenuItemCo2,  {  //dpm 3_17_2020 added CO2 to filter for sodapro update, need to fix titles, should only be "FILTER" etc.. if model 100 or model 200
-		"FILTER",
-		"FILTER",
-		"FILTRE",
-		"FILTRO"
-	}, [](bool press) {
+	Button({2, 120}, Button::drawMenuItem, "", [](bool press) {
 		if (!press) {
-			if (MainBoard::canDispenseSparkling())	doPasscodeTest(ScreenID::Filter);
-			else 	doPasscodeTest(ScreenID::Filter100);
+			if (MainBoard::canDispenseSparkling())
+                doPasscodeTest(ScreenID::Filter);
+			else
+                doPasscodeTest(ScreenID::Filter100);
 		}		
 	}),
 	Button({3, 180}, Button::drawMenuItem, {
@@ -88,4 +84,12 @@ static Screen Settings (
 	})
 );
 
+static void settingsMenuInit(void)
+{
+    clearScreenWithIonHeader();
+    auto filterText = MainBoard::canDispenseSparkling() ?
+        LanguageString {"FILTER + CO2", "FILTER + CO2", "FILTRE + CO2", "FILTRO + CO2"} :
+        LanguageString {"FILTER", "FILTER", "FILTRE", "FILTRO"};
+    Settings.getButton(2).setText(filterText);
+}
 
