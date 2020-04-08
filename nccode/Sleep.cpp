@@ -29,6 +29,7 @@ static Screen Sleep (
 	},
 	// Pre-draw function
 	[](void) {
+		//inSleepMode = MainBoard::getInSleepmode();  //dpm 4_8_2020
 		if (inSleepMode) {
 			// If in sleep mode, only show sleep mode image
 			if (sleepImageLast != 0x1234) {
@@ -55,7 +56,7 @@ static Screen Sleep (
 		GD.Vertex2ii(0, 0, SLEEP_HANDLE);
 
 		if (!inSleepMode) {
-
+		
 			// Show TOUCH TO BEGIN
 			//GD.ColorRGB(NC_BKGND_COLOR);
 			//GD.Begin(RECTS);
@@ -82,6 +83,7 @@ static Screen Sleep (
 				sleepImageCurrent++;
 				if (sleepImageCurrent > 3)
 					sleepImageCurrent = 1;
+				inSleepMode = MainBoard::getInSleepmode();  //check to see if we are in sleep mode dpm 4_8_2020
 			}
 		}
 
