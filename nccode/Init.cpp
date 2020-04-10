@@ -86,6 +86,7 @@ for (int i = 0; i < 24; i++) {
 	GD.swap();
 
 	handshakeTest();
+	
 
 	// Set backlight brightness (value between 0-128)
 	GD.wr32(REG_PWM_DUTY, 64);
@@ -123,8 +124,10 @@ int handshakeTest(void)
 {
 	// Try to get "$0" given by main board on boot
 	int answer = serialTest();
-	if (answer == -1) {
+	 if (answer == -1) {   
+
 		// Maybe board is already on? Try querying language
+		//while (answer != -1){  //loop and keep trying DPM 4_9_2020
 		delay_ms(2000);
 		serialPrintf("#6");
 		answer = serialTest();
@@ -132,7 +135,8 @@ int handshakeTest(void)
 		if (answer != -1)
 			return 0;
 
-		showFatalError("COM error check display cable");
+		//showFatalError("COM error check display cable");  //tried to loop didn't work
+		showFatalError("Please Restart Unit"); 				//Changed per Matt request on 4/10/2020
 	}
 
 	return 0;

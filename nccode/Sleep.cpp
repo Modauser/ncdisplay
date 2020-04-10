@@ -79,7 +79,7 @@ static Screen Sleep (
 			sleepImageCounter += 10;
 			if (sleepImageCounter >= SLEEP_IMGSWITCH) {
 				sleepImageCounter = 0;
-
+  
 				sleepImageCurrent++;
 				if (sleepImageCurrent > 3)
 					sleepImageCurrent = 1;
