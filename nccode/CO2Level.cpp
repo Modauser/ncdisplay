@@ -252,7 +252,7 @@ void plotGraph(int level)
 					GD.ColorRGB(TINT_RED);		//make last half bar red for <5%				
 					GD.Vertex2ii(95, 343); //top left  //make bars 80x40 pixels
 					GD.Vertex2ii(174, 363); //bot right, leave grid of 3 pixels	
-					GD.cmd_text(135, 331, FONT_LARGE, OPT_CENTER, "<5%");
+					GD.cmd_text(135, 331, FONT_LARGE, OPT_CENTER, "<10%");
 
 				break;  //case 0
 
